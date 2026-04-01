@@ -1,0 +1,2543 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>내부품질기한 암기카드</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f2ec;
+    --card: #fffef9;
+    --border: #ddd8cc;
+    --text: #1a1a18;
+    --muted: #7a7870;
+    --accent: #006241;
+    --accent-light: #d4eddf;
+    --accent-muted: #4a9970;
+    --danger: #c0392b;
+    --danger-light: #fde8e6;
+    --warn: #d4830a;
+    --warn-light: #fef3dc;
+    --info: #1a6fa8;
+    --info-light: #dceef9;
+    --purple: #5a3ea0;
+    --purple-light: #ede8fa;
+    --pink: #b03070;
+    --pink-light: #fce8f2;
+    --radius: 14px;
+    --radius-sm: 8px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--accent);
+    color: white;
+    padding: 1.4rem 1.2rem 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .logo {
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+  }
+  .header h1 {
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .header p {
+    font-size: 12px;
+    opacity: 0.75;
+    margin-top: 1px;
+  }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab {
+    padding: 7px 16px;
+    border-radius: 999px;
+    border: 1.5px solid rgba(255,255,255,0.35);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    color: rgba(255,255,255,0.8);
+    background: transparent;
+    transition: all .18s;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+  .tab.active {
+    background: white;
+    color: var(--accent);
+    border-color: white;
+  }
+
+  /* CONTENT */
+  .content {
+    padding: 1.2rem;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* CARDS GRID */
+  .cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  @media (max-width: 420px) {
+    .cards { grid-template-columns: 1fr; }
+  }
+
+  /* FLIP CARD */
+  .flip-wrap {
+    perspective: 1200px;
+    height: 200px;
+    cursor: pointer;
+  }
+  .flip-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform .45s cubic-bezier(.4,0,.2,1);
+  }
+  .flip-wrap.flipped .flip-inner {
+    transform: rotateY(180deg);
+  }
+  .flip-front, .flip-back {
+    position: absolute;
+    inset: 0;
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    overflow: hidden;
+  }
+  .flip-back {
+    transform: rotateY(180deg);
+  }
+
+  .card-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .card-item { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+  .card-sub { font-size: 11.5px; color: var(--muted); line-height: 1.5; }
+
+  .stat-row {
+    display: flex;
+    gap: 6px;
+    margin-top: 10px;
+  }
+  .stat {
+    flex: 1;
+    border-radius: var(--radius-sm);
+    padding: 7px 6px;
+    text-align: center;
+  }
+  .stat-num { font-size: 15px; font-weight: 700; font-family: 'DM Mono', monospace; }
+  .stat-lab { font-size: 10px; margin-top: 2px; }
+
+  .flip-hint {
+    position: absolute;
+    bottom: 10px;
+    right: 12px;
+    font-size: 10px;
+    color: var(--muted);
+    opacity: 0.7;
+  }
+
+  .trick-item {
+    font-size: 12.5px;
+    margin-bottom: 7px;
+    line-height: 1.5;
+    display: flex;
+    gap: 6px;
+  }
+  .trick-tip {
+    margin-top: 10px;
+    font-size: 11.5px;
+    color: var(--muted);
+    border-top: 1px dashed var(--border);
+    padding-top: 8px;
+    font-style: italic;
+    line-height: 1.5;
+  }
+
+  /* COLOR VARIANTS */
+  .c-teal .card-label { color: #0F6E56; }
+  .c-teal .stat { background: #E1F5EE; }
+  .c-teal .stat-num { color: #085041; }
+  .c-teal .stat-lab { color: #0F6E56; }
+  .teal-stat { background: #E1F5EE; }
+  .teal-stat .stat-num { color: #085041; }
+  .teal-stat .stat-lab { color: #0F6E56; }
+  .red-stat { background: #FAECE7; }
+  .red-stat .stat-num { color: #993C1D; }
+  .red-stat .stat-lab { color: #b04020; }
+  .c-green .stat { background: var(--accent-light); }
+  .c-green .stat-num { color: var(--accent); }
+  .c-green .stat-lab { color: var(--accent-muted); }
+
+  .c-blue .card-label { color: var(--info); }
+  .c-blue .stat { background: var(--info-light); }
+  .c-blue .stat-num { color: var(--info); }
+  .c-blue .stat-lab { color: #2a7fbf; }
+
+  .c-amber .card-label { color: var(--warn); }
+  .c-amber .stat { background: var(--warn-light); }
+  .c-amber .stat-num { color: var(--warn); }
+  .c-amber .stat-lab { color: #c07820; }
+
+  .c-red .card-label { color: var(--danger); }
+  .c-red .stat { background: var(--danger-light); }
+  .c-red .stat-num { color: var(--danger); }
+  .c-red .stat-lab { color: #aa3525; }
+
+  .c-purple .card-label { color: var(--purple); }
+  .c-purple .stat { background: var(--purple-light); }
+  .c-purple .stat-num { color: var(--purple); }
+  .c-purple .stat-lab { color: #7050b8; }
+
+  .c-pink .card-label { color: var(--pink); }
+  .c-pink .stat { background: var(--pink-light); }
+  .c-pink .stat-num { color: var(--pink); }
+  .c-pink .stat-lab { color: #c04080; }
+
+  /* RULES SECTION */
+  .rule-section-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--muted);
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    margin: 1.2rem 0 .6rem;
+  }
+  .rule-card {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 10px;
+  }
+  .rule-card-title {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .rule-row {
+    font-size: 13px;
+    margin-bottom: 6px;
+    line-height: 1.55;
+    display: flex;
+    gap: 6px;
+  }
+  .rule-row .dot { flex-shrink: 0; color: var(--muted); }
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  /* BIG TABLE QUICK REF */
+  .quick-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.5px;
+    background: var(--card);
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1.5px solid var(--border);
+    margin-bottom: 10px;
+  }
+  .quick-table th {
+    background: var(--accent);
+    color: white;
+    font-weight: 700;
+    padding: 9px 10px;
+    text-align: left;
+    font-size: 12px;
+  }
+  .quick-table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+  .quick-table tr:last-child td { border-bottom: none; }
+  .quick-table tr:nth-child(even) td { background: #faf8f3; }
+
+  /* QUIZ */
+  .quiz-score-bar {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    margin-bottom: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .quiz-score-num {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--accent);
+    font-family: 'DM Mono', monospace;
+  }
+  .quiz-score-lab { font-size: 12px; color: var(--muted); margin-top: 1px; }
+  .quiz-reset-btn {
+    padding: 8px 16px;
+    border-radius: 999px;
+    border: 1.5px solid var(--border);
+    font-size: 12px;
+    font-weight: 700;
+    background: white;
+    color: var(--text);
+    cursor: pointer;
+    font-family: 'Noto Sans KR', sans-serif;
+    transition: background .15s;
+  }
+  .quiz-reset-btn:hover { background: var(--bg); }
+
+  .q-card {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    animation: fadeIn .25s ease;
+  }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  .q-num { font-size: 11px; font-weight: 700; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 10px; }
+  .q-text { font-size: 15px; font-weight: 700; line-height: 1.55; margin-bottom: 18px; }
+  .q-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .q-opt {
+    padding: 11px 12px;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid var(--border);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    background: white;
+    color: var(--text);
+    text-align: left;
+    line-height: 1.4;
+    transition: all .15s;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+  .q-opt:hover:not(:disabled) { border-color: var(--accent); background: var(--accent-light); }
+  .q-opt.correct { background: var(--accent-light); border-color: var(--accent); color: var(--accent); }
+  .q-opt.wrong { background: var(--danger-light); border-color: var(--danger); color: var(--danger); }
+  .q-opt:disabled { cursor: default; }
+  .q-result { font-size: 13px; font-weight: 500; margin-top: 14px; min-height: 20px; }
+  .q-next {
+    margin-top: 14px;
+    width: 100%;
+    padding: 12px;
+    border-radius: var(--radius-sm);
+    border: none;
+    background: var(--accent);
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Noto Sans KR', sans-serif;
+    transition: opacity .15s;
+    display: none;
+  }
+  .q-next:hover { opacity: 0.88; }
+
+  .q-done {
+    text-align: center;
+    padding: 2rem 1rem;
+  }
+  .q-done-num { font-size: 48px; font-weight: 700; color: var(--accent); font-family: 'DM Mono', monospace; }
+  .q-done-label { font-size: 14px; color: var(--muted); margin-top: 4px; margin-bottom: 20px; }
+
+  /* SECTION LABEL */
+  .sec-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 8px;
+  }
+  .sec-gap { margin-top: 16px; }
+
+  /* Progress dots */
+  .progress-row {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+  }
+  .prog-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--border);
+    transition: background .2s;
+  }
+  .prog-dot.done-c { background: var(--accent); }
+  .prog-dot.done-w { background: var(--danger); }
+  .prog-dot.cur { background: var(--warn); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <svg class="logo" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="25" cy="25" r="23" fill="white" opacity="0.15"/>
+      <circle cx="25" cy="25" r="20" fill="none" stroke="white" stroke-width="1.5"/>
+      <text x="25" y="31" text-anchor="middle" font-size="18" fill="white" font-weight="700" font-family="serif">★</text>
+    </svg>
+    <div>
+      <h1>내부품질기한 암기카드</h1>
+      <p>Barista Basics · 스타벅스 아카데미</p>
+    </div>
+  </div>
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('core',this)">🫙 코어원재료</button>
+    <button class="tab" onclick="switchTab('made',this)">☕ 제조베이스</button>
+    <button class="tab" onclick="switchTab('bujaelyo',this)">🧪 부재료제조</button>
+    <button class="tab" onclick="switchTab('hot',this)">🔥 HOT음료</button>
+    <button class="tab" onclick="switchTab('ice',this)">🧊 ICE음료</button>
+    <button class="tab" onclick="switchTab('ref',this)">📋 빠른참조</button>
+    <button class="tab" onclick="switchTab('rules',this)">📌 표기법</button>
+    <button class="tab" onclick="switchTab('quiz',this)">🎯 퀴즈</button>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- ========== 코어 원재료 ========== -->
+  <div class="section active" id="sec-core">
+
+    <div class="sec-label" style="margin-top:4px">티백 · 사인판</div>
+    <div class="cards">
+
+      <div class="flip-wrap c-blue" onclick="this.classList.toggle('flipped')">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🍵 티백</div>
+            <div class="card-sub">티바나 더블스트렝스<br>제주 녹차 / 1CS티백</div>
+            <div class="stat-row">
+              <div class="stat"><div class="stat-num">3일</div><div class="stat-lab">소분후</div></div>
+              <div class="stat"><div class="stat-num">3개월</div><div class="stat-lab">개봉후(티바나)</div></div>
+            </div>
+            <div class="flip-hint">탭 → 표기법 확인</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">📌 표기법</div>
+            <div class="trick-item"><span>·</span><span>소분 후: <strong>숫자 Tag + 프라이스 Tag</strong></span></div>
+            <div class="trick-item"><span>·</span><span>개봉 후: <strong>수기 기입 또는 프라이스 Tag</strong></span></div>
+            <div class="trick-item"><span>·</span><span>제주녹차: 소분3일 / 개봉1개월</span></div>
+            <div class="trick-item"><span>·</span><span>1CS티백: 소분3일 / 개봉없음(-)</span></div>
+            <div class="flip-hint">탭 → 돌아가기</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-green" onclick="this.classList.toggle('flipped')">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🍫 사인판</div>
+            <div class="card-item" style="font-size:13px">초콜릿 사인판</div>
+            <div class="stat-row">
+              <div class="stat"><div class="stat-num">실온</div><div class="stat-lab">보관</div></div>
+              <div class="stat"><div class="stat-num" style="font-size:12px">소비기한까지</div><div class="stat-lab">개봉후</div></div>
+            </div>
+            <div class="stat-row">
+              <div class="stat" style="flex:none;width:100%"><div class="stat-num" style="font-size:12px">프라이스 Tag</div><div class="stat-lab">표기법</div></div>
+            </div>
+            <div class="flip-hint">탭 → 트릭 확인</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">💡 기억 트릭</div>
+            <div class="trick-item"><span>·</span><span>가장 간단한 품목!</span></div>
+            <div class="trick-item"><span>·</span><span>소비기한까지 → 날짜 따로 안 써도 됨</span></div>
+            <div class="trick-item"><span>·</span><span>프라이스 Tag만 부착</span></div>
+            <div class="trick-tip">실온 + 소비기한 + 프라이스Tag<br>이 3가지만 기억!</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="sec-label sec-gap">파우더</div>
+    <div class="cards">
+
+      <div class="flip-wrap c-green" onclick="this.classList.toggle('flipped')" style="height:220px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🧂 파우더 6종</div>
+            <div class="card-sub" style="font-size:11px">모카 · 초콜릿드링크 · 요거트<br>스노우폼 · 시나몬/슈거 · 유기농말차</div>
+            <div class="stat-row">
+              <div class="stat"><div class="stat-num">실온</div><div class="stat-lab">보관</div></div>
+              <div class="stat"><div class="stat-num">7일</div><div class="stat-lab">소분후</div></div>
+              <div class="stat"><div class="stat-num">3개월</div><div class="stat-lab">개봉후</div></div>
+            </div>
+            <div class="flip-hint">탭 → 기억 트릭</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">💡 기억 트릭</div>
+            <div class="trick-item"><span>·</span><span>6종 모두 <strong>완전 동일!</strong></span></div>
+            <div class="trick-item"><span>·</span><span>소분 → 7일</span></div>
+            <div class="trick-item"><span>·</span><span>개봉 → 3개월</span></div>
+            <div class="trick-item"><span>·</span><span>소분 후: 숫자+프라이스 / 개봉 후: 수기 또는 프라이스</span></div>
+            <div class="trick-tip">파우더는 통일! 7일 / 3개월 하나만 외우면 끝</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="sec-label sec-gap">베이스</div>
+    <div class="cards">
+
+      <div class="flip-wrap c-amber" onclick="this.classList.toggle('flipped')" style="height:220px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🍯 베이스 (개별 냉장)</div>
+            <div class="card-sub" style="font-size:11px">허니자몽소스 · 딸기베이스 · 복숭아소스</div>
+            <div class="stat-row">
+              <div class="stat"><div class="stat-num">2일</div><div class="stat-lab">허니·딸기 소분</div></div>
+              <div class="stat"><div class="stat-num">3일</div><div class="stat-lab">복숭아 소분</div></div>
+            </div>
+            <div class="stat-row">
+              <div class="stat"><div class="stat-num">14일</div><div class="stat-lab">허니 개봉</div></div>
+              <div class="stat"><div class="stat-num">3일</div><div class="stat-lab">딸기 개봉</div></div>
+              <div class="stat"><div class="stat-num">7일</div><div class="stat-lab">복숭아 개봉</div></div>
+            </div>
+            <div class="flip-hint">탭 → 트릭</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">💡 기억 트릭</div>
+            <div class="trick-item"><span>🍯</span><span>허니자몽: 소분<strong>2일</strong> / 개봉<strong>14일</strong> (실온)</span></div>
+            <div class="trick-item"><span>🍓</span><span>딸기베이스: 소분<strong>2일</strong> / 개봉<strong>3일</strong> (냉장)</span></div>
+            <div class="trick-item"><span>🍑</span><span>복숭아소스: 소분<strong>3일</strong> / 개봉<strong>7일</strong> (냉장)</span></div>
+            <div class="trick-tip">복숭아만 소분 3일! 나머지 2일<br>허니자몽만 실온 보관!</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-purple" onclick="this.classList.toggle('flipped')" style="height:220px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🧃 베이스 (냉장 공통 8종)</div>
+            <div class="card-sub" style="font-size:10.5px">피치·핑크자몽·유자진저·망고패션후르츠<br>스타벅스레모네이드·딸기리프레셔·라임비버리지·체리자두</div>
+            <div class="stat-row">
+              <div class="stat"><div class="stat-num">-</div><div class="stat-lab">소분없음</div></div>
+              <div class="stat"><div class="stat-num">7일</div><div class="stat-lab">개봉후</div></div>
+              <div class="stat"><div class="stat-num">냉장</div><div class="stat-lab">보관</div></div>
+            </div>
+            <div class="flip-hint">탭 → 트릭</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">💡 기억 트릭</div>
+            <div class="trick-item"><span>·</span><span>8종 모두 <strong>냉장 + 개봉 후 7일</strong></span></div>
+            <div class="trick-item"><span>·</span><span>소분 없이 바로 개봉해서 사용</span></div>
+            <div class="trick-item"><span>·</span><span>표기법: 숫자 Tag + 프라이스 Tag</span></div>
+            <div class="trick-tip">8종 통일! 냉장·7일·소분없음<br>한 번에 외워!</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="sec-label sec-gap">시럽</div>
+    <div class="cards">
+
+      <div class="flip-wrap c-red" onclick="this.classList.toggle('flipped')" style="height:230px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🍮 시럽 (대부분)</div>
+            <div class="card-sub" style="font-size:11px">25화이트초콜릿·카라멜향N·흑당·클래식·바닐라·스위트·헤이즐넛·토피넛·솔리드카라멜·심플(DT)·베르가못</div>
+            <div class="stat-row">
+              <div class="stat"><div class="stat-num">실온</div><div class="stat-lab">보관</div></div>
+              <div class="stat"><div class="stat-num">14일</div><div class="stat-lab">개봉후(대부분)</div></div>
+            </div>
+            <div class="stat-row">
+              <div class="stat"><div class="stat-num">7일</div><div class="stat-lab">심플(컨디바용)</div></div>
+              <div class="stat"><div class="stat-num">전량소분</div><div class="stat-lab">커피향·크림향</div></div>
+            </div>
+            <div class="flip-hint">탭 → 예외 확인</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">⚠️ 시럽 예외</div>
+            <div class="trick-item"><span>✅</span><span>대부분: 개봉 후 <strong>14일</strong></span></div>
+            <div class="trick-item"><span>⚠️</span><span>심플시럽(컨디바용): <strong>7일</strong> → 병하단 프라이스 Tag</span></div>
+            <div class="trick-item"><span>⚠️</span><span>커피향·크림향(저당포함): 소분<strong>3일</strong> / 개봉 <strong>전량소분</strong></span></div>
+            <div class="trick-item"><span>⚠️</span><span>25화이트초콜릿: 소분2일 / 수기기입 또는 프라이스Tag</span></div>
+            <div class="trick-tip">기본 14일! 예외 3개만 따로 외우기</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-pink" onclick="this.classList.toggle('flipped')" style="height:230px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🍓 토핑 4종</div>
+            <div class="card-sub" style="font-size:11px">LIME 25G · 동결건조딸기슬라이스<br>망고용과토핑 · New 프라푸치노칩</div>
+            <div class="stat-row">
+              <div class="stat"><div class="stat-num">5일</div><div class="stat-lab">LIME 소분</div></div>
+              <div class="stat"><div class="stat-num">3일</div><div class="stat-lab">딸기·망고 소분</div></div>
+              <div class="stat"><div class="stat-num">7일</div><div class="stat-lab">자바칩</div></div>
+            </div>
+            <div class="stat-row">
+              <div class="stat"><div class="stat-num">1개월</div><div class="stat-lab">LIME 개봉</div></div>
+              <div class="stat"><div class="stat-num">3개월</div><div class="stat-lab">딸기·망고 개봉</div></div>
+            </div>
+            <div class="flip-hint">탭 → 자바칩 예외</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">💡 토핑 정리</div>
+            <div class="trick-item"><span>🍋</span><span>LIME: 소분<strong>5일</strong> / 개봉<strong>1개월</strong></span></div>
+            <div class="trick-item"><span>🍓</span><span>동결건조딸기: 소분<strong>3일</strong> / 개봉<strong>3개월</strong></span></div>
+            <div class="trick-item"><span>🥭</span><span>망고용과: 소분<strong>3일</strong> / 개봉<strong>3개월</strong></span></div>
+            <div class="trick-item"><span>☕</span><span>자바칩(냉장): 소분+개봉 <strong>모두 7일</strong><br>⚠️ 부분소분 후 실온보관 시 <strong>당일폐기</strong></span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="sec-label sec-gap">유제품 · 대체유 · 연유</div>
+    <div class="cards">
+
+      <div class="flip-wrap c-blue" onclick="this.classList.toggle('flipped')" style="height:230px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🥛 연유 · 대체유</div>
+            <div class="card-sub" style="font-size:11px">연유소스·스위트블랜디드 / 두유·오트밀크 1000ml</div>
+            <div class="stat-row">
+              <div class="stat"><div class="stat-num">실온</div><div class="stat-lab">연유 보관</div></div>
+              <div class="stat"><div class="stat-num">냉장</div><div class="stat-lab">대체유 보관</div></div>
+            </div>
+            <div class="stat-row">
+              <div class="stat"><div class="stat-num">2일</div><div class="stat-lab">연유 소분+개봉</div></div>
+              <div class="stat"><div class="stat-num">3일</div><div class="stat-lab">두유·오트 개봉</div></div>
+            </div>
+            <div class="flip-hint">탭 → 표기법</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">📌 표기법</div>
+            <div class="trick-item"><span>·</span><span>연유소스·스위트블랜디드: <strong>숫자 Tag + 프라이스 Tag</strong></span></div>
+            <div class="trick-item"><span>·</span><span>두유·오트밀크: <strong>숫자 Tag + 프라이스 Tag</strong></span></div>
+            <div class="trick-tip">연유 2일 / 대체유 3일<br>소분 없이 개봉 후 바로 사용</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-green" onclick="this.classList.toggle('flipped')" style="height:230px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🍶 유제품</div>
+            <div class="card-sub" style="font-size:11px">휘핑크림(프링츠골드·데빅듀오) / 일반·무지방·저지방우유 / 바닐라크림베이스</div>
+            <div class="stat-row">
+              <div class="stat"><div class="stat-num">24시간</div><div class="stat-lab">휘핑크림</div></div>
+              <div class="stat"><div class="stat-num">2일</div><div class="stat-lab">우유·바닐라</div></div>
+            </div>
+            <div class="flip-hint">탭 → 예외 확인</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">⚠️ 유제품 예외</div>
+            <div class="trick-item"><span>⏱️</span><span>휘핑크림: 소분·개봉 모두 <strong>24시간</strong></span></div>
+            <div class="trick-item"><span>📅</span><span>우유·바닐라크림: 개봉 후 <strong>2일</strong></span></div>
+            <div class="trick-item"><span>🏷️</span><span>우유·바닐라크림베이스: 개별표기 없이<br><strong>냉장고 예시문구 부착으로 대체</strong></span></div>
+            <div class="trick-tip">휘핑크림이 가장 짧다! 24시간</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ========== 제조 베이스 ========== -->
+  <div class="section" id="sec-made">
+
+    <div class="sec-label" style="margin-top:4px">커피</div>
+    <div class="cards">
+
+      <div class="flip-wrap c-blue" onclick="this.classList.toggle('flipped')" style="height:250px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">☕ 커피 (시간순)</div>
+            <div class="stat-row">
+              <div class="stat"><div class="stat-num">1h</div><div class="stat-lab">오늘의커피</div></div>
+              <div class="stat"><div class="stat-num">4h</div><div class="stat-lab">아이스(실온)</div></div>
+              <div class="stat"><div class="stat-num">8h</div><div class="stat-lab">아이스(냉장)</div></div>
+            </div>
+            <div class="stat-row">
+              <div class="stat"><div class="stat-num">24h</div><div class="stat-lab">갈은커피</div></div>
+              <div class="stat"><div class="stat-num">7일</div><div class="stat-lab">콜드브루</div></div>
+              <div class="stat"><div class="stat-num">7일</div><div class="stat-lab">원두(개봉후)</div></div>
+            </div>
+            <div class="flip-hint">탭 → 예외 확인</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">⚠️ 커피 예외</div>
+            <div class="trick-item"><span>⏱️</span><span>오늘의커피: <strong>1시간</strong> (URN, 타이머)</span></div>
+            <div class="trick-item"><span>❄️</span><span>아이스: 실온<strong>4시간</strong> / 냉장<strong>8시간</strong> (타이머)</span></div>
+            <div class="trick-item"><span>🫙</span><span>콜드브루(원액보틀): 냉장 <strong>3일</strong> (일반은 7일)</span></div>
+            <div class="trick-item"><span>📦</span><span>원두(5LB/1LB/250g): 개봉후 <strong>7일</strong></span></div>
+            <div class="trick-tip">짧은 순: 오늘커피(1h)→아이스(4/8h)→갈은커피(24h)→콜드브루(7일)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-green" onclick="this.classList.toggle('flipped')" style="height:250px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🍵 티 (제조)</div>
+            <div class="card-item" style="font-size:13px">티바나 더블스트렝스 티</div>
+            <div class="stat-row">
+              <div class="stat"><div class="stat-num">실온</div><div class="stat-lab">보관</div></div>
+              <div class="stat"><div class="stat-num">12시간</div><div class="stat-lab">제조후</div></div>
+            </div>
+            <div class="stat-row">
+              <div class="stat" style="flex:none;width:100%"><div class="stat-num" style="font-size:12px">숫자 Tag + 프라이스 Tag</div><div class="stat-lab">표기법</div></div>
+            </div>
+            <div class="flip-hint">탭 → 트릭</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">💡 기억 트릭</div>
+            <div class="trick-item"><span>·</span><span>제조 후 <strong>12시간</strong></span></div>
+            <div class="trick-item"><span>·</span><span>갈은커피(24시간)의 딱 절반!</span></div>
+            <div class="trick-item"><span>·</span><span>실온 보관</span></div>
+            <div class="trick-tip">커피 24시간의 절반 = 티 12시간</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="sec-label sec-gap">유제품 · 베이스 (제조)</div>
+    <div class="cards">
+
+      <div class="flip-wrap c-amber" onclick="this.classList.toggle('flipped')" style="height:200px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🥛 유제품 (제조)</div>
+            <div class="card-sub">휘핑크림 / 하프 앤 하프</div>
+            <div class="stat-row">
+              <div class="stat"><div class="stat-num">냉장</div><div class="stat-lab">보관</div></div>
+              <div class="stat"><div class="stat-num">24시간</div><div class="stat-lab">제조후 둘 다</div></div>
+            </div>
+            <div class="flip-hint">탭 → 표기법</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">📌 표기법</div>
+            <div class="trick-item"><span>·</span><span>숫자 Tag + 프라이스 Tag</span></div>
+            <div class="trick-tip">휘핑크림·하프앤하프 모두 24시간<br>코어원재료 휘핑크림도 24시간! 일관성 있음</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-purple" onclick="this.classList.toggle('flipped')" style="height:200px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🧃 베이스 (제조)</div>
+            <div class="card-sub" style="font-size:11px">딸기리프레셔믹스 / 클래식밀크티베이스 / 클래식밀크티(보틀)</div>
+            <div class="stat-row">
+              <div class="stat"><div class="stat-num">24h</div><div class="stat-lab">딸기·밀크티</div></div>
+              <div class="stat"><div class="stat-num">2일</div><div class="stat-lab">밀크티(보틀)</div></div>
+            </div>
+            <div class="flip-hint">탭 → 트릭</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">💡 기억 트릭</div>
+            <div class="trick-item"><span>🍓</span><span>딸기리프레셔믹스: <strong>24시간</strong></span></div>
+            <div class="trick-item"><span>🍵</span><span>클래식밀크티베이스: <strong>24시간</strong></span></div>
+            <div class="trick-item"><span>🍵</span><span>클래식밀크티(보틀): <strong>2일</strong></span></div>
+            <div class="trick-tip">보틀만 2일! 나머지 24시간</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="sec-label sec-gap">소스 (제조)</div>
+    <div class="cards">
+
+      <div class="flip-wrap c-red" onclick="this.classList.toggle('flipped')" style="height:230px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🍫 소스 (제조)</div>
+            <div class="stat-row">
+              <div class="stat"><div class="stat-num">24h</div><div class="stat-lab">모카소스</div></div>
+              <div class="stat"><div class="stat-num">48h</div><div class="stat-lab">프라푸치노로스트</div></div>
+            </div>
+            <div class="stat-row">
+              <div class="stat"><div class="stat-num">2일</div><div class="stat-lab">시그니처초콜릿(실온)</div></div>
+              <div class="stat"><div class="stat-num">당일</div><div class="stat-lab">시그니처초콜릿(우유)</div></div>
+            </div>
+            <div class="flip-hint">탭 → 예외 트릭</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">💡 소스 기억법</div>
+            <div class="trick-item"><span>☕</span><span>모카소스(초콜릿드리즐포함): <strong>24시간</strong> (실온)</span></div>
+            <div class="trick-item"><span>🍦</span><span>프라푸치노로스트믹스: <strong>48시간</strong> (실온)</span></div>
+            <div class="trick-item"><span>🍫</span><span>시그니처초콜릿믹스: <strong>2일</strong> (실온) → 숫자Tag+프라이스Tag</span></div>
+            <div class="trick-item"><span>🥛</span><span>시그니처초콜릿(우유포함): <strong>당일</strong> (냉장) → 숫자Tag만!</span></div>
+            <div class="trick-tip">우유 들어가면 당일! 가장 짧다</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-green" onclick="this.classList.toggle('flipped')" style="height:230px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🧁 폼 · 기타반제품</div>
+            <div class="card-sub">폼파우더 사용 반제품<br>말차샷 외 기타 반제품</div>
+            <div class="stat-row">
+              <div class="stat"><div class="stat-num">냉장</div><div class="stat-lab">보관</div></div>
+              <div class="stat"><div class="stat-num">24시간</div><div class="stat-lab">제조후 모두</div></div>
+            </div>
+            <div class="stat-row">
+              <div class="stat" style="flex:none;width:100%"><div class="stat-num" style="font-size:12px">숫자 Tag + 프라이스 Tag</div><div class="stat-lab">표기법</div></div>
+            </div>
+            <div class="flip-hint">탭 → 트릭</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">💡 기억 트릭</div>
+            <div class="trick-item"><span>·</span><span>폼파우더·말차샷 등 기타 반제품</span></div>
+            <div class="trick-item"><span>·</span><span>냉장 + <strong>24시간</strong> 통일</span></div>
+            <div class="trick-tip">제조 베이스 대부분 24시간!<br>24시간을 기본으로 예외만 따로 외우자</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ========== 빠른 참조 표 ========== -->
+  <div class="section" id="sec-ref">
+    <p class="sec-label" style="margin-top:4px">코어 원재료 – 핵심 수치</p>
+    <table class="quick-table">
+      <thead><tr><th>구분/품목</th><th>소분후</th><th>개봉후</th><th>보관</th></tr></thead>
+      <tbody>
+        <tr><td>티백 (티바나)</td><td>3일</td><td>3개월</td><td>실온</td></tr>
+        <tr><td>티백 (제주녹차)</td><td>3일</td><td>1개월</td><td>실온</td></tr>
+        <tr><td>파우더 전체</td><td>7일</td><td>3개월</td><td>실온</td></tr>
+        <tr><td>초콜릿 사인판</td><td>–</td><td>소비기한까지</td><td>실온</td></tr>
+        <tr><td>허니자몽소스</td><td>2일</td><td>14일</td><td>실온</td></tr>
+        <tr><td>딸기베이스</td><td>2일</td><td>3일</td><td>냉장</td></tr>
+        <tr><td>복숭아소스</td><td>3일</td><td>7일</td><td>냉장</td></tr>
+        <tr><td>기타 베이스 8종</td><td>–</td><td>7일</td><td>냉장</td></tr>
+        <tr><td>시럽 (대부분)</td><td>–</td><td>14일</td><td>실온</td></tr>
+        <tr><td>심플시럽(컨디바)</td><td>–</td><td>7일</td><td>실온</td></tr>
+        <tr><td>커피향·크림향 시럽</td><td>3일</td><td>전량소분</td><td>실온</td></tr>
+        <tr><td>LIME 25G</td><td>5일</td><td>1개월</td><td>실온</td></tr>
+        <tr><td>동결건조딸기·망고용과</td><td>3일</td><td>3개월</td><td>실온</td></tr>
+        <tr><td>프라푸치노칩(자바칩)</td><td>7일</td><td>7일</td><td>냉장</td></tr>
+        <tr><td>연유소스·스위트블랜디드</td><td>2일</td><td>2일</td><td>실온</td></tr>
+        <tr><td>두유·오트밀크</td><td>–</td><td>3일</td><td>냉장</td></tr>
+        <tr><td>휘핑크림 (2종)</td><td>24시간</td><td>24시간</td><td>냉장</td></tr>
+        <tr><td>일반·무지방·저지방우유</td><td>–</td><td>2일</td><td>냉장</td></tr>
+        <tr><td>바닐라크림베이스</td><td>당일</td><td>2일</td><td>냉장</td></tr>
+      </tbody>
+    </table>
+
+    <p class="sec-label sec-gap">제조 베이스 – 핵심 수치</p>
+    <table class="quick-table">
+      <thead><tr><th>구분/품목</th><th>내부품질기한</th><th>보관</th></tr></thead>
+      <tbody>
+        <tr><td>오늘의 커피</td><td>추출 후 1시간</td><td>URN</td></tr>
+        <tr><td>아이스 커피</td><td>추출 후 4시간(실온) / 8시간(냉장)</td><td>실온·냉장</td></tr>
+        <tr><td>갈은 커피</td><td>제조 후 24시간</td><td>실온</td></tr>
+        <tr><td>콜드브루 추출액</td><td>추출 후 7일</td><td>냉장</td></tr>
+        <tr><td>콜드브루(원액보틀)</td><td>추출 후 3일</td><td>냉장</td></tr>
+        <tr><td>원두 (개봉 후)</td><td>개봉 후 7일</td><td>실온</td></tr>
+        <tr><td>티바나 더블스트렝스 티</td><td>제조 후 12시간</td><td>실온</td></tr>
+        <tr><td>휘핑크림 / 하프앤하프</td><td>제조 후 24시간</td><td>냉장</td></tr>
+        <tr><td>딸기리프레셔믹스 / 클래식밀크티베이스</td><td>제조 후 24시간</td><td>냉장</td></tr>
+        <tr><td>클래식밀크티 (보틀)</td><td>제조 후 2일</td><td>냉장</td></tr>
+        <tr><td>모카소스 (초콜릿드리즐 포함)</td><td>제조 후 24시간</td><td>실온</td></tr>
+        <tr><td>프라푸치노로스트믹스</td><td>제조 후 48시간</td><td>실온</td></tr>
+        <tr><td>시그니처초콜릿믹스</td><td>제조 후 2일</td><td>실온</td></tr>
+        <tr><td>시그니처초콜릿(우유포함)</td><td>제조 후 당일</td><td>냉장</td></tr>
+        <tr><td>폼파우더 반제품 / 말차샷 외</td><td>제조 후 24시간</td><td>냉장</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ========== 표기법 ========== -->
+  <div class="section" id="sec-rules">
+    <p class="sec-label" style="margin-top:4px">Tag 종류</p>
+    <div class="rule-card">
+      <div class="rule-row"><span class="dot">·</span><span><strong>숫자 Tag</strong>: 제조·소분 일시 기입하는 태그</span></div>
+      <div class="rule-row"><span class="dot">·</span><span><strong>프라이스 Tag</strong>: 품질기한 날짜를 기입하는 태그</span></div>
+      <div class="rule-row"><span class="dot">·</span><span><strong>수기 기입</strong>: 직접 날짜 적기 (프라이스 Tag 대신 가능)</span></div>
+    </div>
+
+    <p class="sec-label sec-gap">기본 공식</p>
+    <div class="rule-card" style="border-left: 4px solid var(--accent)">
+      <div class="rule-card-title" style="color:var(--accent)">✅ 소분 후 → Tag 2개</div>
+      <div class="rule-row"><span class="dot">·</span><span>숫자 Tag <strong>+</strong> 프라이스 Tag (항상 둘 다)</span></div>
+    </div>
+    <div class="rule-card" style="border-left: 4px solid var(--warn)">
+      <div class="rule-card-title" style="color:var(--warn)">⚠️ 개봉 후 → Tag 1개</div>
+      <div class="rule-row"><span class="dot">·</span><span>수기 기입 <strong>또는</strong> 프라이스 Tag (둘 중 하나)</span></div>
+    </div>
+
+    <p class="sec-label sec-gap">예외 표기법</p>
+    <div class="rule-card" style="border-left: 4px solid var(--danger)">
+      <div class="rule-card-title" style="color:var(--danger)">🚨 반드시 따로 외울 예외 4가지</div>
+      <div class="rule-row"><span class="dot">1</span><span><strong>심플시럽(컨디바용)</strong>: 병하단 프라이스 Tag</span></div>
+      <div class="rule-row"><span class="dot">2</span><span><strong>시그니처초콜릿(우유포함)</strong>: 숫자 Tag만 (프라이스 Tag 없음)</span></div>
+      <div class="rule-row"><span class="dot">3</span><span><strong>자바칩 부분소분 후 실온보관</strong>: 당일폐기 / 숫자 Tag</span></div>
+      <div class="rule-row"><span class="dot">4</span><span><strong>일반·저지방·무지방우유, 바닐라크림베이스</strong>: 냉장고 예시문구 부착으로 대체</span></div>
+    </div>
+
+    <p class="sec-label sec-gap">암기 요약</p>
+    <div class="rule-card" style="background: var(--accent-light); border-color: var(--accent-muted)">
+      <div class="rule-card-title" style="color:var(--accent)">💡 핵심 패턴 기억법</div>
+      <div class="rule-row"><span class="dot">·</span><span>파우더 전체: 7일 / 3개월 (통일!)</span></div>
+      <div class="rule-row"><span class="dot">·</span><span>베이스 8종 냉장: 7일 (통일!)</span></div>
+      <div class="rule-row"><span class="dot">·</span><span>시럽 대부분: 14일 (통일!)</span></div>
+      <div class="rule-row"><span class="dot">·</span><span>제조 베이스 대부분: 24시간 (통일!)</span></div>
+      <div class="rule-row"><span class="dot">·</span><span>우유 들어가면 당일! (시그니처초콜릿)</span></div>
+    </div>
+  </div>
+
+  <!-- ========== 부재료 제조 ========== -->
+  <div class="section" id="sec-bujaelyo">
+
+    <div class="sec-label" style="margin-top:4px">제조 방법 — 기본 베이스</div>
+    <div class="cards">
+
+      <div class="flip-wrap c-blue" onclick="this.classList.toggle('flipped')" style="height:230px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">☕ BC — 오늘의 커피</div>
+            <div class="card-sub" style="margin-bottom:10px">118g + 1/4 ▶ 안내려져 있다면 5분 안내</div>
+            <div class="stat-row">
+              <div class="stat blue-stat"><div class="stat-num">1시간</div><div class="stat-lab">유통기한</div></div>
+              <div class="stat blue-stat"><div class="stat-num">타이머</div><div class="stat-lab">표기법</div></div>
+              <div class="stat blue-stat"><div class="stat-num">실온</div><div class="stat-lab">보관</div></div>
+            </div>
+            <div class="flip-hint">탭 → 트릭</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">💡 기억 트릭</div>
+            <div class="trick-item"><span>·</span><span>118g + 물 1/4</span></div>
+            <div class="trick-item"><span>·</span><span>안내려져 있으면 5분 안내 후 사용</span></div>
+            <div class="trick-tip">타이머 표기 · 실온 · 1시간</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-blue" onclick="this.classList.toggle('flipped')" style="height:230px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">❄️ IC — 아이스 커피</div>
+            <div class="card-sub" style="margin-bottom:10px">196g + 1/4 ▶ 5분 내린 후 얼음 660g</div>
+            <div class="stat-row">
+              <div class="stat blue-stat"><div class="stat-num">4시간</div><div class="stat-lab">실온</div></div>
+              <div class="stat blue-stat"><div class="stat-num">8시간</div><div class="stat-lab">냉장</div></div>
+            </div>
+            <div class="stat-row">
+              <div class="stat blue-stat" style="flex:none;width:100%"><div class="stat-num" style="font-size:12px">타이머</div><div class="stat-lab">표기법</div></div>
+            </div>
+            <div class="flip-hint">탭 → 트릭</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">💡 기억 트릭</div>
+            <div class="trick-item"><span>·</span><span>196g + 물 1/4 → 5분 내린 후 얼음 660g</span></div>
+            <div class="trick-item"><span>·</span><span>실온 4시간 / 냉장 8시간</span></div>
+            <div class="trick-tip">BC(1h)의 4배 = IC실온(4h), 8배 = IC냉장(8h)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-green" onclick="this.classList.toggle('flipped')" style="height:230px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🧊 FR — 프라푸치노 로스트</div>
+            <div class="card-sub" style="margin-bottom:10px">프라푸치노 로스트 1봉 + 정수물 1L</div>
+            <div class="stat-row">
+              <div class="stat teal-stat"><div class="stat-num">48시간</div><div class="stat-lab">유통기한</div></div>
+              <div class="stat teal-stat"><div class="stat-num">실온</div><div class="stat-lab">보관</div></div>
+            </div>
+            <div class="flip-hint">탭 → 트릭</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">💡 기억 트릭</div>
+            <div class="trick-item"><span>·</span><span>로스트 1봉 + 정수물 1L</span></div>
+            <div class="trick-item"><span>·</span><span>48시간 = 이틀!</span></div>
+            <div class="trick-tip">실온 보관 · 48시간(2일)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-amber" onclick="this.classList.toggle('flipped')" style="height:230px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🍫 SC — 시그니처 초코</div>
+            <div class="card-sub" style="margin-bottom:10px">시그니처 초코 1봉 + 온수 500ml + 얼음물 500ml</div>
+            <div class="stat-row">
+              <div class="stat amber-stat"><div class="stat-num">2일</div><div class="stat-lab">유통기한</div></div>
+              <div class="stat amber-stat"><div class="stat-num">냉장</div><div class="stat-lab">보관</div></div>
+            </div>
+            <div class="flip-hint">탭 → 트릭</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">💡 기억 트릭</div>
+            <div class="trick-item"><span>·</span><span>초코 1봉 + 온수 500ml + 얼음물 500ml</span></div>
+            <div class="trick-item"><span>·</span><span>냉장 보관 · 2일</span></div>
+            <div class="trick-tip">온수+얼음물 각 500ml = 합쳐서 1L!</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-green" onclick="this.classList.toggle('flipped')" style="height:230px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🥛 H&H — 하프 앤 하프</div>
+            <div class="card-sub" style="margin-bottom:10px">프릿츠골드 100ml + 우유 300ml<br>(우유3 : 휘핑1 비율)</div>
+            <div class="stat-row">
+              <div class="stat teal-stat"><div class="stat-num">24시간</div><div class="stat-lab">유통기한</div></div>
+              <div class="stat teal-stat"><div class="stat-num">냉장</div><div class="stat-lab">보관</div></div>
+            </div>
+            <div class="flip-hint">탭 → 트릭</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">💡 기억 트릭</div>
+            <div class="trick-item"><span>·</span><span>프릿츠골드 100ml + 우유 300ml</span></div>
+            <div class="trick-item"><span>·</span><span>비율: 우유3 : 휘핑1</span></div>
+            <div class="trick-tip">냉장 · 24시간</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-amber" onclick="this.classList.toggle('flipped')" style="height:230px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🧇 M — 바모카</div>
+            <div class="card-sub" style="margin-bottom:6px">바모카 1봉 + 온수 1L</div>
+            <div class="card-sub" style="font-size:11px">바모카 1/2: 바모카 442g + 온수 500ml</div>
+            <div class="stat-row">
+              <div class="stat amber-stat"><div class="stat-num">24시간</div><div class="stat-lab">유통기한</div></div>
+              <div class="stat amber-stat"><div class="stat-num">실온</div><div class="stat-lab">보관</div></div>
+            </div>
+            <div class="flip-hint">탭 → 트릭</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">💡 기억 트릭</div>
+            <div class="trick-item"><span>·</span><span>풀: 바모카 1봉 + 온수 1L</span></div>
+            <div class="trick-item"><span>·</span><span>절반: 바모카 442g + 온수 500ml</span></div>
+            <div class="trick-tip">실온 · 24시간 / 숫자+Price Tag</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-purple" onclick="this.classList.toggle('flipped')" style="height:230px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🍦 WC — 일반 휘핑</div>
+            <div class="card-sub" style="margin-bottom:10px">휘핑크림 260ml + 심플 시럽 3펌프</div>
+            <div class="stat-row">
+              <div class="stat purple-stat"><div class="stat-num">24시간</div><div class="stat-lab">유통기한</div></div>
+              <div class="stat purple-stat"><div class="stat-num">냉장</div><div class="stat-lab">보관</div></div>
+            </div>
+            <div class="flip-hint">탭 → 트릭</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">💡 기억 트릭</div>
+            <div class="trick-item"><span>·</span><span>휘핑크림 260ml + 심플 시럽 3펌프</span></div>
+            <div class="trick-tip">냉장 · 24시간 · 숫자+Price Tag</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-red" onclick="this.classList.toggle('flipped')" style="height:230px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">☕ ESP Chip — 에스프레소 칩</div>
+            <div class="card-sub" style="margin-bottom:10px">에스프레소 원두(2~3스쿱)<br>그라인더 에스프레소로 분쇄</div>
+            <div class="stat-row">
+              <div class="stat red-stat"><div class="stat-num">24시간</div><div class="stat-lab">유통기한</div></div>
+              <div class="stat red-stat"><div class="stat-num">실온</div><div class="stat-lab">보관</div></div>
+            </div>
+            <div class="flip-hint">탭 → 트릭</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">💡 기억 트릭</div>
+            <div class="trick-item"><span>·</span><span>원두 2~3스쿱 → 그라인더로 분쇄</span></div>
+            <div class="trick-tip">실온 · 24시간</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="sec-label sec-gap">제조 방법 — 딸기·티</div>
+    <div class="cards">
+
+      <div class="flip-wrap c-pink" onclick="this.classList.toggle('flipped')" style="height:210px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🍓 SL — 딸기 리프레셔 믹스</div>
+            <div class="card-sub" style="margin-bottom:10px">딸기 리프레셔 베이스 1L + 정수물 1L</div>
+            <div class="stat-row">
+              <div class="stat pink-stat"><div class="stat-num">24시간</div><div class="stat-lab">유통기한</div></div>
+              <div class="stat pink-stat"><div class="stat-num">냉장</div><div class="stat-lab">보관</div></div>
+            </div>
+            <div class="flip-hint">탭 → 트릭</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">💡 기억 트릭</div>
+            <div class="trick-item"><span>·</span><span>딸기베이스 1L + 정수물 1L = 2L</span></div>
+            <div class="trick-tip">냉장 · 24시간 · 숫자+Price Tag</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-blue" onclick="this.classList.toggle('flipped')" style="height:210px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🍵 BT — 더블 스트렝스(블랙)</div>
+            <div class="card-sub" style="font-size:11px;margin-bottom:8px">블랙티 1EA + 온수 500ml ▶ 5분 후 티백제거 + 1L까지 정수물(2배합 O)</div>
+            <div class="stat-row">
+              <div class="stat blue-stat"><div class="stat-num">12시간</div><div class="stat-lab">유통기한</div></div>
+              <div class="stat blue-stat"><div class="stat-num">실온</div><div class="stat-lab">보관</div></div>
+            </div>
+            <div class="flip-hint">탭 → 트릭</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">💡 기억 트릭</div>
+            <div class="trick-item"><span>·</span><span>블랙티 1EA + 온수 500ml</span></div>
+            <div class="trick-item"><span>·</span><span>5분 → 티백제거 → 1L까지 정수물</span></div>
+            <div class="trick-tip">실온 · 12시간 · 숫자+Price Tag</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-green" onclick="this.classList.toggle('flipped')" style="height:240px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🌿 MTB — 더블 스트렝스(민트)</div>
+            <div class="card-sub" style="font-size:10.5px;margin-bottom:6px">민트티 2EA + 스팀피처 V사이즈까지 온수 ▶ 5분 후 티백제거 + MAX선까지 얼음</div>
+            <div class="card-sub" style="font-size:10px;color:var(--muted)">(대용량) 민트티 8EA + 온수 1L ▶ 5분 후 티백제거 + V얼음 + 2L까지 정수물</div>
+            <div class="stat-row">
+              <div class="stat teal-stat"><div class="stat-num">12시간</div><div class="stat-lab">유통기한</div></div>
+              <div class="stat teal-stat"><div class="stat-num">실온</div><div class="stat-lab">보관</div></div>
+            </div>
+            <div class="flip-hint">탭 → 트릭</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">💡 기억 트릭</div>
+            <div class="trick-item"><span>·</span><span>민트티 2EA + 온수(V사이즈) → 5분 → 티백제거 → MAX얼음</span></div>
+            <div class="trick-item"><span>·</span><span>대용량: 민트티 8EA + 온수 1L → V얼음 + 2L 정수물</span></div>
+            <div class="trick-tip">실온 · 12시간 · 숫자+Price Tag</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-teal" onclick="this.classList.toggle('flipped')" style="height:240px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🍵 CMT — 클래식 밀크티 베이스</div>
+            <div class="card-sub" style="font-size:10.5px;margin-bottom:8px">블랙티 1EA + 온수 350ml ▶ 10분 후 티백제거 + T얼음 + 흑당시럽 10펌프 + 하프 앤 하프 500ml (2배합 O)</div>
+            <div class="stat-row">
+              <div class="stat teal-stat"><div class="stat-num">24시간</div><div class="stat-lab">유통기한</div></div>
+              <div class="stat teal-stat"><div class="stat-num">냉장</div><div class="stat-lab">보관</div></div>
+            </div>
+            <div class="flip-hint">탭 → 트릭</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">💡 기억 트릭</div>
+            <div class="trick-item"><span>·</span><span>블랙티 1EA + 온수 350ml → 10분 → 티백제거</span></div>
+            <div class="trick-item"><span>·</span><span>T얼음 + 흑당시럽 10펌프 + H&H 500ml</span></div>
+            <div class="trick-tip">냉장 · 24시간 · 숫자+Price Tag<br>💡 BT(5분) vs CMT(10분) 구분!</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="sec-label sec-gap">제조 방법 — 바닐라·피치</div>
+    <div class="cards">
+
+      <div class="flip-wrap c-purple" onclick="this.classList.toggle('flipped')" style="height:240px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🫐 FVB — 프렌치 바닐라 베이스</div>
+            <div class="card-sub" style="font-size:10.5px;margin-bottom:8px">블렌더 피처(프릿츠골드 200ml + 우유 600ml + 프렌치 바닐라 시럽 8pump + 3번 버튼)</div>
+            <div class="stat-row">
+              <div class="stat purple-stat"><div class="stat-num">24시간</div><div class="stat-lab">유통기한</div></div>
+              <div class="stat purple-stat"><div class="stat-num">냉장</div><div class="stat-lab">보관</div></div>
+            </div>
+            <div class="flip-hint">탭 → 트릭</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">💡 기억 트릭</div>
+            <div class="trick-item"><span>·</span><span>프릿츠골드 200ml + 우유 600ml</span></div>
+            <div class="trick-item"><span>·</span><span>프렌치바닐라 시럽 8pump + 3번 버튼</span></div>
+            <div class="trick-tip">냉장 · 24시간 · 숫자+Price Tag</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-pink" onclick="this.classList.toggle('flipped')" style="height:240px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🍓 피치 딸기 프리믹스</div>
+            <div class="card-sub" style="margin-bottom:10px">딸기 리프레셔 베이스 500ml + 피치 베이스 500ml + 정수물 1L</div>
+            <div class="stat-row">
+              <div class="stat pink-stat"><div class="stat-num">24시간</div><div class="stat-lab">유통기한</div></div>
+              <div class="stat pink-stat"><div class="stat-num">냉장</div><div class="stat-lab">보관</div></div>
+            </div>
+            <div class="flip-hint">탭 → 트릭</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">💡 기억 트릭</div>
+            <div class="trick-item"><span>·</span><span>딸기베이스 500ml + 피치베이스 500ml + 정수물 1L</span></div>
+            <div class="trick-tip">냉장 · 24시간 · 숫자+Price Tag</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="sec-label sec-gap">프로모션 — 슈크림·폼</div>
+    <div class="cards">
+
+      <div class="flip-wrap c-amber" onclick="this.classList.toggle('flipped')" style="height:260px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🍮 CHWC — 슈크림 휘핑(자동)</div>
+            <div class="card-sub" style="font-size:11px;margin-bottom:8px">휘핑크림 1L + 스위트 바닐라 소스 18펌프(180ml) ▶ 30초간 머들러로 잘 저어주고 연결</div>
+            <div class="stat-row">
+              <div class="stat amber-stat"><div class="stat-num">24시간</div><div class="stat-lab">유통기한</div></div>
+              <div class="stat amber-stat"><div class="stat-num">냉장</div><div class="stat-lab">보관</div></div>
+            </div>
+            <div class="flip-hint">탭 → 트릭</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">💡 기억 트릭</div>
+            <div class="trick-item"><span>·</span><span>휘핑크림 1L + 스위트바닐라 18펌프(180ml)</span></div>
+            <div class="trick-item"><span>·</span><span>30초간 머들러로 잘 저어주고 연결</span></div>
+            <div class="trick-tip">냉장 · 24시간 · 숫자+Price Tag</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-amber" onclick="this.classList.toggle('flipped')" style="height:260px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🍮 CHF — 슈크림 휘핑(IT IS)</div>
+            <div class="card-sub" style="font-size:11px;margin-bottom:8px">스위트 바닐라 소스 4펌프 + 휘핑크림 260ml ▶ 가스주입 후 30회 흔들기</div>
+            <div class="stat-row">
+              <div class="stat amber-stat"><div class="stat-num">24시간</div><div class="stat-lab">유통기한</div></div>
+              <div class="stat amber-stat"><div class="stat-num">냉장</div><div class="stat-lab">보관</div></div>
+            </div>
+            <div class="flip-hint">탭 → 트릭</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">💡 기억 트릭</div>
+            <div class="trick-item"><span>·</span><span>스위트바닐라 4펌프 + 휘핑크림 260ml</span></div>
+            <div class="trick-item"><span>·</span><span>가스주입 후 30회 흔들기</span></div>
+            <div class="trick-tip">냉장 · 24시간 · 숫자+Price Tag</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-green" onclick="this.classList.toggle('flipped')" style="height:260px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🥛 CMB — 슈 폼</div>
+            <div class="card-sub" style="font-size:11px;margin-bottom:8px">휘핑크림 200ml + 우유 50ml + 스위트 바닐라 소스 6번 ▶ 3번 버튼 1회<br>*대용량 제조 시 2배</div>
+            <div class="stat-row">
+              <div class="stat teal-stat"><div class="stat-num">24시간</div><div class="stat-lab">유통기한</div></div>
+              <div class="stat teal-stat"><div class="stat-num">냉장</div><div class="stat-lab">보관</div></div>
+            </div>
+            <div class="flip-hint">탭 → 트릭</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">💡 기억 트릭</div>
+            <div class="trick-item"><span>·</span><span>휘핑 200ml + 우유 50ml + 스위트바닐라 6번</span></div>
+            <div class="trick-item"><span>·</span><span>3번 버튼 1회 / 대용량 2배</span></div>
+            <div class="trick-tip">냉장 · 24시간 · 숫자+Price Tag</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-green" onclick="this.classList.toggle('flipped')" style="height:260px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🍵 PTF — 슈크림 말차 베이스</div>
+            <div class="card-sub" style="font-size:11px;margin-bottom:8px">스위트 바닐라 소스 15펌프(150ml) + 우유 300ml + 말차파우더 5t 1번 ▶ 3번 버튼 1회<br>*대용량 제조 시 2배</div>
+            <div class="stat-row">
+              <div class="stat teal-stat"><div class="stat-num">24시간</div><div class="stat-lab">유통기한</div></div>
+              <div class="stat teal-stat"><div class="stat-num">냉장</div><div class="stat-lab">보관</div></div>
+            </div>
+            <div class="flip-hint">탭 → 트릭</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">💡 기억 트릭</div>
+            <div class="trick-item"><span>·</span><span>스위트바닐라 15펌프(150ml) + 우유 300ml</span></div>
+            <div class="trick-item"><span>·</span><span>말차파우더 5t 1번 → 3번 버튼 1회</span></div>
+            <div class="trick-tip">냉장 · 24시간 · 숫자+Price Tag</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-purple" onclick="this.classList.toggle('flipped')" style="height:270px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🌿 ChF — 피스타치오 폼</div>
+            <div class="card-sub" style="font-size:11px;margin-bottom:8px">프릿츠 골드 100ml + 우유 70ml + 피스타치오 소스(10.2ml) 9번 + 바닐라 시럽(7.5ml) 5번 ▶ 3번 버튼 1회<br>*2배수 제조 가능 3번버튼 2~3회</div>
+            <div class="stat-row">
+              <div class="stat purple-stat"><div class="stat-num">24시간</div><div class="stat-lab">유통기한</div></div>
+              <div class="stat purple-stat"><div class="stat-num">냉장</div><div class="stat-lab">보관</div></div>
+            </div>
+            <div class="flip-hint">탭 → 트릭</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">💡 기억 트릭</div>
+            <div class="trick-item"><span>·</span><span>프릿츠골드 100ml + 우유 70ml</span></div>
+            <div class="trick-item"><span>·</span><span>피스타치오소스(10.2ml) 9번 + 바닐라시럽(7.5ml) 5번</span></div>
+            <div class="trick-item"><span>·</span><span>3번 버튼 1회 / 2배수: 2~3회</span></div>
+            <div class="trick-tip">냉장 · 24시간 · 숫자+Price Tag</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-red" onclick="this.classList.toggle('flipped')" style="height:270px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🍫 초콜릿 폼</div>
+            <div class="card-sub" style="font-size:11px;margin-bottom:8px">프릿츠 골드 100ml + 우유 70ml + 바모카 소스(15ml) 3번 + 바닐라 시럽(7.5ml) 5번 ▶ 3번 버튼 1회<br>*2배수 제조 가능 3번버튼 2~3회</div>
+            <div class="stat-row">
+              <div class="stat red-stat"><div class="stat-num">24시간</div><div class="stat-lab">유통기한</div></div>
+              <div class="stat red-stat"><div class="stat-num">냉장</div><div class="stat-lab">보관</div></div>
+            </div>
+            <div class="flip-hint">탭 → 트릭</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">💡 기억 트릭</div>
+            <div class="trick-item"><span>·</span><span>프릿츠골드 100ml + 우유 70ml</span></div>
+            <div class="trick-item"><span>·</span><span>바모카소스(15ml) 3번 + 바닐라시럽(7.5ml) 5번</span></div>
+            <div class="trick-item"><span>·</span><span>3번 버튼 1회 / 2배수: 2~3회</span></div>
+            <div class="trick-tip">냉장 · 24시간 · 숫자+Price Tag<br>💡 ChF(피스타치오)와 기본 구성 동일! 소스만 다름</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 빠른 참조 표 -->
+    <div class="sec-label sec-gap">부재료 제조 — 빠른 참조</div>
+    <table class="quick-table">
+      <thead><tr><th>마킹</th><th>이름</th><th>유통기한</th><th>보관</th></tr></thead>
+      <tbody>
+        <tr><td>BC</td><td>오늘의 커피</td><td>1시간</td><td>실온</td></tr>
+        <tr><td>IC</td><td>아이스 커피</td><td>4시간(실온) / 8시간(냉장)</td><td>실온·냉장</td></tr>
+        <tr><td>FR</td><td>프라푸치노 로스트</td><td>48시간</td><td>실온</td></tr>
+        <tr><td>SC</td><td>시그니처 초코</td><td>2일</td><td>냉장</td></tr>
+        <tr><td>H&H</td><td>하프 앤 하프</td><td>24시간</td><td>냉장</td></tr>
+        <tr><td>M</td><td>바모카 (풀/1/2)</td><td>24시간</td><td>실온</td></tr>
+        <tr><td>WC</td><td>일반 휘핑</td><td>24시간</td><td>냉장</td></tr>
+        <tr><td>ESP Chip</td><td>에스프레소 칩</td><td>24시간</td><td>실온</td></tr>
+        <tr><td>SL</td><td>딸기 리프레셔 믹스</td><td>24시간</td><td>냉장</td></tr>
+        <tr><td>BT</td><td>더블 스트렝스(블랙)</td><td>12시간</td><td>실온</td></tr>
+        <tr><td>MTB</td><td>더블 스트렝스(민트)</td><td>12시간</td><td>실온</td></tr>
+        <tr><td>CMT</td><td>클래식 밀크티 베이스</td><td>24시간</td><td>냉장</td></tr>
+        <tr><td>FVB</td><td>프렌치 바닐라 베이스</td><td>24시간</td><td>냉장</td></tr>
+        <tr><td>—</td><td>피치 딸기 프리믹스</td><td>24시간</td><td>냉장</td></tr>
+        <tr><td>CHWC</td><td>슈크림 휘핑(자동)</td><td>24시간</td><td>냉장</td></tr>
+        <tr><td>CHF</td><td>슈크림 휘핑(IT IS)</td><td>24시간</td><td>냉장</td></tr>
+        <tr><td>CMB</td><td>슈 폼</td><td>24시간</td><td>냉장</td></tr>
+        <tr><td>PTF</td><td>슈크림 말차 베이스</td><td>24시간</td><td>냉장</td></tr>
+        <tr><td>ChF</td><td>피스타치오 폼</td><td>24시간</td><td>냉장</td></tr>
+        <tr><td>—</td><td>초콜릿 폼</td><td>24시간</td><td>냉장</td></tr>
+      </tbody>
+    </table>
+
+  </div>
+
+  <!-- ========== HOT 음료 ========== -->
+  <div class="section" id="sec-hot">
+
+    <div class="sec-label" style="margin-top:4px">드립 · 에스프레소</div>
+    <div class="cards">
+
+      <div class="flip-wrap c-blue" onclick="this.classList.toggle('flipped')" style="height:210px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">☕ BC — 오늘의 커피</div>
+            <div class="card-sub" style="margin-bottom:10px">추출한 오늘의 커피</div>
+            <div class="stat-row">
+              <div class="stat blue-stat"><div class="stat-num">드립</div><div class="stat-lab">구분</div></div>
+            </div>
+            <div class="flip-hint">탭 → 유의사항</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">⚠️ 유의사항</div>
+            <div class="trick-item"><span>·</span><span>드립 추출 음료</span></div>
+            <div class="trick-item"><span>·</span><span>추출 후 최대한 빠르게 제공</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-red" onclick="this.classList.toggle('flipped')" style="height:210px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">☕ E — 에스프레소</div>
+            <div class="card-sub" style="margin-bottom:10px">에스프레소 샷</div>
+            <div class="stat-row">
+              <div class="stat red-stat"><div class="stat-num">Solo:1</div><div class="stat-lab">S/T샷</div></div>
+              <div class="stat red-stat"><div class="stat-num">Doppio:2</div><div class="stat-lab">G/V샷</div></div>
+            </div>
+            <div class="flip-hint">탭 → 유의사항</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">⚠️ 유의사항</div>
+            <div class="trick-item"><span>·</span><span>추출 후 최대한 빠르게 제공</span></div>
+            <div class="trick-item"><span>·</span><span>추출 후 10초 지나면 변질되므로 사용 금지</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-red" onclick="this.classList.toggle('flipped')" style="height:230px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">☕ ECP — 에스프레소 콘파나</div>
+            <div class="card-sub" style="margin-bottom:10px">에스프레소 샷 + 휘핑</div>
+            <div class="stat-row">
+              <div class="stat red-stat"><div class="stat-num">Solo:1</div><div class="stat-lab">S/T샷</div></div>
+              <div class="stat red-stat"><div class="stat-num">Doppio:2</div><div class="stat-lab">G/V샷</div></div>
+              <div class="stat red-stat"><div class="stat-num">O</div><div class="stat-lab">휘핑</div></div>
+            </div>
+            <div class="flip-hint">탭 → 트릭</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">💡 기억 트릭</div>
+            <div class="trick-item"><span>·</span><span>에스프레소 + 휘핑 = 콘파나</span></div>
+            <div class="trick-item"><span>·</span><span>추출 후 최대한 빠르게 제공</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-red" onclick="this.classList.toggle('flipped')" style="height:230px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">☕ EM — 에스프레소 마끼아또</div>
+            <div class="card-sub" style="margin-bottom:10px">에스프레소 샷 + 우유 폼</div>
+            <div class="stat-row">
+              <div class="stat red-stat"><div class="stat-num">Solo:1</div><div class="stat-lab">S/T샷</div></div>
+              <div class="stat red-stat"><div class="stat-num">Doppio:2</div><div class="stat-lab">G/V샷</div></div>
+            </div>
+            <div class="flip-hint">탭 → 유의사항</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">⚠️ 유의사항</div>
+            <div class="trick-item"><span>·</span><span>고운 폼을 에스프레소 샷 위에 올린다</span></div>
+            <div class="trick-item"><span>·</span><span>피처의 가장 하단선까지 우유를 넣고 스팀</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="sec-label sec-gap">기본 에스프레소 음료</div>
+    <div class="cards">
+
+      <div class="flip-wrap c-blue" onclick="this.classList.toggle('flipped')" style="height:230px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">💧 A — 아메리카노</div>
+            <div class="card-sub" style="margin-bottom:8px">에스프레소 샷 + 온수</div>
+            <div class="stat-row">
+              <div class="stat blue-stat"><div class="stat-num">1/1/2/2</div><div class="stat-lab">샷 S/T/G/V</div></div>
+            </div>
+            <div class="flip-hint">탭 → 유의사항</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">⚠️ 유의사항</div>
+            <div class="trick-item"><span>·</span><span>우유를 컵 테두리 아래 12mm까지 채운 후 6mm만큼 우유 폼 올린다</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-blue" onclick="this.classList.toggle('flipped')" style="height:230px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🥛 L — 카페 라떼</div>
+            <div class="card-sub" style="margin-bottom:8px">에스프레소 샷 + 우유 + 우유 폼</div>
+            <div class="stat-row">
+              <div class="stat blue-stat"><div class="stat-num">1/1/2/2</div><div class="stat-lab">샷 S/T/G/V</div></div>
+            </div>
+            <div class="flip-hint">탭 → 유의사항</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">⚠️ 유의사항</div>
+            <div class="trick-item"><span>·</span><span>우유를 컵 테두리 아래 12mm까지 채운 후 6mm만큼 우유 폼 올린다</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-green" onclick="this.classList.toggle('flipped')" style="height:240px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🌿 VL — 바닐라 라떼</div>
+            <div class="card-sub" style="margin-bottom:8px">우유 + 에스프레소 샷 + 바닐라 향 시럽(7.5ml)</div>
+            <div class="stat-row">
+              <div class="stat teal-stat"><div class="stat-num">1/1/2/2</div><div class="stat-lab">샷 S/T/G/V</div></div>
+              <div class="stat teal-stat"><div class="stat-num">2/3/4/5</div><div class="stat-lab">시럽 S/T/G/V</div></div>
+            </div>
+            <div class="flip-hint">탭 → 트릭</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">💡 기억 트릭</div>
+            <div class="trick-item"><span>·</span><span>바닐라 시럽 7.5ml 기준: S=2 / T=3 / G=4 / V=5</span></div>
+            <div class="trick-tip">시럽 2345 순서로 외우기!</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-amber" onclick="this.classList.toggle('flipped')" style="height:260px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🍮 CM — 카라멜 마끼아또</div>
+            <div class="card-sub" style="font-size:11px;margin-bottom:8px">바닐라 시럽 + 우유 + 우유 폼 + 에스프레소 샷 + 카라멜 드리즐</div>
+            <div class="stat-row">
+              <div class="stat amber-stat"><div class="stat-num">1/1/2/2</div><div class="stat-lab">샷 S/T/G/V</div></div>
+              <div class="stat amber-stat"><div class="stat-num">1/2/3/4</div><div class="stat-lab">시럽 S/T/G/V</div></div>
+            </div>
+            <div class="flip-hint">탭 → 유의사항</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">⚠️ 유의사항</div>
+            <div class="trick-item"><span>·</span><span>우유를 컵의 3/4로 채운 뒤 컵 테두리 아래 12mm까지 우유 폼으로 채운다</span></div>
+            <div class="trick-item"><span>·</span><span>우유 폼 위에 샷을 부어준다</span></div>
+            <div class="trick-item"><span>·</span><span>카라멜 드리즐을 벌집 모양으로 올리고 원고 모양으로 두번 둘러 마무리</span></div>
+            <div class="trick-tip">S,T = 피처의 정확한 선 계량 / G,V = 사이즈보다 한 단계 아랫선 계량, 프리푸어 방식으로 부어준다</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-blue" onclick="this.classList.toggle('flipped')" style="height:230px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">☁️ C — 카푸치노</div>
+            <div class="card-sub" style="margin-bottom:8px">에스프레소 샷 + 우유 + 우유 폼</div>
+            <div class="stat-row">
+              <div class="stat blue-stat"><div class="stat-num">1/1/2/2</div><div class="stat-lab">샷 S/T/G/V</div></div>
+            </div>
+            <div class="flip-hint">탭 → 유의사항</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">⚠️ 유의사항</div>
+            <div class="trick-item"><span>·</span><span>X-HOT 스팀</span></div>
+            <div class="trick-tip">💡 카페라떼와 재료 같지만 X-HOT 스팀!</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-amber" onclick="this.classList.toggle('flipped')" style="height:240px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🍫 M — 카페 모카</div>
+            <div class="card-sub" style="margin-bottom:8px">바모카 소스 + 에스프레소 샷 + 우유 + 휘핑</div>
+            <div class="stat-row">
+              <div class="stat amber-stat"><div class="stat-num">1/1/2/2</div><div class="stat-lab">샷 S/T/G/V</div></div>
+              <div class="stat amber-stat"><div class="stat-num">2/3/4/5</div><div class="stat-lab">시럽 S/T/G/V</div></div>
+              <div class="stat amber-stat"><div class="stat-num">O</div><div class="stat-lab">휘핑</div></div>
+            </div>
+            <div class="flip-hint">탭 → 유의사항</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">⚠️ 유의사항</div>
+            <div class="trick-item"><span>·</span><span>X-HOT 스팀</span></div>
+            <div class="trick-tip">💡 카페모카 = 바모카소스 + 라떼 + 휘핑</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-blue" onclick="this.classList.toggle('flipped')" style="height:240px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🤍 WM — 화이트 모카</div>
+            <div class="card-sub" style="margin-bottom:8px">화이트 모카 소스 + 에스프레소 샷 + 우유 + 휘핑</div>
+            <div class="stat-row">
+              <div class="stat blue-stat"><div class="stat-num">1/1/2/2</div><div class="stat-lab">샷 S/T/G/V</div></div>
+              <div class="stat blue-stat"><div class="stat-num">2/3/4/5</div><div class="stat-lab">시럽 S/T/G/V</div></div>
+              <div class="stat blue-stat"><div class="stat-num">O</div><div class="stat-lab">휘핑</div></div>
+            </div>
+            <div class="flip-hint">탭 → 트릭</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">💡 기억 트릭</div>
+            <div class="trick-item"><span>·</span><span>카페모카와 동일 구성, 소스만 화이트 모카로!</span></div>
+            <div class="trick-item"><span>·</span><span>X-HOT 스팀</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-green" onclick="this.classList.toggle('flipped')" style="height:250px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🌿 SDL — 스타벅스 돌체 라떼</div>
+            <div class="card-sub" style="margin-bottom:8px">연유 + 무지방 우유 + 우유 폼 + 에스프레소 샷</div>
+            <div class="stat-row">
+              <div class="stat teal-stat"><div class="stat-num">1/1/2/2</div><div class="stat-lab">샷 S/T/G/V</div></div>
+              <div class="stat teal-stat"><div class="stat-num">2/3/4/5</div><div class="stat-lab">시럽 S/T/G/V</div></div>
+            </div>
+            <div class="flip-hint">탭 → 유의사항</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">⚠️ 유의사항</div>
+            <div class="trick-item"><span>·</span><span>우유를 컵의 3/4로 채운 뒤 컵 테두리 아래 12MM까지 우유 폼으로 만든다</span></div>
+            <div class="trick-item"><span>·</span><span>우유 폼 위에 샷을 부어준다. X-HOT 스팀</span></div>
+            <div class="trick-tip">💡 무지방 우유 사용! 일반라떼와 구분</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-purple" onclick="this.classList.toggle('flipped')" style="height:250px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">⚪ FW — 플랫 화이트</div>
+            <div class="card-sub" style="margin-bottom:8px">리스트레또 샷 + 스팀 밀크</div>
+            <div class="stat-row">
+              <div class="stat purple-stat"><div class="stat-num">2/2/3/3</div><div class="stat-lab">샷 S/T/G/V</div></div>
+            </div>
+            <div class="flip-hint">탭 → 유의사항</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">⚠️ 유의사항</div>
+            <div class="trick-item"><span>·</span><span>거품의 점은 화이트 닷(하얀점) 모양으로 음료 위 크레마 30% 이상 덮어서는 안됨</span></div>
+            <div class="trick-tip">💡 리스트레또 샷 사용! 샷 수도 다름 (2/2/3/3)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-pink" onclick="this.classList.toggle('flipped')" style="height:260px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🍮 MCL — 밀크 카라멜 라떼</div>
+            <div class="card-sub" style="font-size:11px;margin-bottom:8px">사이즈별 아랫선 우유 + 사이즈별 정확한 선 하프앤하프 + 에스프레소 샷 + 솔티드 카라멜(7.5ml)</div>
+            <div class="stat-row">
+              <div class="stat pink-stat"><div class="stat-num">1/1/2/2</div><div class="stat-lab">샷 S/T/G/V</div></div>
+              <div class="stat pink-stat"><div class="stat-num">3/4/5</div><div class="stat-lab">시럽 S·T/G/V</div></div>
+            </div>
+            <div class="flip-hint">탭 → 트릭</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">💡 기억 트릭</div>
+            <div class="trick-item"><span>·</span><span>우유(아랫선) + H&H(정확한 선) 두 단계 우유</span></div>
+            <div class="trick-item"><span>·</span><span>솔티드 카라멜 시럽 7.5ml 기준: S=3/T=3/G=4/V=5</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="sec-label sec-gap">블론드 · 티 라떼</div>
+    <div class="cards">
+
+      <div class="flip-wrap c-amber" onclick="this.classList.toggle('flipped')" style="height:230px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🔆 COR — 코르타도</div>
+            <div class="card-sub" style="margin-bottom:8px">우유 + 블론드 리스트레또 샷</div>
+            <div class="stat-row">
+              <div class="stat amber-stat"><div class="stat-num">3</div><div class="stat-lab">샷 (고정)</div></div>
+            </div>
+            <div class="flip-hint">탭 → 유의사항</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">⚠️ 유의사항</div>
+            <div class="trick-item"><span>·</span><span>핫 컵에 직접 추출 / S사이즈선 계량 후 스팀</span></div>
+            <div class="trick-item"><span>·</span><span>블론드 리스트레또 샷 3샷 고정!</span></div>
+            <div class="trick-tip">💡 블론드 = 연한 로스팅 원두 / 3샷 항상 고정</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 빠른 참조 표 -->
+    <div class="sec-label sec-gap">HOT 음료 — 빠른 참조</div>
+    <table class="quick-table">
+      <thead><tr><th>마킹</th><th>음료명</th><th>제조순서 (핵심)</th><th>샷 S/T/G/V</th></tr></thead>
+      <tbody>
+        <tr><td>BC</td><td>오늘의 커피</td><td>추출한 오늘의 커피</td><td>드립</td></tr>
+        <tr><td>E</td><td>에스프레소</td><td>에스프레소 샷</td><td>Solo1 / Doppio2</td></tr>
+        <tr><td>ECP</td><td>에스프레소 콘파나</td><td>샷 + 휘핑</td><td>Solo1 / Doppio2</td></tr>
+        <tr><td>EM</td><td>에스프레소 마끼아또</td><td>샷 + 우유 폼</td><td>Solo1 / Doppio2</td></tr>
+        <tr><td>A</td><td>아메리카노</td><td>샷 + 온수</td><td>1/1/2/2</td></tr>
+        <tr><td>L</td><td>카페 라떼</td><td>샷 + 우유 + 우유 폼</td><td>1/1/2/2</td></tr>
+        <tr><td>VL</td><td>바닐라 라떼</td><td>우유 + 샷 + 바닐라 시럽</td><td>1/1/2/2 · 시럽2/3/4/5</td></tr>
+        <tr><td>CM</td><td>카라멜 마끼아또</td><td>바닐라시럽 + 우유 + 폼 + 샷 + 카라멜드리즐</td><td>1/1/2/2 · 시럽1/2/3/4</td></tr>
+        <tr><td>C</td><td>카푸치노</td><td>샷 + 우유 + 우유 폼 (X-HOT)</td><td>1/1/2/2</td></tr>
+        <tr><td>M</td><td>카페 모카</td><td>바모카소스 + 샷 + 우유 + 휘핑 (X-HOT)</td><td>1/1/2/2 · 시럽2/3/4/5</td></tr>
+        <tr><td>WM</td><td>화이트 모카</td><td>화이트모카소스 + 샷 + 우유 + 휘핑 (X-HOT)</td><td>1/1/2/2 · 시럽2/3/4/5</td></tr>
+        <tr><td>SDL</td><td>스타벅스 돌체 라떼</td><td>연유 + 무지방우유 + 폼 + 샷 (X-HOT)</td><td>1/1/2/2 · 시럽2/3/4/5</td></tr>
+        <tr><td>FW</td><td>플랫 화이트</td><td>리스트레또 샷 + 스팀 밀크</td><td>2/2/3/3</td></tr>
+        <tr><td>MCL</td><td>밀크 카라멜 라떼</td><td>우유(아랫선) + H&H + 샷 + 솔티드카라멜</td><td>1/1/2/2 · 시럽3/3/4/5</td></tr>
+        <tr><td>COR</td><td>코르타도</td><td>우유 + 블론드 리스트레또 샷 (핫컵 직접추출)</td><td>3샷 고정</td></tr>
+      </tbody>
+    </table>
+
+    <div class="rule-card" style="background:var(--warn-light);border-color:var(--warn);margin-top:12px">
+      <div class="rule-card-title" style="color:var(--warn)">📌 펌프 1회 기준</div>
+      <div class="rule-row"><span class="dot">·</span><span>바모카, 화이트 모카 = 10.2ml</span></div>
+      <div class="rule-row"><span class="dot">·</span><span>CBS 바모카 = 7.5ml</span></div>
+      <div class="rule-row"><span class="dot">·</span><span>프라푸치노 로스트(FR) = 13.5ml</span></div>
+      <div class="rule-row"><span class="dot">·</span><span>차이 시럽 = 20ml</span></div>
+      <div class="rule-row"><span class="dot">·</span><span>에스프레소 바 용 병시럽 = 7.5ml</span></div>
+      <div class="rule-row"><span class="dot">·</span><span>CBS용 = 3.75ml / 커피&크림 베이스 = 21.9ml</span></div>
+    </div>
+
+  </div>
+
+  <!-- ========== ICE 음료 ========== -->
+  <div class="section" id="sec-ice">
+
+    <div class="sec-label" style="margin-top:4px">드립 · 콜드브루</div>
+    <div class="cards">
+
+      <div class="flip-wrap c-blue" onclick="this.classList.toggle('flipped')" style="height:210px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">❄️ IC — 아이스 커피</div>
+            <div class="card-sub" style="margin-bottom:8px">미리 추출된 아이스 커피 상단선 + 얼음</div>
+            <div class="stat-row">
+              <div class="stat blue-stat"><div class="stat-num">드립</div><div class="stat-lab">구분</div></div>
+            </div>
+            <div class="flip-hint">탭 → 유의사항</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">⚠️ 유의사항</div>
+            <div class="trick-item"><span>·</span><span>아이스커피 제조: COW(196g) + 얼음(660g)</span></div>
+            <div class="trick-item"><span>·</span><span>얼음을 컵 테두리 아래 6mm까지 채운다</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-blue" onclick="this.classList.toggle('flipped')" style="height:210px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🖤 CBIC — 콜드 브루</div>
+            <div class="card-sub" style="margin-bottom:8px">하단선 콜드브루 추출액 + 상단선 정수물 + 얼음</div>
+            <div class="stat-row">
+              <div class="stat blue-stat"><div class="stat-num">드립</div><div class="stat-lab">구분</div></div>
+            </div>
+            <div class="flip-hint">탭 → 유의사항</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">⚠️ 유의사항</div>
+            <div class="trick-item"><span>·</span><span>얼음을 컵 테두리 아래 6mm까지 채운다</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-green" onclick="this.classList.toggle('flipped')" style="height:250px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🌿 VCB — 바닐라 크림 콜드브루</div>
+            <div class="card-sub" style="font-size:11px;margin-bottom:8px">바닐라 시럽(7.5ml) + 하단선 콜드브루 추출액 + 얼음 + 바닐라 크림 베이스</div>
+            <div class="stat-row">
+              <div class="stat teal-stat"><div class="stat-num">1/2/3</div><div class="stat-lab">시럽 T/G/V</div></div>
+            </div>
+            <div class="flip-hint">탭 → 유의사항</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">⚠️ 유의사항</div>
+            <div class="trick-item"><span>·</span><span>각 사이즈 스쿱 얼음을 넣은 후, 바닐라 크림 베이스를 컵의 테두리 아래 6mm까지 채운다</span></div>
+            <div class="trick-item"><span>·</span><span>텀블러 제조 시 바닐라 크림 베이스 양 T/G/V = 100ml/140ml/150ml</span></div>
+            <div class="trick-tip">💡 시럽 T=1 / G=2 / V=3</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-amber" onclick="this.classList.toggle('flipped')" style="height:260px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🍯 DCB — 돌체 콜드브루</div>
+            <div class="card-sub" style="font-size:11px;margin-bottom:8px">연유(10.2ml) + 중단선 바닐라 크림 베이스 + 얼음(½) + 콜드브루 추출액</div>
+            <div class="stat-row">
+              <div class="stat amber-stat"><div class="stat-num">2/3/4</div><div class="stat-lab">시럽 T/G/V</div></div>
+            </div>
+            <div class="flip-hint">탭 → 유의사항</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">⚠️ 유의사항</div>
+            <div class="trick-item"><span>·</span><span>각 사이즈 스쿱 얼음을 넣은 후, 콜드브루를 컵의 테두리 아래 6mm까지 채운다</span></div>
+            <div class="trick-item"><span>·</span><span>텀블러 제조 시 콜드브루 양 T/G/V = 110ml/140ml/170ml</span></div>
+            <div class="trick-item"><span>·</span><span>샷 추가 시: 바닐라 크림 베이스 중간선 + 얼음 양 적게 + 샷</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-teal" onclick="this.classList.toggle('flipped')" style="height:260px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🥛 OTCB — 콜드브루 오트 라떼</div>
+            <div class="card-sub" style="font-size:11px;margin-bottom:8px">클래식 시럽(7.5ml) + 중단선 오트 앤 유 + 얼음 + 콜드브루 추출액</div>
+            <div class="stat-row">
+              <div class="stat teal-stat"><div class="stat-num">3/4/5</div><div class="stat-lab">시럽 T/G/V</div></div>
+            </div>
+            <div class="flip-hint">탭 → 유의사항</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">⚠️ 유의사항</div>
+            <div class="trick-item"><span>·</span><span>각 사이즈 스쿱 얼음을 넣은 후, 콜드브루를 컵의 테두리 아래 6mm까지 채운다</span></div>
+            <div class="trick-item"><span>·</span><span>텀블러 제조 시 콜드브루 양 T/G/V = 50ml/70ml/70ml</span></div>
+            <div class="trick-item"><span>·</span><span>샷 추가 시: 오트 유를 중간선 + 얼음 양 적게 + 샷</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-purple" onclick="this.classList.toggle('flipped')" style="height:250px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🍋 B.CB — 베르가못 콜드브루</div>
+            <div class="card-sub" style="font-size:11px;margin-bottom:8px">베르가못 시럽(7.5ml) + 하단선 일반우유 + 얼음 + 콜드브루 추출액</div>
+            <div class="stat-row">
+              <div class="stat purple-stat"><div class="stat-num">3/4/5</div><div class="stat-lab">시럽 T/G/V</div></div>
+            </div>
+            <div class="flip-hint">탭 → 유의사항</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">⚠️ 유의사항</div>
+            <div class="trick-item"><span>·</span><span>시럽과 우유를 가볍게 혼들어 섞기</span></div>
+            <div class="trick-item"><span>·</span><span>텀블러 제조 시 콜드브루 양 T/G/V = 80ml/90ml/110ml</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="sec-label sec-gap">아이스 에스프레소 음료</div>
+    <div class="cards">
+
+      <div class="flip-wrap c-blue" onclick="this.classList.toggle('flipped')" style="height:230px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">💧 A — 아이스 아메리카노</div>
+            <div class="card-sub" style="margin-bottom:8px">상단선 아래 물 + 에스프레소 샷 + 얼음</div>
+            <div class="stat-row">
+              <div class="stat blue-stat"><div class="stat-num">2/3/4</div><div class="stat-lab">샷 T/G/V</div></div>
+            </div>
+            <div class="flip-hint">탭 → 유의사항</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">⚠️ 유의사항</div>
+            <div class="trick-item"><span>·</span><span>물과 에스프레소 샷이 컵의 상단선을 초과하지 않도록 주의</span></div>
+            <div class="trick-tip">💡 ICE 아메리카노 샷: T=2/G=3/V=4</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-blue" onclick="this.classList.toggle('flipped')" style="height:230px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🥛 L — 아이스 카페 라떼</div>
+            <div class="card-sub" style="margin-bottom:8px">상단선 아래 우유 + 에스프레소 샷 + 얼음</div>
+            <div class="stat-row">
+              <div class="stat blue-stat"><div class="stat-num">1/2/2</div><div class="stat-lab">샷 T/G/V</div></div>
+            </div>
+            <div class="flip-hint">탭 → 유의사항</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">⚠️ 유의사항</div>
+            <div class="trick-item"><span>·</span><span>우유와 에스프레소 샷이 컵의 상단선을 초과하지 않도록 주의</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-green" onclick="this.classList.toggle('flipped')" style="height:230px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🌿 VL — 아이스 바닐라 라떼</div>
+            <div class="card-sub" style="margin-bottom:8px">에스프레소 샷 + 바닐라 향 시럽(7.5ml) + 상단선 우유 + 얼음</div>
+            <div class="stat-row">
+              <div class="stat teal-stat"><div class="stat-num">1/2/2</div><div class="stat-lab">샷 T/G/V</div></div>
+              <div class="stat teal-stat"><div class="stat-num">2/3/4</div><div class="stat-lab">시럽 T/G/V</div></div>
+            </div>
+            <div class="flip-hint">탭 → 트릭</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">💡 기억 트릭</div>
+            <div class="trick-item"><span>·</span><span>시럽 T=2 / G=3 / V=4</span></div>
+            <div class="trick-tip">HOT VL(2/3/4/5)보다 V가 1개 적음!</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-amber" onclick="this.classList.toggle('flipped')" style="height:250px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🍮 CM — 아이스 카라멜 마끼아또</div>
+            <div class="card-sub" style="font-size:11px;margin-bottom:8px">바닐라 시럽 + 상단선 우유 + 얼음 + 에스프레소 샷 + 카라멜 드리즐</div>
+            <div class="stat-row">
+              <div class="stat amber-stat"><div class="stat-num">1/2/2</div><div class="stat-lab">샷 T/G/V</div></div>
+              <div class="stat amber-stat"><div class="stat-num">2/3/4</div><div class="stat-lab">시럽 T/G/V</div></div>
+            </div>
+            <div class="flip-hint">탭 → 유의사항</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">⚠️ 유의사항</div>
+            <div class="trick-item"><span>·</span><span>카라멜 드리즐을 벌집 모양으로 올리고 원모양으로 두번 둘러 마무리</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-blue" onclick="this.classList.toggle('flipped')" style="height:260px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">☁️ C — 아이스 카푸치노</div>
+            <div class="card-sub" style="font-size:11px;margin-bottom:8px">중간선 아래 우유 + 에스프레소 샷 + 얼음¾ + 우유 폼</div>
+            <div class="stat-row">
+              <div class="stat blue-stat"><div class="stat-num">1/2/2</div><div class="stat-lab">샷 T/G/V</div></div>
+            </div>
+            <div class="flip-hint">탭 → 유의사항</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">⚠️ 유의사항</div>
+            <div class="trick-item"><span>·</span><span>차가운 우유를 중간선 아래 6mm까지 붓고 샷을 넣은 뒤</span></div>
+            <div class="trick-item"><span>·</span><span>얼음을 컵의 ¾만 넣고 테두리 아래 6mm까지 우유 거품을 채운다</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-amber" onclick="this.classList.toggle('flipped')" style="height:240px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🍫 M — 아이스 카페 모카</div>
+            <div class="card-sub" style="font-size:11px;margin-bottom:8px">바모카 소스(7.5ml) + 에스프레소 샷 + 상단선 우유 + 얼음 + 휘핑</div>
+            <div class="stat-row">
+              <div class="stat amber-stat"><div class="stat-num">1/2/2</div><div class="stat-lab">샷 T/G/V</div></div>
+              <div class="stat amber-stat"><div class="stat-num">3/4/5</div><div class="stat-lab">시럽 T/G/V</div></div>
+              <div class="stat amber-stat"><div class="stat-num">O</div><div class="stat-lab">휘핑</div></div>
+            </div>
+            <div class="flip-hint">탭 → 트릭</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">💡 기억 트릭</div>
+            <div class="trick-item"><span>·</span><span>바모카 소스 7.5ml 기준</span></div>
+            <div class="trick-tip">ICE 모카 시럽 3/4/5 (HOT은 2/3/4/5)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-blue" onclick="this.classList.toggle('flipped')" style="height:240px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🤍 WM — 아이스 화이트 모카</div>
+            <div class="card-sub" style="font-size:11px;margin-bottom:8px">화이트 모카 소스(10.2ml) + 에스프레소 샷 + 상단선 우유 + 얼음 + 휘핑</div>
+            <div class="stat-row">
+              <div class="stat blue-stat"><div class="stat-num">1/2/2</div><div class="stat-lab">샷 T/G/V</div></div>
+              <div class="stat blue-stat"><div class="stat-num">3/4/5</div><div class="stat-lab">시럽 T/G/V</div></div>
+              <div class="stat blue-stat"><div class="stat-num">O</div><div class="stat-lab">휘핑</div></div>
+            </div>
+            <div class="flip-hint">탭 → 트릭</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">💡 기억 트릭</div>
+            <div class="trick-item"><span>·</span><span>화이트 모카 소스 10.2ml 기준</span></div>
+            <div class="trick-tip">아이스 모카와 동일 구조, 소스만 다름!</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-green" onclick="this.classList.toggle('flipped')" style="height:260px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🌿 SDL — 아이스 스타벅스 돌체 라떼</div>
+            <div class="card-sub" style="font-size:11px;margin-bottom:8px">연유(10.2ml) + 상단선 무지방우유 + 얼음 + 에스프레소 샷</div>
+            <div class="stat-row">
+              <div class="stat teal-stat"><div class="stat-num">2/3/4</div><div class="stat-lab">샷 T/G/V</div></div>
+              <div class="stat teal-stat"><div class="stat-num">3/4/5</div><div class="stat-lab">시럽 T/G/V</div></div>
+            </div>
+            <div class="flip-hint">탭 → 유의사항</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">⚠️ 유의사항</div>
+            <div class="trick-item"><span>·</span><span>무지방 우유를 적정선 넣고 연유와 잘 섞이도록 흔들어 준 뒤 상단선까지 마져 무지방 우유를 붓는다</span></div>
+            <div class="trick-item"><span>·</span><span>얼음을 컵 테두리 아래 12mm까지 채운 뒤 에스프레소 샷을 컵 안에 붓는다</span></div>
+            <div class="trick-tip">💡 무지방 우유 + 샷 수 T=2/G=3/V=4</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-pink" onclick="this.classList.toggle('flipped')" style="height:250px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🫐 SH DS — 스타벅스 더블 샷</div>
+            <div class="card-sub" style="font-size:11px;margin-bottom:8px">하프앤하프(70ml) + 향 시럽(7.5ml) + 에스프레소 샷 + 얼음 ▶ 쉐이킹</div>
+            <div class="stat-row">
+              <div class="stat pink-stat"><div class="stat-num">2</div><div class="stat-lab">샷 (고정)</div></div>
+              <div class="stat pink-stat"><div class="stat-num">3</div><div class="stat-lab">시럽 (고정)</div></div>
+            </div>
+            <div class="flip-hint">탭 → 유의사항</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">⚠️ 유의사항</div>
+            <div class="trick-item"><span>·</span><span>바닐라 V / 헤이즐넛 H / 클래식 CS</span></div>
+            <div class="trick-item"><span>·</span><span>쉐이킹! 에스프레소 샷과 시럽을 넣고 가볍게 흔들어서 섞어준다</span></div>
+            <div class="trick-tip">시럽 추가 시: T/G/V = 3/4/5</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-purple" onclick="this.classList.toggle('flipped')" style="height:230px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">⚪ FW — 아이스 플랫 화이트</div>
+            <div class="card-sub" style="margin-bottom:8px">상단선 아래 우유 + 리스트레또 샷 + 얼음</div>
+            <div class="stat-row">
+              <div class="stat purple-stat"><div class="stat-num">2/3/3</div><div class="stat-lab">샷 T/G/V</div></div>
+            </div>
+            <div class="flip-hint">탭 → 트릭</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">💡 기억 트릭</div>
+            <div class="trick-item"><span>·</span><span>리스트레또 샷 사용</span></div>
+            <div class="trick-tip">💡 ICE FW 샷: T=2/G=3/V=3</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-pink" onclick="this.classList.toggle('flipped')" style="height:260px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🍮 MCL — 아이스 밀크 카라멜 라떼</div>
+            <div class="card-sub" style="font-size:11px;margin-bottom:8px">에스프레소 샷 + 솔티드카라멜 시럽 + 하단선 우유 + 상단선 하프앤하프</div>
+            <div class="stat-row">
+              <div class="stat pink-stat"><div class="stat-num">1/2/2</div><div class="stat-lab">샷 T/G/V</div></div>
+              <div class="stat pink-stat"><div class="stat-num">2/3/4</div><div class="stat-lab">시럽 T/G/V</div></div>
+            </div>
+            <div class="flip-hint">탭 → 트릭</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">💡 기억 트릭</div>
+            <div class="trick-item"><span>·</span><span>하단선 우유 + 상단선 H&H 두 단계 우유</span></div>
+            <div class="trick-tip">솔티드카라멜 시럽 T=2/G=3/V=4</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-red" onclick="this.classList.toggle('flipped')" style="height:260px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">💨 Aero — 에어로카노</div>
+            <div class="card-sub" style="font-size:11px;margin-bottom:8px">에스프레소 샷 + T얼음 ▶ 공기주입 스팀 + 6mm 얼음</div>
+            <div class="stat-row">
+              <div class="stat red-stat"><div class="stat-num">2/3/4</div><div class="stat-lab">샷 T/G/V</div></div>
+            </div>
+            <div class="flip-hint">탭 → 유의사항</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">⚠️ 유의사항</div>
+            <div class="trick-item"><span>·</span><span>V 사이즈만 S선까지 정수물 넣기</span></div>
+            <div class="trick-item"><span>·</span><span>스팀 온도 기준 20~25도</span></div>
+            <div class="trick-tip">💡 공기주입 스팀이 포인트!</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-amber" onclick="this.classList.toggle('flipped')" style="height:270px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🍦 SMC — 스위트 밀크 커피</div>
+            <div class="card-sub" style="font-size:11px;margin-bottom:8px">화이트 모카 시럽 + 바닐라 시럽 + 중간선 바닐라 크림 베이스 + 18mm 얼음 + 6mm 아이스 커피</div>
+            <div class="stat-row">
+              <div class="stat amber-stat"><div class="stat-num">2/3/3</div><div class="stat-lab">샷 T/G/V</div></div>
+              <div class="stat amber-stat"><div class="stat-num">1/2/2</div><div class="stat-lab">시럽 T/G/V</div></div>
+            </div>
+            <div class="flip-hint">탭 → 유의사항</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">⚠️ 유의사항</div>
+            <div class="trick-item"><span>·</span><span>아이스 커피 T/G/V = 110ml/140ml/160ml</span></div>
+            <div class="trick-item"><span>·</span><span>화이트 모카 + 바닐라 시럽 각각 T=1/G=2/V=2</span></div>
+            <div class="trick-tip">💡 아이스 커피 위에 바닐라 크림 베이스를 얹는 구조!</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 빠른 참조 표 -->
+    <div class="sec-label sec-gap">ICE 음료 — 빠른 참조</div>
+    <table class="quick-table">
+      <thead><tr><th>마킹</th><th>음료명</th><th>제조순서 (핵심)</th><th>샷 T/G/V</th></tr></thead>
+      <tbody>
+        <tr><td>IC</td><td>아이스 커피</td><td>아이스커피 상단선 + 얼음</td><td>드립</td></tr>
+        <tr><td>CBIC</td><td>콜드 브루</td><td>콜드브루 하단선 + 정수물 상단선 + 얼음</td><td>드립</td></tr>
+        <tr><td>VCB</td><td>바닐라 크림 콜드브루</td><td>바닐라시럽 + 콜드브루 하단선 + 얼음 + 바닐라크림베이스</td><td>— · 시럽1/2/3</td></tr>
+        <tr><td>DCB</td><td>돌체 콜드브루</td><td>연유 + 바닐라크림 중단선 + 얼음½ + 콜드브루</td><td>— · 시럽2/3/4</td></tr>
+        <tr><td>OTCB</td><td>콜드브루 오트 라떼</td><td>클래식시럽 + 오트앤유 중단선 + 얼음 + 콜드브루</td><td>— · 시럽3/4/5</td></tr>
+        <tr><td>B.CB</td><td>베르가못 콜드브루</td><td>베르가못시럽 + 우유 하단선 + 얼음 + 콜드브루</td><td>— · 시럽3/4/5</td></tr>
+        <tr><td>A</td><td>아이스 아메리카노</td><td>물 상단아래 + 샷 + 얼음</td><td>2/3/4</td></tr>
+        <tr><td>L</td><td>아이스 카페 라떼</td><td>우유 상단아래 + 샷 + 얼음</td><td>1/2/2</td></tr>
+        <tr><td>VL</td><td>아이스 바닐라 라떼</td><td>샷 + 바닐라시럽 + 우유 상단선 + 얼음</td><td>1/2/2 · 시럽2/3/4</td></tr>
+        <tr><td>CM</td><td>아이스 카라멜 마끼아또</td><td>바닐라시럽 + 우유 상단선 + 얼음 + 샷 + 카라멜드리즐</td><td>1/2/2 · 시럽2/3/4</td></tr>
+        <tr><td>C</td><td>아이스 카푸치노</td><td>우유 중간선아래 + 샷 + 얼음¾ + 우유폼</td><td>1/2/2</td></tr>
+        <tr><td>M</td><td>아이스 카페 모카</td><td>바모카소스 + 샷 + 우유 상단선 + 얼음 + 휘핑</td><td>1/2/2 · 시럽3/4/5</td></tr>
+        <tr><td>WM</td><td>아이스 화이트 모카</td><td>화이트모카소스 + 샷 + 우유 상단선 + 얼음 + 휘핑</td><td>1/2/2 · 시럽3/4/5</td></tr>
+        <tr><td>SDL</td><td>아이스 돌체 라떼</td><td>연유 + 무지방우유 상단선 + 얼음 + 샷</td><td>2/3/4 · 시럽3/4/5</td></tr>
+        <tr><td>SH DS</td><td>스타벅스 더블 샷</td><td>H&H(70ml) + 향시럽 + 샷 + 얼음 ▶ 쉐이킹</td><td>2샷 고정 · 시럽3</td></tr>
+        <tr><td>FW</td><td>아이스 플랫 화이트</td><td>우유 상단아래 + 리스트레또샷 + 얼음</td><td>2/3/3</td></tr>
+        <tr><td>MCL</td><td>아이스 밀크 카라멜 라떼</td><td>샷 + 솔티드카라멜 + 우유하단선 + H&H상단선</td><td>1/2/2 · 시럽2/3/4</td></tr>
+        <tr><td>Aero</td><td>에어로카노</td><td>샷 + T얼음 ▶ 공기주입 스팀 + 6mm얼음</td><td>2/3/4</td></tr>
+        <tr><td>SMC</td><td>스위트 밀크 커피</td><td>화이트모카+바닐라시럽 + 바닐라크림 중간선 + 18mm얼음 + 아이스커피 6mm</td><td>2/3/3 · 시럽1/2/2</td></tr>
+      </tbody>
+    </table>
+
+  </div>
+
+  <!-- ========== 퀴즈 ========== -->
+  <div class="section" id="sec-quiz">
+    <!-- 퀴즈 모드 선택 -->
+    <div id="quiz-mode-select">
+      <p class="sec-label" style="margin-top:4px;margin-bottom:12px">퀴즈 모드 선택</p>
+      <div style="display:grid;gap:10px;">
+        <button class="quiz-mode-btn" onclick="startQuiz('core')">
+          <div class="quiz-mode-icon">🫙</div>
+          <div>
+            <div class="quiz-mode-title">코어 원재료 퀴즈</div>
+            <div class="quiz-mode-sub">티백·파우더·베이스·시럽·토핑·유제품 — 20문항</div>
+          </div>
+          <div class="quiz-mode-arrow">→</div>
+        </button>
+        <button class="quiz-mode-btn" onclick="startQuiz('made')">
+          <div class="quiz-mode-icon">☕</div>
+          <div>
+            <div class="quiz-mode-title">제조 베이스 퀴즈</div>
+            <div class="quiz-mode-sub">커피·티·유제품·소스·폼 — 20문항</div>
+          </div>
+          <div class="quiz-mode-arrow">→</div>
+        </button>
+        <button class="quiz-mode-btn" onclick="startQuiz('bujaelyo')">
+          <div class="quiz-mode-icon">🧪</div>
+          <div>
+            <div class="quiz-mode-title">부재료 제조 퀴즈</div>
+            <div class="quiz-mode-sub">레시피·마킹코드·유통기한 — 20문항</div>
+          </div>
+          <div class="quiz-mode-arrow">→</div>
+        </button>
+        <button class="quiz-mode-btn" onclick="startQuiz('hot')">
+          <div class="quiz-mode-icon">🔥</div>
+          <div>
+            <div class="quiz-mode-title">HOT 음료 퀴즈</div>
+            <div class="quiz-mode-sub">마킹코드·제조순서·샷수·시럽수 — 20문항</div>
+          </div>
+          <div class="quiz-mode-arrow">→</div>
+        </button>
+        <button class="quiz-mode-btn" onclick="startQuiz('ice')">
+          <div class="quiz-mode-icon">🧊</div>
+          <div>
+            <div class="quiz-mode-title">ICE 음료 퀴즈</div>
+            <div class="quiz-mode-sub">마킹코드·제조순서·샷수·시럽수 — 20문항</div>
+          </div>
+          <div class="quiz-mode-arrow">→</div>
+        </button>
+        <button class="quiz-mode-btn" onclick="startQuiz('all')">
+          <div class="quiz-mode-icon">🎯</div>
+          <div>
+            <div class="quiz-mode-title">전체 퀴즈</div>
+            <div class="quiz-mode-sub">코어 + 제조 + 부재료 + HOT + ICE — 100문항</div>
+          </div>
+          <div class="quiz-mode-arrow">→</div>
+        </button>
+      </div>
+    </div>
+
+    <!-- 퀴즈 진행 화면 -->
+    <div id="quiz-play" style="display:none;">
+      <div class="quiz-score-bar">
+        <div>
+          <div class="quiz-score-lab" id="quiz-mode-label">코어 원재료 퀴즈</div>
+          <div class="quiz-score-num" id="score-display">0 / 0</div>
+        </div>
+        <button class="quiz-reset-btn" onclick="backToSelect()">← 모드 선택</button>
+      </div>
+      <div class="progress-row" id="progress-row"></div>
+      <div id="quiz-area"></div>
+    </div>
+  </div>
+
+</div>
+
+<style>
+.quiz-mode-btn {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 16px 18px;
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  text-align: left;
+  font-family: 'Noto Sans KR', sans-serif;
+  transition: all .18s;
+}
+.quiz-mode-btn:hover {
+  border-color: var(--accent);
+  background: var(--accent-light);
+}
+.quiz-mode-icon { font-size: 28px; flex-shrink: 0; }
+.quiz-mode-title { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+.quiz-mode-sub { font-size: 12px; color: var(--muted); }
+.quiz-mode-arrow { margin-left: auto; font-size: 18px; color: var(--muted); flex-shrink: 0; }
+</style>
+
+<script>
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('sec-' + id).classList.add('active');
+  if (id === 'quiz') backToSelect();
+}
+
+// ===================== 퀴즈 데이터 =====================
+
+// 코어 원재료 — 정답 0,1,2,3 각 5개씩
+const coreQuiz = [
+  // ans=0
+  { q: "파우더류(모카·초콜릿·요거트 등)의 소분 후 품질기한은?", opts: ["7일","3일","5일","14일"], ans: 0 },
+  { q: "허니자몽 소스 개봉 후 품질기한은?", opts: ["14일","3일","7일","30일"], ans: 0 },
+  { q: "소분 후 올바른 표기법은?", opts: ["숫자 Tag + 프라이스 Tag","프라이스 Tag만","숫자 Tag만","수기 기입만"], ans: 0 },
+  { q: "냉장 베이스 8종(피치·핑크자몽베이스 등) 개봉 후 품질기한은?", opts: ["7일","3일","5일","14일"], ans: 0 },
+  { q: "파우더류 개봉 후(원팩) 품질기한은?", opts: ["3개월","1개월","2개월","6개월"], ans: 0 },
+  // ans=1
+  { q: "딸기 베이스 소분 후 품질기한은?", opts: ["1일","2일","3일","5일"], ans: 1 },
+  { q: "시럽(대부분) 개봉 후 품질기한은?", opts: ["7일","14일","3일","30일"], ans: 1 },
+  { q: "심플 시럽(컨디바용) 표기법은?", opts: ["숫자 Tag + 프라이스 Tag","병하단 프라이스 Tag","수기 기입","숫자 Tag만"], ans: 1 },
+  { q: "연유소스·스위트블랜디드 소분 후 품질기한은?", opts: ["1일","2일","3일","7일"], ans: 1 },
+  { q: "동결건조 딸기 슬라이스 소분 후 품질기한은?", opts: ["1일","3일","5일","7일"], ans: 1 },
+  // ans=2
+  { q: "복숭아 소스 소분 후 품질기한은?", opts: ["1일","2일","3일","5일"], ans: 2 },
+  { q: "두유·오트밀크 개봉 후 품질기한은?", opts: ["1일","2일","3일","7일"], ans: 2 },
+  { q: "LIME 25G 소분 후 품질기한은?", opts: ["3일","4일","5일","7일"], ans: 2 },
+  { q: "티백(티바나 더블스트렝스) 소분 후 품질기한은?", opts: ["1일","2일","3일","5일"], ans: 2 },
+  { q: "프라푸치노 칩(자바칩) 소분 후·개봉 후 품질기한은?", opts: ["3일","5일","7일","14일"], ans: 2 },
+  // ans=3
+  { q: "허니자몽 소스 소분 후 품질기한은?", opts: ["1일","3일","5일","2일"], ans: 3 },
+  { q: "LIME 25G 개봉 후(원팩) 품질기한은?", opts: ["1주","2주","3주","1개월"], ans: 3 },
+  { q: "동결건조 딸기·망고용과 개봉 후(원팩) 품질기한은?", opts: ["1개월","2개월","6개월","3개월"], ans: 3 },
+  { q: "휘핑크림(코어원재료) 소분·개봉 후 품질기한은?", opts: ["12시간","2일","3일","24시간"], ans: 3 },
+  { q: "일반·저지방·무지방우유, 바닐라크림베이스 표기법은?", opts: ["숫자Tag+프라이스Tag","숫자Tag만","프라이스Tag만","냉장고 예시문구 부착으로 대체"], ans: 3 },
+];
+
+// 제조 베이스 — 정답 0,1,2,3 각 5개씩
+const madeQuiz = [
+  // ans=0
+  { q: "오늘의 커피 품질기한은?", opts: ["1시간","30분","2시간","4시간"], ans: 0 },
+  { q: "갈은 커피(드립·에스프레소 칩용) 제조 후 품질기한은?", opts: ["24시간","8시간","12시간","48시간"], ans: 0 },
+  { q: "딸기리프레셔믹스·클래식밀크티베이스 제조 후 품질기한은?", opts: ["24시간","12시간","2일","48시간"], ans: 0 },
+  { q: "모카소스(초콜릿드리즐 포함) 제조 후 품질기한은?", opts: ["24시간","12시간","48시간","2일"], ans: 0 },
+  { q: "폼파우더 사용 반제품·말차샷 외 기타 반제품 품질기한은?", opts: ["24시간","12시간","48시간","2일"], ans: 0 },
+  // ans=1
+  { q: "아이스 커피 냉장 보관 시 품질기한은?", opts: ["4시간","8시간","12시간","24시간"], ans: 1 },
+  { q: "콜드브루 커피 추출액(원액보틀) 냉장 보관 품질기한은?", opts: ["1일","3일","5일","7일"], ans: 1 },
+  { q: "프라푸치노 로스트 믹스 제조 후 품질기한은?", opts: ["24시간","48시간","3일","7일"], ans: 1 },
+  { q: "제조한 티바나 더블스트렝스 티 품질기한은?", opts: ["6시간","12시간","24시간","8시간"], ans: 1 },
+  { q: "시그니처 초콜릿 믹스(우유포함) 제조 후 품질기한은?", opts: ["12시간","당일","24시간","2일"], ans: 1 },
+  // ans=2
+  { q: "아이스 커피 실온 보관 시 품질기한은?", opts: ["1시간","2시간","4시간","8시간"], ans: 2 },
+  { q: "콜드브루 커피 추출액(일반) 냉장 보관 품질기한은?", opts: ["3일","5일","7일","14일"], ans: 2 },
+  { q: "휘핑크림·하프앤하프 제조 후 품질기한은?", opts: ["12시간","2일","24시간","48시간"], ans: 2 },
+  { q: "시그니처 초콜릿 믹스(우유포함) 표기법은?", opts: ["프라이스 Tag만","숫자+프라이스 Tag","숫자 Tag만","수기 기입"], ans: 2 },
+  { q: "원두(5LB/1LB/250g) 개봉 후 품질기한은?", opts: ["3일","5일","7일","14일"], ans: 2 },
+  // ans=3
+  { q: "클래식 밀크티(보틀) 제조 후 품질기한은?", opts: ["12시간","24시간","3일","2일"], ans: 3 },
+  { q: "시그니처 초콜릿 믹스(실온) 제조 후 품질기한은?", opts: ["12시간","24시간","당일","2일"], ans: 3 },
+  { q: "제조 후 품질기한이 '당일'인 소스는?", opts: ["모카소스","프라푸치노로스트믹스","시그니처초콜릿믹스(실온)","시그니처초콜릿믹스(우유포함)"], ans: 3 },
+  { q: "오늘의 커피 보관 방법은?", opts: ["냉장","실온","냉동","URN"], ans: 3 },
+  { q: "아이스 커피·오늘의 커피 품질기한 표기 방식은?", opts: ["숫자Tag+프라이스Tag","프라이스Tag만","수기 기입","타이머"], ans: 3 },
+];
+
+// 부재료 제조 — 정답 0,1,2,3 각 5개씩
+const bujaelyoQuiz = [
+  // ans=0
+  { q: "BC(오늘의 커피) 유통기한은?", opts: ["1시간","2시간","4시간","30분"], ans: 0 },
+  { q: "FR(프라푸치노 로스트) 제조 레시피는?", opts: ["프라푸치노 로스트 1봉 + 정수물 1L","프라푸치노 로스트 1봉 + 온수 1L","프라푸치노 로스트 2봉 + 정수물 1L","프라푸치노 로스트 1봉 + 우유 1L"], ans: 0 },
+  { q: "슈크림 휘핑(자동) CHWC 레시피의 스위트 바닐라 소스 양은?", opts: ["18펌프(180ml)","10펌프(100ml)","15펌프(150ml)","8펌프(80ml)"], ans: 0 },
+  { q: "WC(일반 휘핑) 레시피는?", opts: ["휘핑크림 260ml + 심플 시럽 3펌프","휘핑크림 200ml + 심플 시럽 3펌프","휘핑크림 260ml + 심플 시럽 5펌프","휘핑크림 300ml + 심플 시럽 3펌프"], ans: 0 },
+  { q: "BT(더블 스트렝스 블랙) 티백 우리는 시간은?", opts: ["5분","3분","7분","10분"], ans: 0 },
+  // ans=1
+  { q: "IC(아이스 커피) 실온 보관 유통기한은?", opts: ["2시간","4시간","8시간","12시간"], ans: 1 },
+  { q: "H&H(하프 앤 하프) 레시피는?", opts: ["프릿츠골드 200ml + 우유 300ml","프릿츠골드 100ml + 우유 300ml","프릿츠골드 100ml + 우유 400ml","프릿츠골드 150ml + 우유 350ml"], ans: 1 },
+  { q: "CMT(클래식 밀크티 베이스) 티백 우리는 시간은?", opts: ["5분","10분","15분","7분"], ans: 1 },
+  { q: "FVB(프렌치 바닐라 베이스)의 프릿츠골드 양은?", opts: ["100ml","200ml","300ml","150ml"], ans: 1 },
+  { q: "SC(시그니처 초코) 유통기한은?", opts: ["24시간","2일","48시간","12시간"], ans: 1 },
+  // ans=2
+  { q: "IC(아이스 커피) 냉장 보관 유통기한은?", opts: ["4시간","6시간","8시간","12시간"], ans: 2 },
+  { q: "FR(프라푸치노 로스트) 유통기한은?", opts: ["24시간","36시간","48시간","72시간"], ans: 2 },
+  { q: "M(바모카 1/2) 레시피는?", opts: ["바모카 1봉 + 온수 1L","바모카 220g + 온수 250ml","바모카 442g + 온수 500ml","바모카 442g + 온수 250ml"], ans: 2 },
+  { q: "SL(딸기 리프레셔 믹스) 레시피는?", opts: ["딸기베이스 500ml + 정수물 500ml","딸기베이스 500ml + 정수물 1L","딸기베이스 1L + 정수물 1L","딸기베이스 1L + 정수물 500ml"], ans: 2 },
+  { q: "ChF(피스타치오 폼) 피스타치오 소스 펌프 횟수는?", opts: ["5번","7번","9번","11번"], ans: 2 },
+  // ans=3
+  { q: "BT(더블 스트렝스 블랙) 유통기한은?", opts: ["24시간","8시간","6시간","12시간"], ans: 3 },
+  { q: "MTB(더블 스트렝스 민트) 대용량 레시피에서 민트티 개수는?", opts: ["2EA","4EA","6EA","8EA"], ans: 3 },
+  { q: "슈크림 말차 베이스(PTF) 말차파우더 양은?", opts: ["3t","4t","6t","5t"], ans: 3 },
+  { q: "초콜릿 폼 레시피에서 바모카 소스(15ml) 펌프 횟수는?", opts: ["1번","2번","5번","3번"], ans: 3 },
+  { q: "피치 딸기 프리믹스 레시피는?", opts: ["딸기베이스 1L + 피치베이스 1L + 정수물 1L","딸기베이스 500ml + 피치베이스 1L + 정수물 500ml","딸기베이스 1L + 피치베이스 500ml + 정수물 500ml","딸기베이스 500ml + 피치베이스 500ml + 정수물 1L"], ans: 3 },
+];
+
+// HOT 음료 — 정답 0,1,2,3 각 5개씩
+const hotQuiz = [
+  // ans=0
+  { q: "카페 라떼(L)의 마킹 코드는?", opts: ["L","VL","A","C"], ans: 0 },
+  { q: "플랫 화이트(FW)에 사용하는 샷 종류는?", opts: ["리스트레또 샷","에스프레소 샷","블론드 샷","도피오 샷"], ans: 0 },
+  { q: "카페 모카(M) 제조 순서 첫 번째는?", opts: ["바모카 소스","에스프레소 샷","우유","휘핑"], ans: 0 },
+  { q: "코르타도(COR) 샷 수는?", opts: ["3샷 고정","1샷","2샷","사이즈별 다름"], ans: 0 },
+  { q: "아메리카노(A) S/T사이즈 샷 수는?", opts: ["1샷","2샷","3샷","Solo 1샷"], ans: 0 },
+  // ans=1
+  { q: "에스프레소(E) G/V사이즈 샷 수는?", opts: ["Solo 1","Doppio 2","3샷","4샷"], ans: 1 },
+  { q: "바닐라 라떼(VL) T사이즈 시럽 펌프 수는?", opts: ["2번","3번","4번","5번"], ans: 1 },
+  { q: "화이트 모카(WM) 마킹 코드는?", opts: ["M","WM","WC","CM"], ans: 1 },
+  { q: "카라멜 마끼아또(CM) S사이즈 시럽 펌프 수는?", opts: ["2번","1번","3번","4번"], ans: 1 },
+  { q: "스타벅스 돌체 라떼(SDL)에 사용하는 우유는?", opts: ["일반 우유","무지방 우유","두유","오트밀크"], ans: 1 },
+  // ans=2
+  { q: "에스프레소 콘파나(ECP) 제조 순서는?", opts: ["샷+우유폼","샷+우유","샷+휘핑","우유+샷"], ans: 2 },
+  { q: "카푸치노(C)의 특징은?", opts: ["리스트레또 샷 사용","연유 사용","X-HOT 스팀","블론드 샷 사용"], ans: 2 },
+  { q: "플랫 화이트(FW) G사이즈 샷 수는?", opts: ["2샷","2샷","3샷","4샷"], ans: 2 },
+  { q: "바닐라 라떼(VL)의 마킹 코드는?", opts: ["L","BL","VL","VNL"], ans: 2 },
+  { q: "코르타도(COR)에 사용하는 샷 종류는?", opts: ["에스프레소 샷","리스트레또 샷","블론드 리스트레또 샷","도피오 샷"], ans: 2 },
+  // ans=3
+  { q: "카라멜 마끼아또(CM) 마킹 코드는?", opts: ["C","M","MCL","CM"], ans: 3 },
+  { q: "밀크 카라멜 라떼(MCL)에 추가하는 특별 재료는?", opts: ["바닐라 시럽","카라멜 드리즐","바모카 소스","솔티드 카라멜"], ans: 3 },
+  { q: "카페 모카(M) G사이즈 시럽 펌프 수는?", opts: ["2번","3번","5번","4번"], ans: 3 },
+  { q: "에스프레소 마끼아또(EM) 제조 순서는?", opts: ["우유+샷","샷+우유","샷+휘핑","샷+우유폼"], ans: 3 },
+  { q: "바모카(M) 펌프 1회 기준 용량은?", opts: ["7.5ml","13.5ml","3.75ml","10.2ml"], ans: 3 },
+];
+
+// ICE 음료 — 정답 0,1,2,3 각 5개씩
+const iceQuiz = [
+  // ans=0
+  { q: "아이스 아메리카노(A) T사이즈 샷 수는?", opts: ["2샷","1샷","3샷","4샷"], ans: 0 },
+  { q: "아이스 카푸치노(C) 특징적인 재료는?", opts: ["우유 폼","휘핑","카라멜 드리즐","연유"], ans: 0 },
+  { q: "에어로카노(Aero) 스팀 온도 기준은?", opts: ["20~25도","30~35도","10~15도","40~45도"], ans: 0 },
+  { q: "아이스 돌체 라떼(SDL)에 사용하는 우유는?", opts: ["무지방 우유","일반 우유","두유","오트밀크"], ans: 0 },
+  { q: "스타벅스 더블 샷(SH DS)에서 H&H 용량은?", opts: ["70ml","100ml","50ml","90ml"], ans: 0 },
+  // ans=1
+  { q: "콜드 브루(CBIC) 마킹 코드는?", opts: ["VCB","CBIC","DCB","B.CB"], ans: 1 },
+  { q: "아이스 카라멜 마끼아또(CM) T사이즈 시럽 수는?", opts: ["1번","2번","3번","4번"], ans: 1 },
+  { q: "아이스 카페 모카(M) T사이즈 시럽 수는?", opts: ["2번","3번","4번","5번"], ans: 1 },
+  { q: "에어로카노(Aero) 마킹 코드는?", opts: ["SMC","Aero","A","CBIC"], ans: 1 },
+  { q: "돌체 콜드브루(DCB)에서 연유 용량은?", opts: ["7.5ml","10.2ml","13.5ml","20ml"], ans: 1 },
+  // ans=2
+  { q: "아이스 바닐라 라떼(VL) G사이즈 시럽 수는?", opts: ["2번","4번","3번","5번"], ans: 2 },
+  { q: "아이스 플랫 화이트(FW) V사이즈 샷 수는?", opts: ["2샷","2샷","3샷","4샷"], ans: 2 },
+  { q: "스위트 밀크 커피(SMC) 마킹 코드는?", opts: ["SDL","SH DS","SMC","SCM"], ans: 2 },
+  { q: "바닐라 크림 콜드브루(VCB) T사이즈 시럽 수는?", opts: ["2번","3번","1번","4번"], ans: 2 },
+  { q: "아이스 화이트 모카(WM) 화이트 모카 소스 기준 용량은?", opts: ["7.5ml","13.5ml","10.2ml","15ml"], ans: 2 },
+  // ans=3
+  { q: "콜드브루 오트 라떼(OTCB) 마킹 코드는?", opts: ["OCB","CBIC","B.CB","OTCB"], ans: 3 },
+  { q: "베르가못 콜드브루(B.CB) T사이즈 시럽 수는?", opts: ["1번","2번","4번","3번"], ans: 3 },
+  { q: "스타벅스 더블 샷(SH DS) 시럽 종류가 아닌 것은?", opts: ["바닐라(V)","헤이즐넛(H)","클래식(CS)","카라멜"], ans: 3 },
+  { q: "아이스 밀크 카라멜 라떼(MCL)의 두 가지 우유는?", opts: ["일반우유+두유","무지방우유+H&H","오트밀크+우유","우유+바닐라크림베이스"], ans: 3 },
+  { q: "아이스 돌체 라떼(SDL) G사이즈 샷 수는?", opts: ["1샷","2샷","4샷","3샷"], ans: 3 },
+];
+
+const allQuiz = [...coreQuiz, ...madeQuiz, ...bujaelyoQuiz, ...hotQuiz, ...iceQuiz];
+
+const modeLabels = { core: '🫙 코어 원재료 퀴즈', made: '☕ 제조 베이스 퀴즈', bujaelyo: '🧪 부재료 제조 퀴즈', hot: '🔥 HOT 음료 퀴즈', ice: '🧊 ICE 음료 퀴즈', all: '🎯 전체 퀴즈' };
+
+let shuffled = [], current = 0, correct = 0, results = [], answered = false, currentMode = 'core';
+
+function shuffle(arr) { return [...arr].sort(() => Math.random() - 0.5); }
+
+function backToSelect() {
+  document.getElementById('quiz-mode-select').style.display = 'block';
+  document.getElementById('quiz-play').style.display = 'none';
+}
+
+function startQuiz(mode) {
+  currentMode = mode;
+  const pool = mode === 'core' ? coreQuiz : mode === 'made' ? madeQuiz : mode === 'bujaelyo' ? bujaelyoQuiz : mode === 'hot' ? hotQuiz : mode === 'ice' ? iceQuiz : allQuiz;
+  shuffled = shuffle(pool);
+  current = 0; correct = 0; results = []; answered = false;
+  document.getElementById('quiz-mode-label').textContent = modeLabels[mode];
+  document.getElementById('quiz-mode-select').style.display = 'none';
+  document.getElementById('quiz-play').style.display = 'block';
+  updateScore();
+  updateProgress();
+  renderQ();
+}
+
+function updateScore() {
+  document.getElementById('score-display').textContent = correct + ' / ' + current;
+}
+
+function updateProgress() {
+  const row = document.getElementById('progress-row');
+  row.innerHTML = shuffled.map((_, i) => {
+    let cls = 'prog-dot';
+    if (i < current) cls += results[i] ? ' done-c' : ' done-w';
+    else if (i === current) cls += ' cur';
+    return '<div class="' + cls + '"></div>';
+  }).join('');
+}
+
+function renderQ() {
+  const area = document.getElementById('quiz-area');
+  if (current >= shuffled.length) {
+    const pct = Math.round(correct / shuffled.length * 100);
+    area.innerHTML = '<div class="q-card q-done">'
+      + '<div class="quiz-score-num" style="font-size:48px;color:var(--accent)">' + correct + '/' + shuffled.length + '</div>'
+      + '<div class="quiz-score-lab" style="font-size:14px;margin:8px 0 20px">'
+      + (pct >= 80 ? '🎉 훌륭해요! 거의 다 외웠어요!' : pct >= 60 ? '👍 잘하고 있어요! 조금만 더!' : '💪 카드를 다시 보고 재도전!')
+      + '</div>'
+      + '<button class="q-next" style="display:block;margin-bottom:10px" onclick="startQuiz(\'' + currentMode + '\')">↺ 다시 풀기</button>'
+      + '<button class="q-next" style="display:block;background:var(--muted)" onclick="backToSelect()">← 모드 선택으로</button>'
+      + '</div>';
+    return;
+  }
+  const q = shuffled[current];
+  answered = false;
+  // 50% 확률로 주관식 / 50% 객관식
+  const isSubjective = (Math.random() < 0.5);
+  q._subjective = isSubjective;
+
+  let typeTag = isSubjective
+    ? '<span style="display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:700;background:var(--warn-light);color:var(--warn);margin-bottom:8px">✏️ 주관식</span>'
+    : '<span style="display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:700;background:var(--info-light);color:var(--info);margin-bottom:8px">🔘 객관식</span>';
+
+  let body = '';
+  if (isSubjective) {
+    body = '<input type="text" id="subj-input" placeholder="정답을 입력하세요" autocomplete="off" style="width:100%;padding:11px 14px;border-radius:var(--radius-sm);border:1.5px solid var(--border);font-size:14px;font-family:\'Noto Sans KR\',sans-serif;background:var(--card);color:var(--text);margin-top:4px" onkeydown="if(event.key===\'Enter\')answerSubj()">'
+      + '<button class="q-next" id="q-submit" style="display:block;margin-top:10px" onclick="answerSubj()">제출 →</button>';
+  } else {
+    body = '<div class="q-opts">'
+      + q.opts.map((o, i) => '<button class="q-opt" id="opt-'+i+'" onclick="answerObj('+i+')">' + o + '</button>').join('')
+      + '</div>';
+  }
+
+  area.innerHTML = '<div class="q-card">'
+    + '<div class="q-num">Q' + (current+1) + ' / ' + shuffled.length + '</div>'
+    + typeTag
+    + '<div class="q-text">' + q.q + '</div>'
+    + body
+    + '<div class="q-result" id="q-result"></div>'
+    + '<button class="q-next" id="q-next" onclick="nextQ()">다음 문제 →</button>'
+    + '</div>';
+
+  if (isSubjective) {
+    setTimeout(() => { const inp = document.getElementById('subj-input'); if(inp) inp.focus(); }, 100);
+  }
+}
+
+function normalize(str) {
+  return str.replace(/\s/g,'').replace(/[.,·\/\-]/g,'').toLowerCase();
+}
+
+function checkSubjAnswer(input, q) {
+  const correct = q.opts[q.ans];
+  const n = normalize(input);
+  const c = normalize(correct);
+  if (n === c) return true;
+  // 숫자+단위 유연 체크 (예: "7일" vs "7 일")
+  if (n.length > 0 && c.includes(n)) return true;
+  // 괄호 안 내용 제거 후 비교
+  const stripped = c.replace(/\(.*?\)/g,'');
+  if (n === normalize(stripped)) return true;
+  return false;
+}
+
+function answerSubj() {
+  if (answered) return;
+  const input = document.getElementById('subj-input');
+  if (!input || input.value.trim() === '') return;
+  answered = true;
+  const q = shuffled[current];
+  const isCorrect = checkSubjAnswer(input.value.trim(), q);
+  results.push(isCorrect);
+  if (isCorrect) correct++;
+  current++;
+  updateScore();
+  updateProgress();
+  input.disabled = true;
+  document.getElementById('q-submit').style.display = 'none';
+  const res = document.getElementById('q-result');
+  res.innerHTML = isCorrect
+    ? '✅ 정답!'
+    : '❌ 오답! 정답: <strong>' + q.opts[q.ans] + '</strong>';
+  res.style.color = isCorrect ? 'var(--accent)' : 'var(--danger)';
+  document.getElementById('q-next').style.display = 'block';
+}
+
+function answerObj(idx) {
+  if (answered) return;
+  answered = true;
+  const q = shuffled[current];
+  const isCorrect = idx === q.ans;
+  results.push(isCorrect);
+  if (isCorrect) correct++;
+  current++;
+  updateScore();
+  updateProgress();
+  const res = document.getElementById('q-result');
+  for (let i = 0; i < q.opts.length; i++) {
+    const btn = document.getElementById('opt-' + i);
+    btn.disabled = true;
+    if (i === q.ans) btn.classList.add('correct');
+    else if (i === idx) btn.classList.add('wrong');
+  }
+  res.textContent = isCorrect ? '✅ 정답!' : '❌ 오답! 정답: ' + q.opts[q.ans];
+  res.style.color = isCorrect ? 'var(--accent)' : 'var(--danger)';
+  document.getElementById('q-next').style.display = 'block';
+}
+
+function answer(idx) { answerObj(idx); }
+
+function nextQ() { renderQ(); }
+</script>
+
+</body>
+</html>
