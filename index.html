@@ -603,12 +603,12 @@
     </div>
   </div>
   <div class="tabs">
-    <button class="tab active" onclick="switchTab('core',this)">🫙 코어원재료</button>
+    <button class="tab active" onclick="switchTab('recipe',this)">🍹 음료레시피</button>
+    <button class="tab" onclick="switchTab('core',this)">🫙 코어원재료</button>
     <button class="tab" onclick="switchTab('made',this)">☕ 제조베이스</button>
     <button class="tab" onclick="switchTab('bujaelyo',this)">🧪 부재료제조</button>
     <button class="tab" onclick="switchTab('hot',this)">🔥 HOT음료</button>
     <button class="tab" onclick="switchTab('ice',this)">🧊 ICE음료</button>
-    <button class="tab" onclick="switchTab('recipe',this)">🍹 음료레시피</button>
     <button class="tab" onclick="switchTab('ref',this)">📋 빠른참조</button>
     <button class="tab" onclick="switchTab('rules',this)">📌 표기법</button>
     <button class="tab" onclick="switchTab('quiz',this)">🎯 퀴즈</button>
@@ -618,7 +618,7 @@
 <div class="content">
 
   <!-- ========== 코어 원재료 ========== -->
-  <div class="section active" id="sec-core">
+  <div class="section" id="sec-core">
 
     <div class="sec-label" style="margin-top:4px">티백 · 사인판</div>
     <div class="cards">
@@ -1021,7 +1021,7 @@
   </div>
 
   <!-- ========== 음료 레시피 ========== -->
-  <div class="section" id="sec-recipe">
+  <div class="section active" id="sec-recipe">
 
     <div class="sec-label" style="margin-top:4px">카테고리 선택</div>
     <div class="recipe-cat-row">
