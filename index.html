@@ -421,6 +421,171 @@
   .prog-dot.done-c { background: var(--accent); }
   .prog-dot.done-w { background: var(--danger); }
   .prog-dot.cur { background: var(--warn); }
+
+  /* RECIPE TAB */
+  .recipe-cat-btn {
+    padding: 7px 14px;
+    border-radius: 999px;
+    border: 1.5px solid var(--border);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    background: white;
+    color: var(--text);
+    font-family: 'Noto Sans KR', sans-serif;
+    transition: all .15s;
+    white-space: nowrap;
+  }
+  .recipe-cat-btn.active {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+  }
+  .recipe-cat-row {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    margin-bottom: 14px;
+  }
+  .recipe-cat-row::-webkit-scrollbar { display: none; }
+
+  .recipe-card {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .recipe-card:hover { border-color: var(--accent); }
+  .recipe-card.expanded .recipe-detail { display: block; }
+  .recipe-detail { display: none; margin-top: 12px; }
+
+  .recipe-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .recipe-icon {
+    font-size: 32px;
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: var(--accent-light);
+  }
+  .recipe-name {
+    font-size: 15px;
+    font-weight: 700;
+  }
+  .recipe-name-en {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 1px;
+  }
+  .recipe-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 10px;
+    font-weight: 700;
+    margin-top: 4px;
+  }
+  .tag-espresso { background: #fde8e6; color: #c0392b; }
+  .tag-coldbrew { background: #dceef9; color: #1a6fa8; }
+  .tag-frappuccino { background: #ede8fa; color: #5a3ea0; }
+  .tag-tea { background: #d4eddf; color: #006241; }
+  .tag-fizz { background: #fef3dc; color: #d4830a; }
+  .tag-blended { background: #fce8f2; color: #b03070; }
+
+  .memory-box {
+    background: #fffbe6;
+    border: 1.5px dashed #e6c84a;
+    border-radius: var(--radius-sm);
+    padding: 12px;
+    margin-top: 10px;
+  }
+  .memory-box-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: #b8860b;
+    margin-bottom: 6px;
+  }
+  .memory-story {
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: #5a4a00;
+  }
+
+  .compare-box {
+    background: #f0f4ff;
+    border: 1.5px solid #c0d0f0;
+    border-radius: var(--radius-sm);
+    padding: 12px;
+    margin-top: 10px;
+  }
+  .compare-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--info);
+    margin-bottom: 8px;
+  }
+  .compare-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    font-size: 12px;
+  }
+  .compare-item {
+    background: white;
+    border-radius: var(--radius-sm);
+    padding: 8px 10px;
+    border: 1px solid #d0ddf0;
+  }
+  .compare-item-name {
+    font-weight: 700;
+    font-size: 11px;
+    margin-bottom: 4px;
+  }
+  .compare-item-diff {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .recipe-steps {
+    margin-top: 8px;
+    font-size: 12.5px;
+    line-height: 1.6;
+  }
+  .recipe-step {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+  .step-num {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .recipe-expand-hint {
+    font-size: 10px;
+    color: var(--muted);
+    text-align: right;
+    margin-top: 6px;
+  }
 </style>
 </head>
 <body>
@@ -443,6 +608,7 @@
     <button class="tab" onclick="switchTab('bujaelyo',this)">🧪 부재료제조</button>
     <button class="tab" onclick="switchTab('hot',this)">🔥 HOT음료</button>
     <button class="tab" onclick="switchTab('ice',this)">🧊 ICE음료</button>
+    <button class="tab" onclick="switchTab('recipe',this)">🍹 음료레시피</button>
     <button class="tab" onclick="switchTab('ref',this)">📋 빠른참조</button>
     <button class="tab" onclick="switchTab('rules',this)">📌 표기법</button>
     <button class="tab" onclick="switchTab('quiz',this)">🎯 퀴즈</button>
@@ -852,6 +1018,761 @@
 
     </div>
 
+  </div>
+
+  <!-- ========== 음료 레시피 ========== -->
+  <div class="section" id="sec-recipe">
+
+    <div class="sec-label" style="margin-top:4px">카테고리 선택</div>
+    <div class="recipe-cat-row">
+      <button class="recipe-cat-btn active" onclick="filterRecipe('all',this)">전체</button>
+      <button class="recipe-cat-btn" onclick="filterRecipe('espresso',this)">에스프레소</button>
+      <button class="recipe-cat-btn" onclick="filterRecipe('coldbrew',this)">콜드브루</button>
+      <button class="recipe-cat-btn" onclick="filterRecipe('frappuccino',this)">프라푸치노</button>
+      <button class="recipe-cat-btn" onclick="filterRecipe('tea',this)">티바나</button>
+      <button class="recipe-cat-btn" onclick="filterRecipe('fizz',this)">피지오/리프레셔</button>
+      <button class="recipe-cat-btn" onclick="filterRecipe('blended',this)">블렌디드</button>
+    </div>
+
+    <!-- 헷갈리는 음료 차별화 가이드 -->
+    <div class="sec-label">헷갈리는 음료 차별화 가이드</div>
+
+    <div class="compare-box" style="margin-top:0;margin-bottom:10px">
+      <div class="compare-title">카페라떼 vs 카푸치노 vs 플랫화이트</div>
+      <div class="compare-row" style="grid-template-columns:1fr 1fr 1fr">
+        <div class="compare-item">
+          <div class="compare-item-name">카페라떼 (L)</div>
+          <div class="compare-item-diff">일반 샷 + 우유 + 얇은 폼<br>부드럽고 크리미</div>
+        </div>
+        <div class="compare-item">
+          <div class="compare-item-name">카푸치노 (C)</div>
+          <div class="compare-item-diff">일반 샷 + 우유 + 두꺼운 폼<br>X-HOT 스팀!</div>
+        </div>
+        <div class="compare-item">
+          <div class="compare-item-name">플랫화이트 (FW)</div>
+          <div class="compare-item-diff">리스트레또 샷 + 밀크<br>폼 거의 없음, 진한 맛</div>
+        </div>
+      </div>
+      <div class="memory-box" style="margin-top:8px">
+        <div class="memory-box-title">이미지 연상 기억법</div>
+        <div class="memory-story">라떼는 '부드러운 우유 이불' 위에 커피가 살짝 올라간 모습. 카푸치노는 수도사(카푸친 수도회)의 '뾰족한 모자처럼 폼이 높이 솟아오른' 모습. 플랫화이트는 '평평한(flat) 흰 접시'처럼 폼 없이 납작하고 진한 커피.</div>
+      </div>
+    </div>
+
+    <div class="compare-box" style="margin-top:0;margin-bottom:10px">
+      <div class="compare-title">카라멜 마끼아또 vs 바닐라 라떼</div>
+      <div class="compare-row">
+        <div class="compare-item">
+          <div class="compare-item-name">카라멜 마끼아또 (CM)</div>
+          <div class="compare-item-diff">바닐라시럽 + 우유 + 폼 + 샷(위) + 카라멜드리즐<br>시럽: 1/2/3/4</div>
+        </div>
+        <div class="compare-item">
+          <div class="compare-item-name">바닐라 라떼 (VL)</div>
+          <div class="compare-item-diff">바닐라시럽 + 샷 + 우유 + 폼<br>시럽: 2/3/4/5</div>
+        </div>
+      </div>
+      <div class="memory-box" style="margin-top:8px">
+        <div class="memory-box-title">이미지 연상 기억법</div>
+        <div class="memory-story">마끼아또는 '얼룩(macchiato)'이란 뜻! 우유 위에 샷을 부어 갈색 '얼룩'이 생기고, 그 위에 카라멜 '그물'이 드리워진 모습을 상상하세요. 바닐라 라떼는 '바닐라 향 가득한 우유 목욕탕'에 커피가 풍덩 들어간 모습!</div>
+      </div>
+    </div>
+
+    <div class="compare-box" style="margin-top:0;margin-bottom:10px">
+      <div class="compare-title">카페모카 vs 화이트모카</div>
+      <div class="compare-row">
+        <div class="compare-item">
+          <div class="compare-item-name">카페모카 (M)</div>
+          <div class="compare-item-diff">바모카(다크초콜릿) + 샷 + 우유 + 휘핑<br>진한 초콜릿 색</div>
+        </div>
+        <div class="compare-item">
+          <div class="compare-item-name">화이트모카 (WM)</div>
+          <div class="compare-item-diff">화이트모카(화이트초콜릿) + 샷 + 우유 + 휘핑<br>밝은 크림색</div>
+        </div>
+      </div>
+      <div class="memory-box" style="margin-top:8px">
+        <div class="memory-box-title">이미지 연상 기억법</div>
+        <div class="memory-story">카페모카 = '밤하늘 같은 다크 초콜릿 바다'에 커피가 섞인 모습. 화이트모카 = '눈 덮인 하얀 초콜릿 산' 위에 커피가 흘러내리는 모습. 둘 다 구성 동일, 소스 색만 다르다!</div>
+      </div>
+    </div>
+
+    <div class="compare-box" style="margin-top:0;margin-bottom:10px">
+      <div class="compare-title">콜드브루 vs 아이스커피 vs 아이스 아메리카노</div>
+      <div class="compare-row" style="grid-template-columns:1fr 1fr 1fr">
+        <div class="compare-item">
+          <div class="compare-item-name">콜드브루 (CBIC)</div>
+          <div class="compare-item-diff">찬물 추출 원액 + 물<br>부드러운 단맛</div>
+        </div>
+        <div class="compare-item">
+          <div class="compare-item-name">아이스커피 (IC)</div>
+          <div class="compare-item-diff">핫 추출 후 냉각<br>깔끔한 맛</div>
+        </div>
+        <div class="compare-item">
+          <div class="compare-item-name">아메리카노 (A)</div>
+          <div class="compare-item-diff">에스프레소 + 물 + 얼음<br>샷 맛 강함</div>
+        </div>
+      </div>
+      <div class="memory-box" style="margin-top:8px">
+        <div class="memory-box-title">이미지 연상 기억법</div>
+        <div class="memory-story">콜드브루 = 찬 강물에 커피원두를 오래 담가놓은 '천천히 우려낸 냉차'. 아이스커피 = 뜨거운 커피를 '급속 냉동실'에 넣은 느낌. 아메리카노 = 에스프레소에 '폭포수'처럼 물을 부은 모습!</div>
+      </div>
+    </div>
+
+    <div class="compare-box" style="margin-top:0;margin-bottom:10px">
+      <div class="compare-title">돌체라떼 vs 밀크카라멜라떼</div>
+      <div class="compare-row">
+        <div class="compare-item">
+          <div class="compare-item-name">돌체라떼 (SDL)</div>
+          <div class="compare-item-diff">연유 + 무지방우유 + 폼 + 샷<br>샷: 1/2/3/4 (사이즈별 다름!)</div>
+        </div>
+        <div class="compare-item">
+          <div class="compare-item-name">밀크카라멜라떼 (MCL)</div>
+          <div class="compare-item-diff">우유 + H&H + 샷 + 솔티드카라멜<br>두 가지 우유 사용!</div>
+        </div>
+      </div>
+      <div class="memory-box" style="margin-top:8px">
+        <div class="memory-box-title">이미지 연상 기억법</div>
+        <div class="memory-story">돌체(dolce=달콤)는 '연유 꿀통'에서 흘러나온 달콤함 + 무지방우유. 밀크카라멜은 '우유 두 겹의 담요(우유+H&H)'를 덮고 소금 카라멜을 뿌린 모습!</div>
+      </div>
+    </div>
+
+    <div class="compare-box" style="margin-top:0;margin-bottom:14px">
+      <div class="compare-title">에스프레소 마끼아또 vs 에스프레소 콘파나</div>
+      <div class="compare-row">
+        <div class="compare-item">
+          <div class="compare-item-name">에스프레소 마끼아또 (EM)</div>
+          <div class="compare-item-diff">샷 위에 우유 폼<br>'얼룩' = 하얀 폼 자국</div>
+        </div>
+        <div class="compare-item">
+          <div class="compare-item-name">에스프레소 콘파나 (ECP)</div>
+          <div class="compare-item-diff">샷 위에 휘핑크림<br>'함께(con) 크림(panna)'</div>
+        </div>
+      </div>
+      <div class="memory-box" style="margin-top:8px">
+        <div class="memory-box-title">이미지 연상 기억법</div>
+        <div class="memory-story">마끼아또 = 검은 에스프레소에 '하얀 점(폼) 하나' 찍은 모습. 콘파나 = 에스프레소 위에 '생크림 구름'이 풍성하게 올라간 모습. 점 vs 구름!</div>
+      </div>
+    </div>
+
+    <!-- 음료 레시피 카드 목록 -->
+    <div class="sec-label">에스프레소 음료</div>
+    <div id="recipe-list">
+
+      <div class="recipe-card" data-cat="espresso" onclick="this.classList.toggle('expanded')">
+        <div class="recipe-header">
+          <div class="recipe-icon">☕</div>
+          <div>
+            <div class="recipe-name">아메리카노</div>
+            <div class="recipe-name-en">Americano · 마킹: A</div>
+            <span class="recipe-tag tag-espresso">에스프레소</span>
+          </div>
+        </div>
+        <div class="recipe-expand-hint">탭하여 레시피 보기 ↓</div>
+        <div class="recipe-detail">
+          <div class="recipe-steps">
+            <div class="recipe-step"><div class="step-num">1</div><span>에스프레소 샷 추출 (S1/T2/G3/V4)</span></div>
+            <div class="recipe-step"><div class="step-num">2</div><span>온수(HOT) 또는 물+얼음(ICE) 추가</span></div>
+          </div>
+          <div class="memory-box">
+            <div class="memory-box-title">이미지 연상 기억법</div>
+            <div class="memory-story">미국인(American)이 유럽 에스프레소가 너무 진해서 '물 폭포'를 부었다! 샷 수는 사이즈 번호와 같다 (S=1, T=2, G=3, V=4).</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="recipe-card" data-cat="espresso" onclick="this.classList.toggle('expanded')">
+        <div class="recipe-header">
+          <div class="recipe-icon">🥛</div>
+          <div>
+            <div class="recipe-name">카페 라떼</div>
+            <div class="recipe-name-en">Caffè Latte · 마킹: L</div>
+            <span class="recipe-tag tag-espresso">에스프레소</span>
+          </div>
+        </div>
+        <div class="recipe-expand-hint">탭하여 레시피 보기 ↓</div>
+        <div class="recipe-detail">
+          <div class="recipe-steps">
+            <div class="recipe-step"><div class="step-num">1</div><span>에스프레소 샷 추출 (S1/T1/G2/V2)</span></div>
+            <div class="recipe-step"><div class="step-num">2</div><span>스팀 밀크 + 얇은 우유 폼</span></div>
+          </div>
+          <div class="memory-box">
+            <div class="memory-box-title">이미지 연상 기억법</div>
+            <div class="memory-story">'라떼(latte)=우유'! 넓은 우유 호수에 에스프레소가 한 방울 떨어지는 모습. 샷은 1122 (작은 건 1, 큰 건 2).</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="recipe-card" data-cat="espresso" onclick="this.classList.toggle('expanded')">
+        <div class="recipe-header">
+          <div class="recipe-icon">🍮</div>
+          <div>
+            <div class="recipe-name">카라멜 마끼아또</div>
+            <div class="recipe-name-en">Caramel Macchiato · 마킹: CM</div>
+            <span class="recipe-tag tag-espresso">에스프레소</span>
+          </div>
+        </div>
+        <div class="recipe-expand-hint">탭하여 레시피 보기 ↓</div>
+        <div class="recipe-detail">
+          <div class="recipe-steps">
+            <div class="recipe-step"><div class="step-num">1</div><span>바닐라 시럽 (S1/T2/G3/V4)</span></div>
+            <div class="recipe-step"><div class="step-num">2</div><span>우유 + 우유 폼 (3/4 우유 → 12mm 아래까지 폼)</span></div>
+            <div class="recipe-step"><div class="step-num">3</div><span>에스프레소 샷을 폼 위에 부어준다 (S1/T1/G2/V2)</span></div>
+            <div class="recipe-step"><div class="step-num">4</div><span>카라멜 드리즐 (벌집 + 원형 2바퀴)</span></div>
+          </div>
+          <div class="memory-box">
+            <div class="memory-box-title">이미지 연상 기억법</div>
+            <div class="memory-story">'마끼아또=얼룩'! 하얀 폼 위에 커피 '갈색 얼룩'이 생기고, 그 위에 카라멜 '거미줄(벌집무늬)'을 친다. 시럽은 1234 계단, 샷은 라떼와 같은 1122!</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="recipe-card" data-cat="espresso" onclick="this.classList.toggle('expanded')">
+        <div class="recipe-header">
+          <div class="recipe-icon">☁</div>
+          <div>
+            <div class="recipe-name">카푸치노</div>
+            <div class="recipe-name-en">Cappuccino · 마킹: C</div>
+            <span class="recipe-tag tag-espresso">에스프레소</span>
+          </div>
+        </div>
+        <div class="recipe-expand-hint">탭하여 레시피 보기 ↓</div>
+        <div class="recipe-detail">
+          <div class="recipe-steps">
+            <div class="recipe-step"><div class="step-num">1</div><span>에스프레소 샷 추출 (S1/T1/G2/V2)</span></div>
+            <div class="recipe-step"><div class="step-num">2</div><span>X-HOT 스팀 밀크 + 두꺼운 폼</span></div>
+          </div>
+          <div class="memory-box">
+            <div class="memory-box-title">이미지 연상 기억법</div>
+            <div class="memory-story">카푸친 수도사의 뾰족한 갈색 두건! X-HOT = 'eXtra 뜨거운' 스팀. 라떼와 재료 같지만 '폼이 모자처럼 높이 솟는다'.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="recipe-card" data-cat="espresso" onclick="this.classList.toggle('expanded')">
+        <div class="recipe-header">
+          <div class="recipe-icon">🍫</div>
+          <div>
+            <div class="recipe-name">카페 모카</div>
+            <div class="recipe-name-en">Caffè Mocha · 마킹: M</div>
+            <span class="recipe-tag tag-espresso">에스프레소</span>
+          </div>
+        </div>
+        <div class="recipe-expand-hint">탭하여 레시피 보기 ↓</div>
+        <div class="recipe-detail">
+          <div class="recipe-steps">
+            <div class="recipe-step"><div class="step-num">1</div><span>바모카 소스 (S2/T3/G4/V5)</span></div>
+            <div class="recipe-step"><div class="step-num">2</div><span>에스프레소 샷 (S1/T1/G2/V2)</span></div>
+            <div class="recipe-step"><div class="step-num">3</div><span>X-HOT 스팀 밀크</span></div>
+            <div class="recipe-step"><div class="step-num">4</div><span>휘핑크림 토핑</span></div>
+          </div>
+          <div class="memory-box">
+            <div class="memory-box-title">이미지 연상 기억법</div>
+            <div class="memory-story">모카 = '초콜릿 화산'! 다크 초콜릿(바모카) 용암 위에 에스프레소가 섞이고, 눈(휘핑)이 덮인다. 시럽 2345, 샷 1122, 항상 휘핑 O!</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="recipe-card" data-cat="espresso" onclick="this.classList.toggle('expanded')">
+        <div class="recipe-header">
+          <div class="recipe-icon">🤍</div>
+          <div>
+            <div class="recipe-name">화이트 모카</div>
+            <div class="recipe-name-en">White Mocha · 마킹: WM</div>
+            <span class="recipe-tag tag-espresso">에스프레소</span>
+          </div>
+        </div>
+        <div class="recipe-expand-hint">탭하여 레시피 보기 ↓</div>
+        <div class="recipe-detail">
+          <div class="recipe-steps">
+            <div class="recipe-step"><div class="step-num">1</div><span>화이트 모카 소스 (S2/T3/G4/V5)</span></div>
+            <div class="recipe-step"><div class="step-num">2</div><span>에스프레소 샷 (S1/T1/G2/V2)</span></div>
+            <div class="recipe-step"><div class="step-num">3</div><span>X-HOT 스팀 밀크</span></div>
+            <div class="recipe-step"><div class="step-num">4</div><span>휘핑크림 토핑</span></div>
+          </div>
+          <div class="memory-box">
+            <div class="memory-box-title">이미지 연상 기억법</div>
+            <div class="memory-story">카페모카의 '겨울 버전'! 다크초콜릿이 화이트초콜릿으로 바뀌었을 뿐, 모든 수치 동일. M → WM = 'White 옷 갈아입기'!</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="recipe-card" data-cat="espresso" onclick="this.classList.toggle('expanded')">
+        <div class="recipe-header">
+          <div class="recipe-icon">🌿</div>
+          <div>
+            <div class="recipe-name">바닐라 라떼</div>
+            <div class="recipe-name-en">Vanilla Latte · 마킹: VL</div>
+            <span class="recipe-tag tag-espresso">에스프레소</span>
+          </div>
+        </div>
+        <div class="recipe-expand-hint">탭하여 레시피 보기 ↓</div>
+        <div class="recipe-detail">
+          <div class="recipe-steps">
+            <div class="recipe-step"><div class="step-num">1</div><span>바닐라 시럽 (S2/T3/G4/V5)</span></div>
+            <div class="recipe-step"><div class="step-num">2</div><span>에스프레소 샷 (S1/T1/G2/V2)</span></div>
+            <div class="recipe-step"><div class="step-num">3</div><span>스팀 밀크 + 얇은 폼</span></div>
+          </div>
+          <div class="memory-box">
+            <div class="memory-box-title">이미지 연상 기억법</div>
+            <div class="memory-story">라떼에 '바닐라 향수'를 뿌린 것! 시럽은 2345 (카라멜 마끼아또 1234보다 한 칸씩 높다). 라떼 기본형에 바닐라만 추가!</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="recipe-card" data-cat="espresso" onclick="this.classList.toggle('expanded')">
+        <div class="recipe-header">
+          <div class="recipe-icon">🍯</div>
+          <div>
+            <div class="recipe-name">스타벅스 돌체 라떼</div>
+            <div class="recipe-name-en">Starbucks Dolce Latte · 마킹: SDL</div>
+            <span class="recipe-tag tag-espresso">에스프레소</span>
+          </div>
+        </div>
+        <div class="recipe-expand-hint">탭하여 레시피 보기 ↓</div>
+        <div class="recipe-detail">
+          <div class="recipe-steps">
+            <div class="recipe-step"><div class="step-num">1</div><span>연유 (S2/T3/G4/V5)</span></div>
+            <div class="recipe-step"><div class="step-num">2</div><span>무지방 우유 + 폼 (X-HOT)</span></div>
+            <div class="recipe-step"><div class="step-num">3</div><span>에스프레소 샷을 폼 위에 (S1/T2/G3/V4)</span></div>
+          </div>
+          <div class="memory-box">
+            <div class="memory-box-title">이미지 연상 기억법</div>
+            <div class="memory-story">돌체(dolce) = 이탈리아어로 '달콤'! 연유라는 '달콤한 밑바닥' 위에 무지방우유(죄책감 줄이기!)를 붓고 샷을 올린다. 유일하게 샷이 1234 계단!</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="recipe-card" data-cat="espresso" onclick="this.classList.toggle('expanded')">
+        <div class="recipe-header">
+          <div class="recipe-icon">⚪</div>
+          <div>
+            <div class="recipe-name">플랫 화이트</div>
+            <div class="recipe-name-en">Flat White · 마킹: FW</div>
+            <span class="recipe-tag tag-espresso">에스프레소</span>
+          </div>
+        </div>
+        <div class="recipe-expand-hint">탭하여 레시피 보기 ↓</div>
+        <div class="recipe-detail">
+          <div class="recipe-steps">
+            <div class="recipe-step"><div class="step-num">1</div><span>리스트레또 샷 추출 (S2/T2/G3/V3)</span></div>
+            <div class="recipe-step"><div class="step-num">2</div><span>스팀 밀크 (폼 최소화, 화이트 닷)</span></div>
+          </div>
+          <div class="memory-box">
+            <div class="memory-box-title">이미지 연상 기억법</div>
+            <div class="memory-story">이름 그대로 '납작한(flat) 흰색(white)'! 폼이 거의 없어 표면이 납작하다. 리스트레또(짧게 추출) = 더 진하고 부드러운 샷. 샷 수 2233 (라떼 1122보다 더 진함!)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="recipe-card" data-cat="espresso" onclick="this.classList.toggle('expanded')">
+        <div class="recipe-header">
+          <div class="recipe-icon">🔆</div>
+          <div>
+            <div class="recipe-name">코르타도</div>
+            <div class="recipe-name-en">Cortado · 마킹: COR</div>
+            <span class="recipe-tag tag-espresso">에스프레소</span>
+          </div>
+        </div>
+        <div class="recipe-expand-hint">탭하여 레시피 보기 ↓</div>
+        <div class="recipe-detail">
+          <div class="recipe-steps">
+            <div class="recipe-step"><div class="step-num">1</div><span>핫 컵에 우유 (S사이즈 선 계량, 스팀)</span></div>
+            <div class="recipe-step"><div class="step-num">2</div><span>블론드 리스트레또 샷 3샷 (핫컵 직접 추출)</span></div>
+          </div>
+          <div class="memory-box">
+            <div class="memory-box-title">이미지 연상 기억법</div>
+            <div class="memory-story">코르타도 = 스페인어 'cortar(자르다)'! 우유로 에스프레소의 쓴맛을 '잘라낸' 음료. 블론드(금발) 원두 + 3샷 고정. 유일하게 핫컵에 직접 추출!</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="recipe-card" data-cat="espresso" onclick="this.classList.toggle('expanded')">
+        <div class="recipe-header">
+          <div class="recipe-icon">🍮</div>
+          <div>
+            <div class="recipe-name">밀크 카라멜 라떼</div>
+            <div class="recipe-name-en">Milk Caramel Latte · 마킹: MCL</div>
+            <span class="recipe-tag tag-espresso">에스프레소</span>
+          </div>
+        </div>
+        <div class="recipe-expand-hint">탭하여 레시피 보기 ↓</div>
+        <div class="recipe-detail">
+          <div class="recipe-steps">
+            <div class="recipe-step"><div class="step-num">1</div><span>우유 (아랫선까지) + 하프앤하프 (정확한 선까지)</span></div>
+            <div class="recipe-step"><div class="step-num">2</div><span>스팀 후 에스프레소 샷 (-/T1/G2/V2)</span></div>
+            <div class="recipe-step"><div class="step-num">3</div><span>솔티드 카라멜 시럽 (-/T3/G4/V5)</span></div>
+          </div>
+          <div class="memory-box">
+            <div class="memory-box-title">이미지 연상 기억법</div>
+            <div class="memory-story">'두 겹 담요(우유+H&H)' 위에 소금 카라멜 비가 내린다! S사이즈 없음 (T부터). 우유 두 종류 = 더 풍성한 밀키함!</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 콜드브루 -->
+      <div class="recipe-card" data-cat="coldbrew" onclick="this.classList.toggle('expanded')">
+        <div class="recipe-header">
+          <div class="recipe-icon" style="background:var(--info-light)">🧊</div>
+          <div>
+            <div class="recipe-name">콜드 브루</div>
+            <div class="recipe-name-en">Cold Brew · 마킹: CBIC</div>
+            <span class="recipe-tag tag-coldbrew">콜드브루</span>
+          </div>
+        </div>
+        <div class="recipe-expand-hint">탭하여 레시피 보기 ↓</div>
+        <div class="recipe-detail">
+          <div class="recipe-steps">
+            <div class="recipe-step"><div class="step-num">1</div><span>콜드브루 원액 + 정수물 (컵 라인까지)</span></div>
+            <div class="recipe-step"><div class="step-num">2</div><span>얼음 추가</span></div>
+          </div>
+          <div class="memory-box">
+            <div class="memory-box-title">이미지 연상 기억법</div>
+            <div class="memory-story">20시간 동안 차가운 물에서 천천히 추출한 '인내의 커피'. 뜨거운 물을 쓰지 않아 산미가 적고 부드럽다!</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="recipe-card" data-cat="coldbrew" onclick="this.classList.toggle('expanded')">
+        <div class="recipe-header">
+          <div class="recipe-icon" style="background:var(--info-light)">🍦</div>
+          <div>
+            <div class="recipe-name">바닐라 크림 콜드브루</div>
+            <div class="recipe-name-en">Vanilla Cream Cold Brew · 마킹: VCB</div>
+            <span class="recipe-tag tag-coldbrew">콜드브루</span>
+          </div>
+        </div>
+        <div class="recipe-expand-hint">탭하여 레시피 보기 ↓</div>
+        <div class="recipe-detail">
+          <div class="recipe-steps">
+            <div class="recipe-step"><div class="step-num">1</div><span>바닐라 시럽 (T1/G1/V2)</span></div>
+            <div class="recipe-step"><div class="step-num">2</div><span>콜드브루 원액 + 정수물</span></div>
+            <div class="recipe-step"><div class="step-num">3</div><span>얼음 + 바닐라 크림 폼 위에 올림</span></div>
+          </div>
+          <div class="memory-box">
+            <div class="memory-box-title">이미지 연상 기억법</div>
+            <div class="memory-story">콜드브루 위에 '바닐라 구름'이 떠있는 모습! 크림이 천천히 콜드브루 속으로 스며드는 '하늘과 바다의 경계선'을 상상하세요.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="recipe-card" data-cat="coldbrew" onclick="this.classList.toggle('expanded')">
+        <div class="recipe-header">
+          <div class="recipe-icon" style="background:var(--info-light)">🍯</div>
+          <div>
+            <div class="recipe-name">돌체 콜드브루</div>
+            <div class="recipe-name-en">Dolce Cold Brew · 마킹: DCB</div>
+            <span class="recipe-tag tag-coldbrew">콜드브루</span>
+          </div>
+        </div>
+        <div class="recipe-expand-hint">탭하여 레시피 보기 ↓</div>
+        <div class="recipe-detail">
+          <div class="recipe-steps">
+            <div class="recipe-step"><div class="step-num">1</div><span>연유 (10.2ml) + 콜드브루 원액</span></div>
+            <div class="recipe-step"><div class="step-num">2</div><span>정수물 + 얼음</span></div>
+          </div>
+          <div class="memory-box">
+            <div class="memory-box-title">이미지 연상 기억법</div>
+            <div class="memory-story">돌체(달콤한) 콜드브루 = 콜드브루 바닥에 '연유 보물'이 숨겨져 있다! 빨대로 마시면 연유층이 올라오는 '달콤한 서프라이즈'.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="recipe-card" data-cat="coldbrew" onclick="this.classList.toggle('expanded')">
+        <div class="recipe-header">
+          <div class="recipe-icon" style="background:var(--info-light)">🫖</div>
+          <div>
+            <div class="recipe-name">콜드브루 오트 라떼</div>
+            <div class="recipe-name-en">Cold Brew Oat Latte · 마킹: OTCB</div>
+            <span class="recipe-tag tag-coldbrew">콜드브루</span>
+          </div>
+        </div>
+        <div class="recipe-expand-hint">탭하여 레시피 보기 ↓</div>
+        <div class="recipe-detail">
+          <div class="recipe-steps">
+            <div class="recipe-step"><div class="step-num">1</div><span>콜드브루 원액 + 오트밀크 (라인까지)</span></div>
+            <div class="recipe-step"><div class="step-num">2</div><span>얼음 추가</span></div>
+          </div>
+          <div class="memory-box">
+            <div class="memory-box-title">이미지 연상 기억법</div>
+            <div class="memory-story">콜드브루에 '귀리밭(oat) 우유'를 섞었다! 식물성 대체유로 비건 친화적인 콜드브루.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="recipe-card" data-cat="coldbrew" onclick="this.classList.toggle('expanded')">
+        <div class="recipe-header">
+          <div class="recipe-icon" style="background:var(--info-light)">🍊</div>
+          <div>
+            <div class="recipe-name">베르가못 콜드브루</div>
+            <div class="recipe-name-en">Bergamot Cold Brew · 마킹: B.CB</div>
+            <span class="recipe-tag tag-coldbrew">콜드브루</span>
+          </div>
+        </div>
+        <div class="recipe-expand-hint">탭하여 레시피 보기 ↓</div>
+        <div class="recipe-detail">
+          <div class="recipe-steps">
+            <div class="recipe-step"><div class="step-num">1</div><span>베르가못 시럽 (T3/G4/V5)</span></div>
+            <div class="recipe-step"><div class="step-num">2</div><span>콜드브루 원액 + 정수물 + 얼음</span></div>
+          </div>
+          <div class="memory-box">
+            <div class="memory-box-title">이미지 연상 기억법</div>
+            <div class="memory-story">베르가못 = 얼그레이 차에 쓰이는 '향기로운 귤'! 콜드브루에 홍차 같은 시트러스 향을 입힌 음료. 시럽 345!</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 프라푸치노 -->
+      <div class="recipe-card" data-cat="frappuccino" onclick="this.classList.toggle('expanded')">
+        <div class="recipe-header">
+          <div class="recipe-icon" style="background:var(--purple-light)">🍦</div>
+          <div>
+            <div class="recipe-name">자바 칩 프라푸치노</div>
+            <div class="recipe-name-en">Java Chip Frappuccino</div>
+            <span class="recipe-tag tag-frappuccino">프라푸치노</span>
+          </div>
+        </div>
+        <div class="recipe-expand-hint">탭하여 레시피 보기 ↓</div>
+        <div class="recipe-detail">
+          <div class="recipe-steps">
+            <div class="recipe-step"><div class="step-num">1</div><span>우유 + 프라푸치노 로스트 + 바모카소스</span></div>
+            <div class="recipe-step"><div class="step-num">2</div><span>프라푸치노 칩(자바칩) + 얼음</span></div>
+            <div class="recipe-step"><div class="step-num">3</div><span>블렌더로 갈기</span></div>
+            <div class="recipe-step"><div class="step-num">4</div><span>휘핑 + 모카 드리즐</span></div>
+          </div>
+          <div class="memory-box">
+            <div class="memory-box-title">이미지 연상 기억법</div>
+            <div class="memory-story">'자바(Java) 섬'에서 가져온 초콜릿 칩이 얼음 폭풍 속에서 갈려나간다! 초콜릿(바모카) + 초콜릿칩 + 커피(FR) = 3중 초콜릿 커피 폭탄!</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="recipe-card" data-cat="frappuccino" onclick="this.classList.toggle('expanded')">
+        <div class="recipe-header">
+          <div class="recipe-icon" style="background:var(--purple-light)">🍫</div>
+          <div>
+            <div class="recipe-name">모카 프라푸치노</div>
+            <div class="recipe-name-en">Mocha Frappuccino</div>
+            <span class="recipe-tag tag-frappuccino">프라푸치노</span>
+          </div>
+        </div>
+        <div class="recipe-expand-hint">탭하여 레시피 보기 ↓</div>
+        <div class="recipe-detail">
+          <div class="recipe-steps">
+            <div class="recipe-step"><div class="step-num">1</div><span>우유 + 프라푸치노 로스트 + 바모카소스</span></div>
+            <div class="recipe-step"><div class="step-num">2</div><span>얼음 + 블렌더</span></div>
+            <div class="recipe-step"><div class="step-num">3</div><span>휘핑크림</span></div>
+          </div>
+          <div class="memory-box">
+            <div class="memory-box-title">이미지 연상 기억법</div>
+            <div class="memory-story">자바칩 프라푸치노에서 칩을 빼면 모카 프라푸치노! '초콜릿 스무디' 버전. 칩 유무로 구분하세요.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="recipe-card" data-cat="frappuccino" onclick="this.classList.toggle('expanded')">
+        <div class="recipe-header">
+          <div class="recipe-icon" style="background:var(--purple-light)">🍨</div>
+          <div>
+            <div class="recipe-name">카라멜 프라푸치노</div>
+            <div class="recipe-name-en">Caramel Frappuccino</div>
+            <span class="recipe-tag tag-frappuccino">프라푸치노</span>
+          </div>
+        </div>
+        <div class="recipe-expand-hint">탭하여 레시피 보기 ↓</div>
+        <div class="recipe-detail">
+          <div class="recipe-steps">
+            <div class="recipe-step"><div class="step-num">1</div><span>우유 + 프라푸치노 로스트 + 카라멜 시럽</span></div>
+            <div class="recipe-step"><div class="step-num">2</div><span>얼음 + 블렌더</span></div>
+            <div class="recipe-step"><div class="step-num">3</div><span>휘핑 + 카라멜 드리즐</span></div>
+          </div>
+          <div class="memory-box">
+            <div class="memory-box-title">이미지 연상 기억법</div>
+            <div class="memory-story">카라멜 아래로 흐르는 '황금 폭포'! 바모카 대신 카라멜 시럽이 들어간다. 위아래 모두 카라멜(시럽+드리즐)이 감싸는 '카라멜 샌드위치'!</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="recipe-card" data-cat="frappuccino" onclick="this.classList.toggle('expanded')">
+        <div class="recipe-header">
+          <div class="recipe-icon" style="background:var(--purple-light)">🍵</div>
+          <div>
+            <div class="recipe-name">말차 프라푸치노</div>
+            <div class="recipe-name-en">Matcha Frappuccino</div>
+            <span class="recipe-tag tag-frappuccino">프라푸치노</span>
+          </div>
+        </div>
+        <div class="recipe-expand-hint">탭하여 레시피 보기 ↓</div>
+        <div class="recipe-detail">
+          <div class="recipe-steps">
+            <div class="recipe-step"><div class="step-num">1</div><span>우유 + 클래식 시럽 + 유기농 말차 파우더</span></div>
+            <div class="recipe-step"><div class="step-num">2</div><span>얼음 + 블렌더</span></div>
+            <div class="recipe-step"><div class="step-num">3</div><span>휘핑크림</span></div>
+          </div>
+          <div class="memory-box">
+            <div class="memory-box-title">이미지 연상 기억법</div>
+            <div class="memory-story">'녹색 숲의 프라푸치노'! 커피(FR) 대신 말차 파우더가 들어간다 = 논커피 프라푸치노. 초록색 = 말차!</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 티바나 -->
+      <div class="recipe-card" data-cat="tea" onclick="this.classList.toggle('expanded')">
+        <div class="recipe-header">
+          <div class="recipe-icon" style="background:var(--accent-light)">🍵</div>
+          <div>
+            <div class="recipe-name">차이 티 라떼</div>
+            <div class="recipe-name-en">Chai Tea Latte</div>
+            <span class="recipe-tag tag-tea">티바나</span>
+          </div>
+        </div>
+        <div class="recipe-expand-hint">탭하여 레시피 보기 ↓</div>
+        <div class="recipe-detail">
+          <div class="recipe-steps">
+            <div class="recipe-step"><div class="step-num">1</div><span>차이 시럽 (20ml 펌프) + 우유</span></div>
+            <div class="recipe-step"><div class="step-num">2</div><span>스팀 밀크 (HOT) / 얼음+우유 (ICE)</span></div>
+          </div>
+          <div class="memory-box">
+            <div class="memory-box-title">이미지 연상 기억법</div>
+            <div class="memory-story">인도의 '향신료 시장'에서 온 차! 시나몬+카다멈+생강 향신료가 우유 속에 녹아있다. 차이 시럽 펌프가 20ml로 '다른 시럽의 약 3배' 크기!</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="recipe-card" data-cat="tea" onclick="this.classList.toggle('expanded')">
+        <div class="recipe-header">
+          <div class="recipe-icon" style="background:var(--accent-light)">🌸</div>
+          <div>
+            <div class="recipe-name">얼 그레이 티</div>
+            <div class="recipe-name-en">Earl Grey Tea</div>
+            <span class="recipe-tag tag-tea">티바나</span>
+          </div>
+        </div>
+        <div class="recipe-expand-hint">탭하여 레시피 보기 ↓</div>
+        <div class="recipe-detail">
+          <div class="recipe-steps">
+            <div class="recipe-step"><div class="step-num">1</div><span>얼 그레이 티백 + 온수(HOT) / 정수물+얼음(ICE)</span></div>
+            <div class="recipe-step"><div class="step-num">2</div><span>우리기 시간: 3분</span></div>
+          </div>
+          <div class="memory-box">
+            <div class="memory-box-title">이미지 연상 기억법</div>
+            <div class="memory-story">영국 '그레이 백작(Earl Grey)'이 좋아한 차! 베르가못 오렌지 향이 특징. 베르가못 콜드브루와 같은 향 계열이니 함께 기억하세요.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="recipe-card" data-cat="tea" onclick="this.classList.toggle('expanded')">
+        <div class="recipe-header">
+          <div class="recipe-icon" style="background:var(--accent-light)">🍃</div>
+          <div>
+            <div class="recipe-name">유자 민트 티</div>
+            <div class="recipe-name-en">Yuja Mint Tea</div>
+            <span class="recipe-tag tag-tea">티바나</span>
+          </div>
+        </div>
+        <div class="recipe-expand-hint">탭하여 레시피 보기 ↓</div>
+        <div class="recipe-detail">
+          <div class="recipe-steps">
+            <div class="recipe-step"><div class="step-num">1</div><span>유자진저 베이스 + 민트 티백</span></div>
+            <div class="recipe-step"><div class="step-num">2</div><span>온수(HOT) / 정수물+얼음(ICE)</span></div>
+          </div>
+          <div class="memory-box">
+            <div class="memory-box-title">이미지 연상 기억법</div>
+            <div class="memory-story">'한국의 유자'와 '서양의 민트'가 만났다! 노란 유자 + 초록 민트 = 상큼한 비타민 폭탄. 겨울에는 따뜻하게 감기 예방!</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="recipe-card" data-cat="tea" onclick="this.classList.toggle('expanded')">
+        <div class="recipe-header">
+          <div class="recipe-icon" style="background:var(--accent-light)">🍊</div>
+          <div>
+            <div class="recipe-name">허니 자몽 블랙 티</div>
+            <div class="recipe-name-en">Honey Grapefruit Black Tea</div>
+            <span class="recipe-tag tag-tea">티바나</span>
+          </div>
+        </div>
+        <div class="recipe-expand-hint">탭하여 레시피 보기 ↓</div>
+        <div class="recipe-detail">
+          <div class="recipe-steps">
+            <div class="recipe-step"><div class="step-num">1</div><span>허니자몽소스 + 더블스트렝스 블랙티</span></div>
+            <div class="recipe-step"><div class="step-num">2</div><span>온수(HOT) / 정수물+얼음(ICE)</span></div>
+          </div>
+          <div class="memory-box">
+            <div class="memory-box-title">이미지 연상 기억법</div>
+            <div class="memory-story">'꿀벌이 자몽나무'에서 꿀을 모으는 장면! 달콤한 꿀 + 상큼한 자몽 + 진한 블랙티 = 3단 하모니. 허니자몽소스는 실온보관 14일!</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 피지오/리프레셔 -->
+      <div class="recipe-card" data-cat="fizz" onclick="this.classList.toggle('expanded')">
+        <div class="recipe-header">
+          <div class="recipe-icon" style="background:var(--warn-light)">🍓</div>
+          <div>
+            <div class="recipe-name">딸기 아사이 레모네이드</div>
+            <div class="recipe-name-en">Strawberry Acai Lemonade</div>
+            <span class="recipe-tag tag-fizz">리프레셔</span>
+          </div>
+        </div>
+        <div class="recipe-expand-hint">탭하여 레시피 보기 ↓</div>
+        <div class="recipe-detail">
+          <div class="recipe-steps">
+            <div class="recipe-step"><div class="step-num">1</div><span>딸기리프레셔 믹스</span></div>
+            <div class="recipe-step"><div class="step-num">2</div><span>레모네이드 + 얼음</span></div>
+            <div class="recipe-step"><div class="step-num">3</div><span>동결건조 딸기 토핑</span></div>
+          </div>
+          <div class="memory-box">
+            <div class="memory-box-title">이미지 연상 기억법</div>
+            <div class="memory-story">'핑크색 파티 음료'! 딸기 + 아사이 베리의 분홍빛 + 레모네이드의 상큼함. 카페인이 있는 논커피 음료 (아사이 베리에 카페인 포함!)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="recipe-card" data-cat="fizz" onclick="this.classList.toggle('expanded')">
+        <div class="recipe-header">
+          <div class="recipe-icon" style="background:var(--warn-light)">🍑</div>
+          <div>
+            <div class="recipe-name">망고 패션 후르츠 블렌디드</div>
+            <div class="recipe-name-en">Mango Passion Fruit Blended</div>
+            <span class="recipe-tag tag-blended">블렌디드</span>
+          </div>
+        </div>
+        <div class="recipe-expand-hint">탭하여 레시피 보기 ↓</div>
+        <div class="recipe-detail">
+          <div class="recipe-steps">
+            <div class="recipe-step"><div class="step-num">1</div><span>망고패션후르츠 베이스 + 클래식 시럽</span></div>
+            <div class="recipe-step"><div class="step-num">2</div><span>얼음 + 블렌더</span></div>
+            <div class="recipe-step"><div class="step-num">3</div><span>망고용과 토핑</span></div>
+          </div>
+          <div class="memory-box">
+            <div class="memory-box-title">이미지 연상 기억법</div>
+            <div class="memory-story">'열대 섬의 망고 스무디'! 노란 망고 + 패션후르츠의 새콤달콤함. 논커피 블렌디드 = 프라푸치노와 비슷하지만 커피 없는 과일 버전!</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="recipe-card" data-cat="fizz" onclick="this.classList.toggle('expanded')">
+        <div class="recipe-header">
+          <div class="recipe-icon" style="background:var(--warn-light)">🫧</div>
+          <div>
+            <div class="recipe-name">핑크자몽 피지오</div>
+            <div class="recipe-name-en">Pink Grapefruit Starbucks Fizzio</div>
+            <span class="recipe-tag tag-fizz">피지오</span>
+          </div>
+        </div>
+        <div class="recipe-expand-hint">탭하여 레시피 보기 ↓</div>
+        <div class="recipe-detail">
+          <div class="recipe-steps">
+            <div class="recipe-step"><div class="step-num">1</div><span>핑크자몽 베이스</span></div>
+            <div class="recipe-step"><div class="step-num">2</div><span>탄산수 + 얼음</span></div>
+          </div>
+          <div class="memory-box">
+            <div class="memory-box-title">이미지 연상 기억법</div>
+            <div class="memory-story">피지오(Fizzio) = 'Fizz(탄산)' + 'io'! 탄산수가 들어가는 유일한 카테고리. 핑크색 자몽이 '톡톡 터지는 탄산 거품' 속에서 춤추는 모습!</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
   </div>
 
   <!-- ========== 빠른 참조 표 ========== -->
@@ -2015,7 +2936,7 @@
             <div class="card-label">🫐 SH DS — 스타벅스 더블 샷</div>
             <div class="card-sub" style="font-size:11px;margin-bottom:8px">하프앤하프(70ml) + 향 시럽(7.5ml) + 에스프레소 샷 + 얼음 ▶ 쉐이킹</div>
             <div class="stat-row">
-              <div class="stat pink-stat"><div class="stat-num">2</div><div class="stat-lab">샷 (고정)</div></div>
+              <div class="stat pink-stat"><div class="stat-num">2/3/3</div><div class="stat-lab">샷 T/G/V</div></div>
               <div class="stat pink-stat"><div class="stat-num">3</div><div class="stat-lab">시럽 (고정)</div></div>
             </div>
             <div class="flip-hint">탭 → 유의사항</div>
@@ -2035,14 +2956,14 @@
             <div class="card-label">⚪ FW — 아이스 플랫 화이트</div>
             <div class="card-sub" style="margin-bottom:8px">상단선 아래 우유 + 리스트레또 샷 + 얼음</div>
             <div class="stat-row">
-              <div class="stat purple-stat"><div class="stat-num">2/3/3</div><div class="stat-lab">샷 T/G/V</div></div>
+              <div class="stat purple-stat"><div class="stat-num">1/2/3</div><div class="stat-lab">샷 T/G/V</div></div>
             </div>
-            <div class="flip-hint">탭 → 트릭</div>
+            <div class="flip-hint">탭 → 유의사항</div>
           </div>
           <div class="flip-back">
-            <div class="card-label">💡 기억 트릭</div>
-            <div class="trick-item"><span>·</span><span>리스트레또 샷 사용</span></div>
-            <div class="trick-tip">💡 ICE FW 샷: T=2/G=3/V=3</div>
+            <div class="card-label">⚠️ 유의사항</div>
+            <div class="trick-item"><span>·</span><span>거품의 점은 화이트 닷(하얀점) 모양으로 음료 위 크레마 30% 이상 덮어서는 안됨</span></div>
+            <div class="trick-tip">💡 ICE FW 샷: T=1/G=2/V=3</div>
           </div>
         </div>
       </div>
@@ -2053,7 +2974,7 @@
             <div class="card-label">🍮 MCL — 아이스 밀크 카라멜 라떼</div>
             <div class="card-sub" style="font-size:11px;margin-bottom:8px">에스프레소 샷 + 솔티드카라멜 시럽 + 하단선 우유 + 상단선 하프앤하프</div>
             <div class="stat-row">
-              <div class="stat pink-stat"><div class="stat-num">1/2/2</div><div class="stat-lab">샷 T/G/V</div></div>
+              <div class="stat pink-stat"><div class="stat-num">2/3/4</div><div class="stat-lab">샷 T/G/V</div></div>
               <div class="stat pink-stat"><div class="stat-num">2/3/4</div><div class="stat-lab">시럽 T/G/V</div></div>
             </div>
             <div class="flip-hint">탭 → 트릭</div>
@@ -2072,7 +2993,7 @@
             <div class="card-label">💨 Aero — 에어로카노</div>
             <div class="card-sub" style="font-size:11px;margin-bottom:8px">에스프레소 샷 + T얼음 ▶ 공기주입 스팀 + 6mm 얼음</div>
             <div class="stat-row">
-              <div class="stat red-stat"><div class="stat-num">2/3/4</div><div class="stat-lab">샷 T/G/V</div></div>
+              <div class="stat red-stat"><div class="stat-num">2/3/3</div><div class="stat-lab">샷 T/G/V</div></div>
             </div>
             <div class="flip-hint">탭 → 유의사항</div>
           </div>
@@ -2126,10 +3047,10 @@
         <tr><td>M</td><td>아이스 카페 모카</td><td>바모카소스 + 샷 + 우유 상단선 + 얼음 + 휘핑</td><td>1/2/2 · 시럽3/4/5</td></tr>
         <tr><td>WM</td><td>아이스 화이트 모카</td><td>화이트모카소스 + 샷 + 우유 상단선 + 얼음 + 휘핑</td><td>1/2/2 · 시럽3/4/5</td></tr>
         <tr><td>SDL</td><td>아이스 돌체 라떼</td><td>연유 + 무지방우유 상단선 + 얼음 + 샷</td><td>2/3/4 · 시럽3/4/5</td></tr>
-        <tr><td>SH DS</td><td>스타벅스 더블 샷</td><td>H&H(70ml) + 향시럽 + 샷 + 얼음 ▶ 쉐이킹</td><td>2샷 고정 · 시럽3</td></tr>
-        <tr><td>FW</td><td>아이스 플랫 화이트</td><td>우유 상단아래 + 리스트레또샷 + 얼음</td><td>2/3/3</td></tr>
-        <tr><td>MCL</td><td>아이스 밀크 카라멜 라떼</td><td>샷 + 솔티드카라멜 + 우유하단선 + H&H상단선</td><td>1/2/2 · 시럽2/3/4</td></tr>
-        <tr><td>Aero</td><td>에어로카노</td><td>샷 + T얼음 ▶ 공기주입 스팀 + 6mm얼음</td><td>2/3/4</td></tr>
+        <tr><td>SH DS</td><td>스타벅스 더블 샷</td><td>H&H(70ml) + 향시럽 + 샷 + 얼음 ▶ 쉐이킹</td><td>2/3/3 · 시럽3</td></tr>
+        <tr><td>FW</td><td>아이스 플랫 화이트</td><td>우유 상단아래 + 리스트레또샷 + 얼음</td><td>1/2/3</td></tr>
+        <tr><td>MCL</td><td>아이스 밀크 카라멜 라떼</td><td>샷 + 솔티드카라멜 + 우유하단선 + H&H상단선</td><td>2/3/4 · 시럽2/3/4</td></tr>
+        <tr><td>Aero</td><td>에어로카노</td><td>샷 + T얼음 ▶ 공기주입 스팀 + 6mm얼음</td><td>2/3/3</td></tr>
         <tr><td>SMC</td><td>스위트 밀크 커피</td><td>화이트모카+바닐라시럽 + 바닐라크림 중간선 + 18mm얼음 + 아이스커피 6mm</td><td>2/3/3 · 시럽1/2/2</td></tr>
       </tbody>
     </table>
@@ -2182,11 +3103,19 @@
           </div>
           <div class="quiz-mode-arrow">→</div>
         </button>
+        <button class="quiz-mode-btn" onclick="startQuiz('recipe')">
+          <div class="quiz-mode-icon">🍹</div>
+          <div>
+            <div class="quiz-mode-title">음료 레시피 퀴즈</div>
+            <div class="quiz-mode-sub">레시피·차이점·연상기억법 — 20문항</div>
+          </div>
+          <div class="quiz-mode-arrow">→</div>
+        </button>
         <button class="quiz-mode-btn" onclick="startQuiz('all')">
           <div class="quiz-mode-icon">🎯</div>
           <div>
             <div class="quiz-mode-title">전체 퀴즈</div>
-            <div class="quiz-mode-sub">코어 + 제조 + 부재료 + HOT + ICE — 100문항</div>
+            <div class="quiz-mode-sub">코어 + 제조 + 부재료 + HOT + ICE + 레시피 — 120문항</div>
           </div>
           <div class="quiz-mode-arrow">→</div>
         </button>
@@ -2373,7 +3302,7 @@ const iceQuiz = [
   { q: "돌체 콜드브루(DCB)에서 연유 용량은?", opts: ["7.5ml","10.2ml","13.5ml","20ml"], ans: 1 },
   // ans=2
   { q: "아이스 바닐라 라떼(VL) G사이즈 시럽 수는?", opts: ["2번","4번","3번","5번"], ans: 2 },
-  { q: "아이스 플랫 화이트(FW) V사이즈 샷 수는?", opts: ["2샷","2샷","3샷","4샷"], ans: 2 },
+  { q: "아이스 플랫 화이트(FW) V사이즈 샷 수는?", opts: ["1샷","2샷","3샷","4샷"], ans: 2 },
   { q: "스위트 밀크 커피(SMC) 마킹 코드는?", opts: ["SDL","SH DS","SMC","SCM"], ans: 2 },
   { q: "바닐라 크림 콜드브루(VCB) T사이즈 시럽 수는?", opts: ["2번","3번","1번","4번"], ans: 2 },
   { q: "아이스 화이트 모카(WM) 화이트 모카 소스 기준 용량은?", opts: ["7.5ml","13.5ml","10.2ml","15ml"], ans: 2 },
@@ -2385,9 +3314,37 @@ const iceQuiz = [
   { q: "아이스 돌체 라떼(SDL) G사이즈 샷 수는?", opts: ["1샷","2샷","4샷","3샷"], ans: 3 },
 ];
 
-const allQuiz = [...coreQuiz, ...madeQuiz, ...bujaelyoQuiz, ...hotQuiz, ...iceQuiz];
+// 음료 레시피 퀴즈 — 정답 0,1,2,3 각 5개씩
+const recipeQuiz = [
+  // ans=0
+  { q: "카라멜 마끼아또(CM)에서 '마끼아또'의 뜻은?", opts: ["얼룩","달콤한","카라멜","크림"], ans: 0 },
+  { q: "플랫 화이트(FW)에 사용하는 샷 종류는?", opts: ["리스트레또 샷","에스프레소 샷","블론드 샷","도피오 샷"], ans: 0 },
+  { q: "카푸치노(C)가 카페라떼와 다른 핵심 차이점은?", opts: ["X-HOT 스팀 (두꺼운 폼)","리스트레또 샷 사용","시럽 추가","휘핑크림 토핑"], ans: 0 },
+  { q: "피지오(Fizzio) 음료의 특징적인 재료는?", opts: ["탄산수","우유","에스프레소","휘핑크림"], ans: 0 },
+  { q: "콜드브루 커피의 추출 방식은?", opts: ["찬물로 장시간 추출","핫 추출 후 냉각","에스프레소+물","드립 추출"], ans: 0 },
+  // ans=1
+  { q: "카페모카(M)와 화이트모카(WM)의 차이점은?", opts: ["샷 수","소스 종류만 다름","휘핑 유무","우유 종류"], ans: 1 },
+  { q: "바닐라 라떼(VL) 시럽 펌프 순서(S/T/G/V)는?", opts: ["1/2/3/4","2/3/4/5","3/4/5/6","1/3/4/5"], ans: 1 },
+  { q: "돌체 콜드브루(DCB)에 들어가는 특별한 재료는?", opts: ["카라멜 시럽","연유","꿀","초콜릿"], ans: 1 },
+  { q: "코르타도(COR)의 고정 샷 수는?", opts: ["2샷","3샷","1샷","4샷"], ans: 1 },
+  { q: "말차 프라푸치노가 다른 프라푸치노와 다른 점은?", opts: ["휘핑 없음","커피(FR) 대신 말차 파우더","얼음 없음","우유 대신 물"], ans: 1 },
+  // ans=2
+  { q: "카라멜 마끼아또(CM) 시럽 펌프(S/T/G/V)는?", opts: ["2/3/4/5","3/4/5/6","1/2/3/4","1/3/4/5"], ans: 2 },
+  { q: "스타벅스 돌체 라떼(SDL)에 사용하는 우유는?", opts: ["일반 우유","저지방 우유","무지방 우유","오트밀크"], ans: 2 },
+  { q: "에스프레소 콘파나(ECP) 위에 올라가는 것은?", opts: ["우유 폼","카라멜 드리즐","휘핑크림","시나몬 파우더"], ans: 2 },
+  { q: "자바칩 프라푸치노에서 '자바칩'은?", opts: ["커피원두 조각","캔디 조각","프라푸치노 칩(초콜릿칩)","견과류"], ans: 2 },
+  { q: "밀크카라멜라떼(MCL)에 사용하는 두 가지 유제품은?", opts: ["우유+두유","우유+오트","우유+하프앤하프","우유+바닐라크림"], ans: 2 },
+  // ans=3
+  { q: "차이 티 라떼의 차이 시럽 1펌프 용량은?", opts: ["7.5ml","10.2ml","13.5ml","20ml"], ans: 3 },
+  { q: "플랫 화이트(FW)의 샷 수(S/T/G/V)는?", opts: ["1/1/2/2","1/2/3/4","1/2/2/3","2/2/3/3"], ans: 3 },
+  { q: "아메리카노(A) 샷 수(S/T/G/V)의 규칙은?", opts: ["모두 2샷","1/1/2/2","2/3/4/5","1/2/3/4 (사이즈=샷 수)"], ans: 3 },
+  { q: "카페모카(M)에 들어가는 소스 이름은?", opts: ["카라멜소스","화이트모카소스","초콜릿시럽","바모카소스"], ans: 3 },
+  { q: "카라멜 마끼아또(CM) 제조에서 샷은 어디에 붓나?", opts: ["컵 바닥에","우유에 직접","시럽 위에","우유 폼 위에"], ans: 3 },
+];
 
-const modeLabels = { core: '🫙 코어 원재료 퀴즈', made: '☕ 제조 베이스 퀴즈', bujaelyo: '🧪 부재료 제조 퀴즈', hot: '🔥 HOT 음료 퀴즈', ice: '🧊 ICE 음료 퀴즈', all: '🎯 전체 퀴즈' };
+const allQuiz = [...coreQuiz, ...madeQuiz, ...bujaelyoQuiz, ...hotQuiz, ...iceQuiz, ...recipeQuiz];
+
+const modeLabels = { core: '🫙 코어 원재료 퀴즈', made: '☕ 제조 베이스 퀴즈', bujaelyo: '🧪 부재료 제조 퀴즈', hot: '🔥 HOT 음료 퀴즈', ice: '🧊 ICE 음료 퀴즈', recipe: '🍹 음료 레시피 퀴즈', all: '🎯 전체 퀴즈' };
 
 let shuffled = [], current = 0, correct = 0, results = [], answered = false, currentMode = 'core';
 
@@ -2400,7 +3357,7 @@ function backToSelect() {
 
 function startQuiz(mode) {
   currentMode = mode;
-  const pool = mode === 'core' ? coreQuiz : mode === 'made' ? madeQuiz : mode === 'bujaelyo' ? bujaelyoQuiz : mode === 'hot' ? hotQuiz : mode === 'ice' ? iceQuiz : allQuiz;
+  const pool = mode === 'core' ? coreQuiz : mode === 'made' ? madeQuiz : mode === 'bujaelyo' ? bujaelyoQuiz : mode === 'hot' ? hotQuiz : mode === 'ice' ? iceQuiz : mode === 'recipe' ? recipeQuiz : allQuiz;
   shuffled = shuffle(pool);
   current = 0; correct = 0; results = []; answered = false;
   document.getElementById('quiz-mode-label').textContent = modeLabels[mode];
@@ -2537,6 +3494,19 @@ function answerObj(idx) {
 function answer(idx) { answerObj(idx); }
 
 function nextQ() { renderQ(); }
+
+// 음료 레시피 카테고리 필터
+function filterRecipe(cat, btn) {
+  document.querySelectorAll('.recipe-cat-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.recipe-card').forEach(card => {
+    if (cat === 'all' || card.dataset.cat === cat) {
+      card.style.display = 'block';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
 </script>
 
 </body>
