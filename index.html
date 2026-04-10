@@ -4201,11 +4201,27 @@
           </div>
           <div class="quiz-mode-arrow">→</div>
         </button>
+        <button class="quiz-mode-btn" onclick="startQuiz('hotnew')">
+          <div class="quiz-mode-icon">🔥</div>
+          <div>
+            <div class="quiz-mode-title">HOT 신규 음료 퀴즈</div>
+            <div class="quiz-mode-sub">JML·CMT·YMT·GHBT·PIT·T·SHC·SM — 20문항</div>
+          </div>
+          <div class="quiz-mode-arrow">→</div>
+        </button>
+        <button class="quiz-mode-btn" onclick="startQuiz('icenew')">
+          <div class="quiz-mode-icon">🧊</div>
+          <div>
+            <div class="quiz-mode-title">ICE 신규 음료 퀴즈</div>
+            <div class="quiz-mode-sub">티 6종·피지오 4종·SALR·SHC·C/M·SSL — 20문항</div>
+          </div>
+          <div class="quiz-mode-arrow">→</div>
+        </button>
         <button class="quiz-mode-btn" onclick="startQuiz('all')">
           <div class="quiz-mode-icon">🎯</div>
           <div>
             <div class="quiz-mode-title">전체 퀴즈</div>
-            <div class="quiz-mode-sub">코어+제조+부재료+HOT+ICE+레시피+프라푸치노+프로모션 — 160문항</div>
+            <div class="quiz-mode-sub">코어+제조+부재료+HOT+ICE+레시피+프라푸치노+프로모션+HOT신규+ICE신규 — 200문항</div>
           </div>
           <div class="quiz-mode-arrow">→</div>
         </button>
@@ -4488,9 +4504,65 @@ const promoQuiz = [
   { q: "별다방 바닐라 라떼(BVL) HOT 제조에 사용하는 우유는?", opts: ["일반우유","두유","무지방우유","하프앤하프"], ans: 3 },
 ];
 
-const allQuiz = [...coreQuiz, ...madeQuiz, ...bujaelyoQuiz, ...hotQuiz, ...iceQuiz, ...recipeQuiz, ...fbQuiz, ...promoQuiz];
+// HOT 신규 음료 (JML/CMT/YMT/GHBT/PIT/T/SHC/SM) — 정답 0,1,2,3 각 5개씩
+const hotNewQuiz = [
+  // ans=0
+  { q: "제주 말차 라떼 마킹 코드는?", opts: ["JML","JM","ML","JC"], ans: 0 },
+  { q: "시그니처 핫 초코(SHC) 시그니처 초콜릿 믹스와 우유의 비율은?", opts: ["50:50","30:70","60:40","70:30"], ans: 0 },
+  { q: "자몽 허니 블랙 티(GHBT)의 쉐이킹 횟수 기준은?", opts: ["10회 이상","5회","3회","20회"], ans: 0 },
+  { q: "클래식 밀크티(CMT) 클래식 시럽 1회 기준 용량은?", opts: ["3.75ml","7.5ml","10.2ml","13.5ml"], ans: 0 },
+  { q: "스팀 밀크(SM)의 제공 사이즈는?", opts: ["S/T 만","T/G","S/T/G","T/G/V"], ans: 0 },
+  // ans=1
+  { q: "자몽 허니 블랙 티(GHBT) 자몽소스 펌프(S/T/G/V)는?", opts: ["1/2/3/4","2/3/4/5","1/1/1/2","3/4/5/6"], ans: 1 },
+  { q: "클래식 밀크티(CMT) 시럽 펌프(T/G/V)는?", opts: ["2/3/4","3/4/5","1/2/3","4/5/6"], ans: 1 },
+  { q: "유자 민트 티(YMT) 시럽 펌프(T/G/V)는?", opts: ["1/2/3","2/3/4","3/4/5","2/2/2"], ans: 1 },
+  { q: "제주 말차 라떼(JML) 시럽 펌프(S/T/G/V)는?", opts: ["2/2/3/4","1/2/3/4","2/3/4/5","1/1/2/2"], ans: 1 },
+  { q: "스타벅스 잎 차(T) 녹차·유스베리의 우리는 시간은?", opts: ["5분","3분","2분","7분"], ans: 1 },
+  // ans=2
+  { q: "자몽 허니 블랙 티(GHBT) 잉블티 펌프(S/T/G/V)는?", opts: ["2/3/4/5","1/2/3/4","1/1/1/2","2/2/2/3"], ans: 2 },
+  { q: "복숭아 핫 티(PIT) 50:50 피처에 들어가지 않는 재료는?", opts: ["복숭아 소스","피치 베이스","우유","정수물"], ans: 2 },
+  { q: "유자 민트 티(YMT) 민트 풀 리프 티백(T/G/V)은?", opts: ["1/2/3","2/2/2","1/1/2","2/3/4"], ans: 2 },
+  { q: "제주 말차 라떼(JML) 말차 파우더(S/T/G/V)는?", opts: ["1/2/3/4","2/3/4/5","2/2/3/4","1/1/2/2"], ans: 2 },
+  { q: "스타벅스 잎 차(T)에서 녹차·유스베리 외 일반 잎차의 우리는 시간은?", opts: ["3분","2분","5분","7분"], ans: 2 },
+  // ans=3
+  { q: "클래식 밀크티 마킹 코드는?", opts: ["CT","CMK","MTC","CMT"], ans: 3 },
+  { q: "복숭아 핫 티(PIT) 시럽 펌프(T/G/V)는?", opts: ["3/4/5","1/2/3","1/1/1","2/3/4"], ans: 3 },
+  { q: "시그니처 핫 초코(SHC)의 마무리 토핑은?", opts: ["휘핑만","초콜릿 시럽","계피","휘핑 + 초콜릿 파우더"], ans: 3 },
+  { q: "자몽 허니 블랙 티(GHBT) 클래식 시럽 펌프(S/T/G/V)는?", opts: ["3/4/5/6","2/3/4/5","2/2/3/4","1/2/3/4"], ans: 3 },
+  { q: "스타벅스 잎 차(T) 티백 개수(T/V)는?", opts: ["2/2","2/3","1/1","1/2"], ans: 3 },
+];
 
-const modeLabels = { core: '🫙 코어 원재료 퀴즈', made: '☕ 제조 베이스 퀴즈', bujaelyo: '🧪 부재료 제조 퀴즈', hot: '🔥 HOT 음료 퀴즈', ice: '🧊 ICE 음료 퀴즈', recipe: '🍹 음료 레시피 퀴즈', fb: '🥤 프라푸치노/블렌디드 퀴즈', promo: '✨ 프로모션/트렌타/딜리버스 퀴즈', all: '🎯 전체 퀴즈' };
+// ICE 신규 음료 (JML/CMT/YMT/GHBT/PIT/Fiz 4종/SALR/T/SHC/C/M/SSL) — 정답 0,1,2,3 각 5개씩
+const iceNewQuiz = [
+  // ans=0
+  { q: "클라임 피지오(CL Fiz) 건라임 펌프(T/G/V)는?", opts: ["1/1/1","2/2/2","1/2/3","2/3/4"], ans: 0 },
+  { q: "콜드 밀크(C/M)의 제공 컵은?", opts: ["종이컵","유리컵","머그컵","텀블러"], ans: 0 },
+  { q: "딸기 아사이 레모네이드 리프레셔(SALR) 딸기 슬라이스(T/G/V)는?", opts: ["2/2/2","1/2/3","3/4/5","2/3/4"], ans: 0 },
+  { q: "시그니처 아이스 초코(SHC) T사이즈 시그니처 초콜릿 믹스 양은?", opts: ["80ml","100ml","110ml","130ml"], ans: 0 },
+  { q: "복숭아 아이스티(PIT)의 베이스 구성은?", opts: ["블랙티 + 피치 베이스","녹차 + 복숭아","우유 + 피치","블랙티 + 망고"], ans: 0 },
+  // ans=1
+  { q: "라이트 핑크 자몽 피지오(LG Fiz)의 베이스는?", opts: ["라임 베이스","핑크 자몽 베이스","피치 베이스","딸기 베이스"], ans: 1 },
+  { q: "아이스 클래식 밀크티(CMT) 시럽 펌프(T/G/V)는?", opts: ["2/3/4","3/4/5","1/2/3","4/5/6"], ans: 1 },
+  { q: "딸기 라떼(SSL) 시럽 펌프(T/G/V)는?", opts: ["2/3/4","1/2/3","3/4/5","1/1/1"], ans: 1 },
+  { q: "아이스 자몽 허니 블랙 티(GHBT) 자몽소스 펌프(T/G/V)는?", opts: ["2/3/4","3/4/5","1/2/3","4/5/6"], ans: 1 },
+  { q: "콜드 밀크(C/M)의 제공 사이즈는?", opts: ["T/G","S/T","S/T/G","T/G/V"], ans: 1 },
+  // ans=2
+  { q: "피치 딸기 피지오(PS Fiz)의 베이스 적층 순서(하단→상단)는?", opts: ["피치→딸기→정수물","정수물→피치→딸기","정수물→딸기→피치","딸기→피치→정수물"], ans: 2 },
+  { q: "딸기 라떼(SSL) T사이즈 딸기 베이스 양은?", opts: ["120ml","150ml","100ml","130ml"], ans: 2 },
+  { q: "아이스 제주 말차 라떼(JML) 파우더(T/G/V)는?", opts: ["1/2/3","3/4/5","2/3/4","2/2/2"], ans: 2 },
+  { q: "시그니처 아이스 초코(SHC) 마무리 토핑은?", opts: ["휘핑만","초콜릿 시럽","휘핑 + 초콜릿 파우더","계피"], ans: 2 },
+  { q: "체리 & 자두 피지오(C&P Fiz)의 핵심 공정은?", opts: ["블렌딩","쉐이킹","탄산주입","드립 추출"], ans: 2 },
+  // ans=3
+  { q: "아이스 유자 민트 티(YMT) 얼음 계량선은?", opts: ["1번선","2번선","3번선","4번선"], ans: 3 },
+  { q: "딸기 라떼(SSL) V사이즈 딸기 베이스 양은?", opts: ["100ml","120ml","130ml","150ml"], ans: 3 },
+  { q: "아이스 스타벅스 잎 차(T) 티백 개수(T/V)는?", opts: ["2/2","2/3","1/1","1/2"], ans: 3 },
+  { q: "딸기 아사이 레모네이드 리프레셔(SALR) 딸기 베이스 계량선은?", opts: ["1번선","2번선","4번선","C선"], ans: 3 },
+  { q: "아이스 자몽 허니 블랙 티(GHBT)의 핵심 공정은?", opts: ["블렌딩","드립","스팀","쉐이킹"], ans: 3 },
+];
+
+const allQuiz = [...coreQuiz, ...madeQuiz, ...bujaelyoQuiz, ...hotQuiz, ...iceQuiz, ...recipeQuiz, ...fbQuiz, ...promoQuiz, ...hotNewQuiz, ...iceNewQuiz];
+
+const modeLabels = { core: '🫙 코어 원재료 퀴즈', made: '☕ 제조 베이스 퀴즈', bujaelyo: '🧪 부재료 제조 퀴즈', hot: '🔥 HOT 음료 퀴즈', ice: '🧊 ICE 음료 퀴즈', recipe: '🍹 음료 레시피 퀴즈', fb: '🥤 프라푸치노/블렌디드 퀴즈', promo: '✨ 프로모션/트렌타/딜리버스 퀴즈', hotnew: '🔥 HOT 신규 음료 퀴즈', icenew: '🧊 ICE 신규 음료 퀴즈', all: '🎯 전체 퀴즈' };
 
 let shuffled = [], current = 0, correct = 0, results = [], answered = false, currentMode = 'core';
 
@@ -4503,7 +4575,7 @@ function backToSelect() {
 
 function startQuiz(mode) {
   currentMode = mode;
-  const pool = mode === 'core' ? coreQuiz : mode === 'made' ? madeQuiz : mode === 'bujaelyo' ? bujaelyoQuiz : mode === 'hot' ? hotQuiz : mode === 'ice' ? iceQuiz : mode === 'recipe' ? recipeQuiz : mode === 'fb' ? fbQuiz : mode === 'promo' ? promoQuiz : allQuiz;
+  const pool = mode === 'core' ? coreQuiz : mode === 'made' ? madeQuiz : mode === 'bujaelyo' ? bujaelyoQuiz : mode === 'hot' ? hotQuiz : mode === 'ice' ? iceQuiz : mode === 'recipe' ? recipeQuiz : mode === 'fb' ? fbQuiz : mode === 'promo' ? promoQuiz : mode === 'hotnew' ? hotNewQuiz : mode === 'icenew' ? iceNewQuiz : allQuiz;
   shuffled = shuffle(pool);
   current = 0; correct = 0; results = []; answered = false;
   document.getElementById('quiz-mode-label').textContent = modeLabels[mode];
