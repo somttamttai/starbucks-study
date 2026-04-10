@@ -610,6 +610,7 @@
     <button class="tab" onclick="switchTab('hot',this)">🔥 HOT음료</button>
     <button class="tab" onclick="switchTab('ice',this)">🧊 ICE음료</button>
     <button class="tab" onclick="switchTab('fb',this)">🥤 프라푸치노/블렌디드</button>
+    <button class="tab" onclick="switchTab('promo',this)">✨ 프로모션/트렌타/딜리버스</button>
     <button class="tab" onclick="switchTab('ref',this)">📋 빠른참조</button>
     <button class="tab" onclick="switchTab('rules',this)">📌 표기법</button>
     <button class="tab" onclick="switchTab('quiz',this)">🎯 퀴즈</button>
@@ -3777,6 +3778,355 @@
       <div class="rule-row"><span class="dot">·</span><span>커피 프라푸치노 = 커피베이스 추가</span></div>
       <div class="rule-row"><span class="dot">·</span><span>크림 프라푸치노 = 크림베이스 추가</span></div>
       <div class="rule-row"><span class="dot">·</span><span>Flavor Syrup = 커피/크림 프라푸치노의 향 시럽 (펌프 수)</span></div>
+    </div>
+
+  </div>
+
+  <!-- ========== 프로모션 / 트렌타 / 딜리버스 ========== -->
+  <div class="section" id="sec-promo">
+
+    <div class="sec-label" style="margin-top:4px">프로모션 — 슈크림 시리즈</div>
+    <div class="cards">
+
+      <div class="flip-wrap c-amber" onclick="this.classList.toggle('flipped')" style="height:350px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🍮 CCL — 슈크림 라떼</div>
+            <div class="card-sub" style="font-size:11px;margin-bottom:8px">[HOT] 우유 X-HOT 스팀 + 샷 + 스위트 바닐라 소스(10.2ml) + 12mm 내용물 붓기 + 슈크림 휘핑<br>[ICE] 샷 + 스위트 바닐라 소스(10.2ml) + 상단선 우유 + 6mm 얼음 + 슈크림 휘핑</div>
+            <div class="stat-row">
+              <div class="stat amber-stat"><div class="stat-num">1/2/2</div><div class="stat-lab">샷 T/G/V</div></div>
+              <div class="stat amber-stat"><div class="stat-num">3/4/5</div><div class="stat-lab">시럽 T/G/V</div></div>
+              <div class="stat amber-stat"><div class="stat-num">O</div><div class="stat-lab">휘핑</div></div>
+            </div>
+            <div class="flip-hint">탭 → 유의사항</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">⚠️ 유의사항</div>
+            <div class="trick-item"><span>·</span><span>스위트 바닐라 소스 10.2ml 기준</span></div>
+            <div class="trick-item"><span>·</span><span>샷 T/G/V = 1/2/2</span></div>
+            <div class="trick-item"><span>·</span><span>시럽 T/G/V = 3/4/5</span></div>
+            <div class="trick-item"><span>·</span><span>HOT: X-HOT 스팀 / ICE: 6mm 얼음</span></div>
+            <div class="trick-item"><span>·</span><span>마무리 슈크림 휘핑</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-amber" onclick="this.classList.toggle('flipped')" style="height:370px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🫧 CF L — 슈크림 폼 라떼</div>
+            <div class="card-sub" style="font-size:11px;margin-bottom:8px">[HOT] 우유 X-HOT 스팀 + 샷 + 스위트 바닐라 소스(10.2ml) + 12mm 내용물 붓기 + 슈 폼<br>[ICE] 샷 + 스위트 바닐라 소스(10.2ml) + 상단선 우유 + 12mm 얼음 + 슈 폼</div>
+            <div class="stat-row">
+              <div class="stat amber-stat"><div class="stat-num">1/2/2</div><div class="stat-lab">샷 T/G/V</div></div>
+              <div class="stat amber-stat"><div class="stat-num">2/3/4</div><div class="stat-lab">시럽 T/G/V</div></div>
+            </div>
+            <div class="flip-hint">탭 → 유의사항</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">⚠️ 유의사항</div>
+            <div class="trick-item"><span>·</span><span>샷 T/G/V = 1/2/2</span></div>
+            <div class="trick-item"><span>·</span><span>시럽 T/G/V = 2/3/4</span></div>
+            <div class="trick-item"><span>·</span><span>슈 폼(계량) T/G/V = 40ml / 50ml / 60ml</span></div>
+            <div class="trick-item"><span>·</span><span>슈 폼(완성 양) T/G/V = 80ml / 100ml / 120ml</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-pink" onclick="this.classList.toggle('flipped')" style="height:280px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🍓 C SL — 슈크림 딸기 라떼</div>
+            <div class="card-sub" style="font-size:11px;margin-bottom:8px">클래식 시럽 + 하단선 우유 + 12mm 얼음 + 딸기 베이스 + 슈크림 휘핑</div>
+            <div class="stat-row">
+              <div class="stat pink-stat"><div class="stat-num">1/2/3</div><div class="stat-lab">시럽 T/G/V</div></div>
+              <div class="stat pink-stat"><div class="stat-num">O</div><div class="stat-lab">휘핑</div></div>
+            </div>
+            <div class="flip-hint">탭 → 트릭</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">💡 기억 트릭</div>
+            <div class="trick-item"><span>·</span><span>클래식 시럽 T/G/V = 1/2/3</span></div>
+            <div class="trick-item"><span>·</span><span>우유 하단선 → 얼음 12mm → 딸기 베이스</span></div>
+            <div class="trick-item"><span>·</span><span>마무리 슈크림 휘핑</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-pink" onclick="this.classList.toggle('flipped')" style="height:270px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🫧 CF SL — 슈 폼 딸기 라떼</div>
+            <div class="card-sub" style="font-size:11px;margin-bottom:8px">클래식 시럽 + 하단선 우유 + 18mm 얼음 + 딸기 베이스 + 슈 폼</div>
+            <div class="stat-row">
+              <div class="stat pink-stat"><div class="stat-num">슈 폼</div><div class="stat-lab">마무리</div></div>
+            </div>
+            <div class="flip-hint">탭 → 트릭</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">💡 기억 트릭</div>
+            <div class="trick-item"><span>·</span><span>우유 하단선 → 얼음 18mm → 딸기 베이스</span></div>
+            <div class="trick-item"><span>·</span><span>마무리 슈 폼</span></div>
+            <div class="trick-item"><span>·</span><span>C SL과 달리 얼음이 18mm, 휘핑 대신 폼</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-green" onclick="this.classList.toggle('flipped')" style="height:320px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🍵 C ML — 슈크림 말차 라떼</div>
+            <div class="card-sub" style="font-size:11px;margin-bottom:8px">[HOT] 한 단계 아랫선 우유 + 슈크림 말차 베이스 사이즈별 계량선 + 12mm 내용물 붓기 + 슈크림 휘핑<br>[ICE] 하단선 우유 + 상단선 슈크림 말차 베이스 + 6mm 얼음 + 슈크림 휘핑</div>
+            <div class="stat-row">
+              <div class="stat teal-stat"><div class="stat-num">O</div><div class="stat-lab">휘핑</div></div>
+            </div>
+            <div class="flip-hint">탭 → 유의사항</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">⚠️ 유의사항</div>
+            <div class="trick-item"><span>·</span><span>HOT: 우유 한 단계 아랫선 + 말차 베이스 사이즈 계량선</span></div>
+            <div class="trick-item"><span>·</span><span>ICE: 우유 하단선 + 말차 베이스 상단선 + 얼음 6mm</span></div>
+            <div class="trick-item"><span>·</span><span>마무리 슈크림 휘핑</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-green" onclick="this.classList.toggle('flipped')" style="height:320px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🫧 CF ML — 슈 폼 말차 라떼</div>
+            <div class="card-sub" style="font-size:11px;margin-bottom:8px">[HOT] 한 단계 아랫선 우유 + 슈크림 말차 베이스 사이즈별 계량선 + 12mm 내용물 붓기 + 슈 폼<br>[ICE] 하단선 우유 + 상단선 슈크림 말차 베이스 + 12mm 얼음 + 슈 폼</div>
+            <div class="stat-row">
+              <div class="stat teal-stat"><div class="stat-num">슈 폼</div><div class="stat-lab">마무리</div></div>
+            </div>
+            <div class="flip-hint">탭 → 유의사항</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">⚠️ 유의사항</div>
+            <div class="trick-item"><span>·</span><span>HOT: 우유 한 단계 아랫선 + 말차 베이스 사이즈 계량선</span></div>
+            <div class="trick-item"><span>·</span><span>ICE: 우유 하단선 + 말차 베이스 상단선 + 얼음 12mm</span></div>
+            <div class="trick-item"><span>·</span><span>C ML과 달리 ICE 얼음 12mm, 휘핑 대신 슈 폼</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="sec-label sec-gap">프로모션 — 시즌 한정</div>
+    <div class="cards">
+
+      <div class="flip-wrap c-pink" onclick="this.classList.toggle('flipped')" style="height:360px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🌸 CB CRM — 체리블라썸 백도 크림 프라푸치노</div>
+            <div class="card-sub" style="font-size:11px;margin-bottom:8px">하단선 우유 + 화이트 모카 + 백도 파우더(2t) + 밀크 푸딩(2t) + 백도 베이스 ▶ 얼음 + 커피베이스 ▶ 휘핑 + 체리블라썸 스트로베리 소스 드리즐</div>
+            <div class="stat-row">
+              <div class="stat pink-stat"><div class="stat-num">1/2/2</div><div class="stat-lab">시럽 T/G/V</div></div>
+              <div class="stat pink-stat"><div class="stat-num">2t×2</div><div class="stat-lab">토핑 스쿱</div></div>
+              <div class="stat pink-stat"><div class="stat-num">O</div><div class="stat-lab">휘핑</div></div>
+            </div>
+            <div class="flip-hint">탭 → 유의사항</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">⚠️ 유의사항</div>
+            <div class="trick-item"><span>·</span><span>모든 토핑(백도 파우더/밀크 푸딩)은 2t 스쿱에 2번</span></div>
+            <div class="trick-item"><span>·</span><span>시럽 T/G/V = 1/2/2</span></div>
+            <div class="trick-item"><span>·</span><span>블렌딩 후 벚꽃 체리블라썸 스트로베리 소스 드리즐</span></div>
+            <div class="trick-item"><span>·</span><span>내용물 붓기로 마무리</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-amber" onclick="this.classList.toggle('flipped')" style="height:340px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🍫 DCM — 두바이 초콜릿 모카</div>
+            <div class="card-sub" style="font-size:11px;margin-bottom:8px">바모카(15ml) + 에스프레소 샷 + 상단선 우유 + 12ml 얼음 + 6mm 피스타치오 폼 + 솔티드 브라운 버터리 토핑</div>
+            <div class="stat-row">
+              <div class="stat amber-stat"><div class="stat-num">1/2/2</div><div class="stat-lab">샷 T/G/V</div></div>
+              <div class="stat amber-stat"><div class="stat-num">2/3/4</div><div class="stat-lab">시럽 T/G/V</div></div>
+              <div class="stat amber-stat"><div class="stat-num">피스타치오</div><div class="stat-lab">폼</div></div>
+            </div>
+            <div class="flip-hint">탭 → 유의사항</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">⚠️ 유의사항</div>
+            <div class="trick-item"><span>·</span><span>바모카 15ml 기준</span></div>
+            <div class="trick-item"><span>·</span><span>샷 T/G/V = 1/2/2</span></div>
+            <div class="trick-item"><span>·</span><span>시럽 T/G/V = 2/3/4</span></div>
+            <div class="trick-item"><span>·</span><span>피스타치오 폼 T/G/V = 40ml / 50ml / 60ml</span></div>
+            <div class="trick-item"><span>·</span><span>마무리 솔티드 브라운 버터리 토핑</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-green" onclick="this.classList.toggle('flipped')" style="height:340px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🍵 DC Mal — 두바이 초콜릿 말차</div>
+            <div class="card-sub" style="font-size:11px;margin-bottom:8px">중간선 우유 + 피스타치오 소스(10.2ml) + 유기농 말차 1t 버튼 + 내용물 붓기 + 12ml 얼음 + 6mm 초콜릿 폼 + 솔티드 브라운 버터리 토핑</div>
+            <div class="stat-row">
+              <div class="stat teal-stat"><div class="stat-num">2/3/4</div><div class="stat-lab">시럽 T/G/V</div></div>
+              <div class="stat teal-stat"><div class="stat-num">초콜릿</div><div class="stat-lab">폼</div></div>
+            </div>
+            <div class="flip-hint">탭 → 유의사항</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">⚠️ 유의사항</div>
+            <div class="trick-item"><span>·</span><span>피스타치오 소스 10.2ml 기준</span></div>
+            <div class="trick-item"><span>·</span><span>시럽 T/G/V = 2/3/4</span></div>
+            <div class="trick-item"><span>·</span><span>유기농 말차 1t 버튼</span></div>
+            <div class="trick-item"><span>·</span><span>초콜릿 폼 T/G/V = 40ml / 50ml / 60ml</span></div>
+            <div class="trick-item"><span>·</span><span>마무리 솔티드 브라운 버터리 토핑</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="sec-label sec-gap">트렌타 (Trenta)</div>
+    <div class="cards">
+
+      <div class="flip-wrap c-blue" onclick="this.classList.toggle('flipped')" style="height:240px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🖤 CBIC — 트렌타 콜드 브루</div>
+            <div class="card-sub" style="font-size:11px;margin-bottom:8px">하단선 콜드브루 추출액 + 상단선 정수물 + 얼음</div>
+            <div class="stat-row">
+              <div class="stat blue-stat"><div class="stat-num">250ml</div><div class="stat-lab">콜드브루</div></div>
+              <div class="stat blue-stat"><div class="stat-num">230ml</div><div class="stat-lab">정수물</div></div>
+            </div>
+            <div class="flip-hint">탭 → 유의사항</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">⚠️ 유의사항</div>
+            <div class="trick-item"><span>·</span><span>텀블러 계량 시 콜드브루 = 250ml</span></div>
+            <div class="trick-item"><span>·</span><span>텀블러 계량 시 정수물 = 230ml</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-pink" onclick="this.classList.toggle('flipped')" style="height:320px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🍊 GHBT — 트렌타 자몽 허니 블랙 티</div>
+            <div class="card-sub" style="font-size:11px;margin-bottom:8px">G사이즈 2번선 블랙티 + 자몽소스 + 클래식 시럽(7.5ml) + G사이즈 4번선 정수물 + T사이즈 얼음 2번 ▶ 쉐이킹</div>
+            <div class="stat-row">
+              <div class="stat pink-stat"><div class="stat-num">8 고정</div><div class="stat-lab">시럽</div></div>
+              <div class="stat pink-stat"><div class="stat-num">5 고정</div><div class="stat-lab">Syrup</div></div>
+            </div>
+            <div class="flip-hint">탭 → 유의사항</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">⚠️ 유의사항</div>
+            <div class="trick-item"><span>·</span><span>블랙티는 G사이즈 2번선까지 계량</span></div>
+            <div class="trick-item"><span>·</span><span>정수물은 G사이즈 4번선까지 계량</span></div>
+            <div class="trick-item"><span>·</span><span>얼음은 T사이즈로 2번</span></div>
+            <div class="trick-item"><span>·</span><span>시럽 8 고정 · Syrup 5 고정</span></div>
+            <div class="trick-item"><span>·</span><span>쉐이킹 10회 이상</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-pink" onclick="this.classList.toggle('flipped')" style="height:270px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🍑 PIT — 트렌타 복숭아 아이스티</div>
+            <div class="card-sub" style="font-size:11px;margin-bottom:8px">G사이즈 아랫선 블랙티 + 상단선 피치 베이스 + 얼음</div>
+            <div class="stat-row">
+              <div class="stat pink-stat"><div class="stat-num">6 고정</div><div class="stat-lab">시럽</div></div>
+            </div>
+            <div class="flip-hint">탭 → 유의사항</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">⚠️ 유의사항</div>
+            <div class="trick-item"><span>·</span><span>블랙티는 G사이즈 아랫선까지</span></div>
+            <div class="trick-item"><span>·</span><span>피치 베이스는 상단선까지</span></div>
+            <div class="trick-item"><span>·</span><span>시럽 6 고정</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-red" onclick="this.classList.toggle('flipped')" style="height:310px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🍓 SALR — 트렌타 딸기 아사이 레모네이드 리프레셔</div>
+            <div class="card-sub" style="font-size:11px;margin-bottom:8px">G사이즈 1번선 딸기 리프레셔 베이스 + 2번선 정수물 + 4번선 레모네이드 + 딸기 슬라이스 + T사이즈 얼음 2번 ▶ 쉐이킹</div>
+            <div class="stat-row">
+              <div class="stat red-stat"><div class="stat-num">2 고정</div><div class="stat-lab">시럽</div></div>
+            </div>
+            <div class="flip-hint">탭 → 유의사항</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">⚠️ 유의사항</div>
+            <div class="trick-item"><span>·</span><span>딸기 리프레셔 베이스 G사이즈 1번선</span></div>
+            <div class="trick-item"><span>·</span><span>정수물 2번선, 레모네이드 4번선 (모두 G사이즈 기준)</span></div>
+            <div class="trick-item"><span>·</span><span>얼음은 T사이즈로 2번</span></div>
+            <div class="trick-item"><span>·</span><span>시럽 2 고정</span></div>
+            <div class="trick-item"><span>·</span><span>쉐이킹 후 제공</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="sec-label sec-gap">딜리버스 (Deliverus)</div>
+    <div class="cards">
+
+      <div class="flip-wrap c-green" onclick="this.classList.toggle('flipped')" style="height:340px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">⭐ BVL — 별다방 바닐라 라떼</div>
+            <div class="card-sub" style="font-size:11px;margin-bottom:8px">[HOT] 하프앤하프 G사이즈 계량 후 X-HOT 스팀 + 블론드 에스프레소 샷 + 바닐라 시럽(7.5ml)<br>[ICE] 블론드 샷 + 바닐라 시럽(7.5ml) + 중간선 하프앤하프 + 상단선 우유 + 얼음</div>
+            <div class="stat-row">
+              <div class="stat teal-stat"><div class="stat-num">3 고정</div><div class="stat-lab">블론드 샷</div></div>
+              <div class="stat teal-stat"><div class="stat-num">4 고정</div><div class="stat-lab">시럽</div></div>
+            </div>
+            <div class="flip-hint">탭 → 유의사항</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">⚠️ 유의사항</div>
+            <div class="trick-item"><span>·</span><span>블론드 에스프레소 샷 3 고정</span></div>
+            <div class="trick-item"><span>·</span><span>바닐라 시럽 4 고정</span></div>
+            <div class="trick-item"><span>·</span><span>HOT: 하프앤하프 G사이즈 계량 → X-HOT 스팀</span></div>
+            <div class="trick-item"><span>·</span><span>ICE: 중간선 H&H + 상단선 우유 + 얼음</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 빠른 참조 표 -->
+    <div class="sec-label sec-gap">프로모션 / 트렌타 / 딜리버스 — 빠른 참조</div>
+    <table class="quick-table">
+      <thead><tr><th>마킹</th><th>음료명</th><th>핵심 구성</th><th>샷·시럽</th></tr></thead>
+      <tbody>
+        <tr><td colspan="4" style="background:#f5eee0;font-weight:700;color:#8a5a00">프로모션 — 슈크림 시리즈</td></tr>
+        <tr><td>CCL</td><td>슈크림 라떼</td><td>샷 + 스위트 바닐라 소스 + 우유 + 슈크림 휘핑</td><td>샷 1/2/2 · 시럽 3/4/5</td></tr>
+        <tr><td>CF L</td><td>슈크림 폼 라떼</td><td>샷 + 스위트 바닐라 소스 + 우유 + 슈 폼</td><td>샷 1/2/2 · 시럽 2/3/4</td></tr>
+        <tr><td>C SL</td><td>슈크림 딸기 라떼</td><td>클래식시럽 + 우유 하단선 + 얼음 12mm + 딸기 베이스 + 슈크림 휘핑</td><td>시럽 1/2/3</td></tr>
+        <tr><td>CF SL</td><td>슈 폼 딸기 라떼</td><td>클래식시럽 + 우유 하단선 + 얼음 18mm + 딸기 베이스 + 슈 폼</td><td>—</td></tr>
+        <tr><td>C ML</td><td>슈크림 말차 라떼</td><td>우유 + 슈크림 말차 베이스 + 슈크림 휘핑</td><td>—</td></tr>
+        <tr><td>CF ML</td><td>슈 폼 말차 라떼</td><td>우유 + 슈크림 말차 베이스 + 슈 폼</td><td>—</td></tr>
+        <tr><td colspan="4" style="background:#fdecec;font-weight:700;color:#8a0f2a">프로모션 — 시즌 한정</td></tr>
+        <tr><td>CB CRM</td><td>체리블라썸 백도 크림 프라푸치노</td><td>우유 + 화이트모카 + 백도파우더(2t) + 밀크푸딩(2t) + 백도베이스 + 커피베이스 ▶ 휘핑 + 스월</td><td>시럽 1/2/2</td></tr>
+        <tr><td>DCM</td><td>두바이 초콜릿 모카</td><td>바모카(15ml) + 샷 + 우유 + 얼음 + 피스타치오 폼 + 솔티드 브라운 버터리</td><td>샷 1/2/2 · 시럽 2/3/4</td></tr>
+        <tr><td>DC Mal</td><td>두바이 초콜릿 말차</td><td>우유 + 피스타치오 소스 + 말차 1t + 얼음 + 초콜릿 폼 + 솔티드 브라운 버터리</td><td>시럽 2/3/4</td></tr>
+        <tr><td colspan="4" style="background:#e8f5e9;font-weight:700;color:#1b5e20">트렌타</td></tr>
+        <tr><td>CBIC</td><td>트렌타 콜드 브루</td><td>콜드브루 하단선 + 정수물 상단선 + 얼음</td><td>콜드브루 250ml · 정수물 230ml</td></tr>
+        <tr><td>GHBT</td><td>트렌타 자몽 허니 블랙 티</td><td>G 2번선 블랙티 + 자몽소스 + 클래식시럽 + G 4번선 물 + T 얼음 ×2 ▶ 쉐이킹</td><td>시럽 8 · Syrup 5 고정</td></tr>
+        <tr><td>PIT</td><td>트렌타 복숭아 아이스티</td><td>G 아랫선 블랙티 + 피치 상단선 + 얼음</td><td>시럽 6 고정</td></tr>
+        <tr><td>SALR</td><td>트렌타 딸기 아사이 레모네이드 리프레셔</td><td>딸기 G 1번 + 물 2번 + 레모네이드 4번 + 딸기슬라이스 + T 얼음 ×2 ▶ 쉐이킹</td><td>시럽 2 고정</td></tr>
+        <tr><td colspan="4" style="background:#e6f0ff;font-weight:700;color:#0b3a7a">딜리버스</td></tr>
+        <tr><td>BVL</td><td>별다방 바닐라 라떼</td><td>H&H + 블론드 샷 + 바닐라 시럽 (HOT: X-HOT 스팀 / ICE: 중간선 H&H + 상단선 우유)</td><td>샷 3 · 시럽 4 고정</td></tr>
+      </tbody>
+    </table>
+
+    <div class="rule-card" style="background:var(--warn-light);border-color:var(--warn);margin-top:12px">
+      <div class="rule-card-title" style="color:var(--warn)">📌 프로모션 / 트렌타 / 딜리버스 참고</div>
+      <div class="rule-row"><span class="dot">·</span><span>슈크림(휘핑) vs 슈 폼(폼): 동일 구성에서 마무리 차이</span></div>
+      <div class="rule-row"><span class="dot">·</span><span>트렌타 = G사이즈 계량선을 기준으로 배수 계량 (T 얼음 2번 등)</span></div>
+      <div class="rule-row"><span class="dot">·</span><span>딜리버스 BVL = 블론드 샷 3 / 시럽 4 고정 (사이즈 무관)</span></div>
+      <div class="rule-row"><span class="dot">·</span><span>피스타치오 폼 · 초콜릿 폼 = 40/50/60ml (T/G/V)</span></div>
     </div>
 
   </div>
