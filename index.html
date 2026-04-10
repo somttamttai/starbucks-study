@@ -609,6 +609,7 @@
     <button class="tab" onclick="switchTab('bujaelyo',this)">🧪 부재료제조</button>
     <button class="tab" onclick="switchTab('hot',this)">🔥 HOT음료</button>
     <button class="tab" onclick="switchTab('ice',this)">🧊 ICE음료</button>
+    <button class="tab" onclick="switchTab('fb',this)">🥤 프라푸치노/블렌디드</button>
     <button class="tab" onclick="switchTab('ref',this)">📋 빠른참조</button>
     <button class="tab" onclick="switchTab('rules',this)">📌 표기법</button>
     <button class="tab" onclick="switchTab('quiz',this)">🎯 퀴즈</button>
@@ -3523,6 +3524,260 @@
         <tr><td>SSL</td><td>딸기 라떼</td><td>클래식시럽 + 우유 하단선 + 얼음 + 딸기 베이스</td><td>시럽 1/2/3</td></tr>
       </tbody>
     </table>
+
+  </div>
+
+  <!-- ========== 프라푸치노 / 블렌디드 ========== -->
+  <div class="section" id="sec-fb">
+
+    <div class="sec-label" style="margin-top:4px">커피 프라푸치노</div>
+    <div class="cards">
+
+      <div class="flip-wrap c-amber" onclick="this.classList.toggle('flipped')" style="height:290px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">☕ EF — 에스프레소 프라푸치노</div>
+            <div class="card-sub" style="font-size:11px;margin-bottom:8px">하단선(FR + 에스프레소 샷 + 우유) + 얼음 + 커피베이스</div>
+            <div class="stat-row">
+              <div class="stat amber-stat"><div class="stat-num">1/1/1</div><div class="stat-lab">샷 T/G/V</div></div>
+              <div class="stat amber-stat"><div class="stat-num">2/3/4</div><div class="stat-lab">Flavor 시럽</div></div>
+            </div>
+            <div class="flip-hint">탭 → 유의사항</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">⚠️ 유의사항</div>
+            <div class="trick-item"><span>·</span><span>에스프레소 샷 T/G/V = 1/1/1</span></div>
+            <div class="trick-item"><span>·</span><span>Flavor Syrup T/G/V = 2/3/4</span></div>
+            <div class="trick-item"><span>·</span><span>하단선까지 FR + 샷 + 우유, 얼음과 커피베이스 추가</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-amber" onclick="this.classList.toggle('flipped')" style="height:310px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🍫 FC/MF — 자바칩 프라푸치노</div>
+            <div class="card-sub" style="font-size:11px;margin-bottom:8px">하단선(FR + 우유) + 바모카 소스 + 프라푸치노 칩 + 얼음 + 커피베이스 ▶ 휘핑 + 초콜릿 드리즐</div>
+            <div class="stat-row">
+              <div class="stat amber-stat"><div class="stat-num">2/3/4</div><div class="stat-lab">Flavor 시럽</div></div>
+              <div class="stat amber-stat"><div class="stat-num">2/3/4</div><div class="stat-lab">칩 T/G/V</div></div>
+              <div class="stat amber-stat"><div class="stat-num">O</div><div class="stat-lab">휘핑</div></div>
+            </div>
+            <div class="flip-hint">탭 → 유의사항</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">⚠️ 유의사항</div>
+            <div class="trick-item"><span>·</span><span>프라푸치노 칩 T/G/V = 2/3/4</span></div>
+            <div class="trick-item"><span>·</span><span>Flavor Syrup T/G/V = 2/3/4</span></div>
+            <div class="trick-item"><span>·</span><span>휘핑 + 초콜릿 드리즐로 마무리</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-amber" onclick="this.classList.toggle('flipped')" style="height:310px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🍮 CRF — 카라멜 프라푸치노</div>
+            <div class="card-sub" style="font-size:11px;margin-bottom:8px">하단선(FR + 우유) + 스위트 향 시럽(3.75ml) + 얼음 + 커피베이스 ▶ 휘핑 + 카라멜 드리즐</div>
+            <div class="stat-row">
+              <div class="stat amber-stat"><div class="stat-num">2/3/4</div><div class="stat-lab">Flavor 시럽</div></div>
+              <div class="stat amber-stat"><div class="stat-num">2/3/4</div><div class="stat-lab">스위트 시럽</div></div>
+              <div class="stat amber-stat"><div class="stat-num">O</div><div class="stat-lab">휘핑</div></div>
+            </div>
+            <div class="flip-hint">탭 → 유의사항</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">⚠️ 유의사항</div>
+            <div class="trick-item"><span>·</span><span>Flavor Syrup T/G/V = 2/3/4</span></div>
+            <div class="trick-item"><span>·</span><span>스위트 향 시럽(3.75ml) T/G/V = 2/3/4</span></div>
+            <div class="trick-item"><span>·</span><span>휘핑 + 카라멜 드리즐로 마무리</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-red" onclick="this.classList.toggle('flipped')" style="height:320px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">⚡ DEF — 더블 에스프레소 칩 프라푸치노</div>
+            <div class="card-sub" style="font-size:11px;margin-bottom:8px">하단선(리스트레또 샷 + 하프앤하프) + 에스프레소 칩 + 얼음 + 커피베이스 ▶ 휘핑 + 에스프레소 칩</div>
+            <div class="stat-row">
+              <div class="stat red-stat"><div class="stat-num">2/2/4</div><div class="stat-lab">리스트레또 샷</div></div>
+              <div class="stat red-stat"><div class="stat-num">2/3/4</div><div class="stat-lab">에스프레소 칩</div></div>
+              <div class="stat red-stat"><div class="stat-num">2/2/4</div><div class="stat-lab">Flavor 시럽</div></div>
+            </div>
+            <div class="flip-hint">탭 → 유의사항</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">⚠️ 유의사항</div>
+            <div class="trick-item"><span>·</span><span>리스트레또 샷 T/G/V = 2/2/4</span></div>
+            <div class="trick-item"><span>·</span><span>에스프레소 칩 T/G/V = 2/3/4</span></div>
+            <div class="trick-item"><span>·</span><span>Flavor Syrup T/G/V = 2/2/4 (G 값 유의!)</span></div>
+            <div class="trick-item"><span>·</span><span>휘핑 + 에스프레소 칩으로 마무리</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="sec-label sec-gap">크림 프라푸치노</div>
+    <div class="cards">
+
+      <div class="flip-wrap c-green" onclick="this.classList.toggle('flipped')" style="height:320px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🍵 JM CRM — 유기농 말차 크림 프라푸치노</div>
+            <div class="card-sub" style="font-size:11px;margin-bottom:8px">우유 + 블렌더에 붓기 + 클래식 시럽(3.75ml) + 유기농 말차 파우더 + 얼음 + 크림 베이스 ▶ 휘핑</div>
+            <div class="stat-row">
+              <div class="stat teal-stat"><div class="stat-num">2/3/4</div><div class="stat-lab">Flavor 시럽</div></div>
+              <div class="stat teal-stat"><div class="stat-num">2/3/4</div><div class="stat-lab">말차 파우더</div></div>
+              <div class="stat teal-stat"><div class="stat-num">O</div><div class="stat-lab">휘핑</div></div>
+            </div>
+            <div class="flip-hint">탭 → 유의사항</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">⚠️ 유의사항</div>
+            <div class="trick-item"><span>·</span><span>유기농 말차 파우더 T/G/V = 2/3/4</span></div>
+            <div class="trick-item"><span>·</span><span>클래식 시럽 CBS T/G/V = 2/3/4</span></div>
+            <div class="trick-item"><span>·</span><span>Flavor Syrup T/G/V = 2/3/4</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-amber" onclick="this.classList.toggle('flipped')" style="height:310px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🍫 MO FC CRM — 초콜릿 크림 칩 프라푸치노</div>
+            <div class="card-sub" style="font-size:11px;margin-bottom:8px">우유 + 블렌더에 붓기 + 바모카 소스 + 프라푸치노 칩 + 얼음 + 크림 베이스 ▶ 휘핑 + 초콜릿 드리즐</div>
+            <div class="stat-row">
+              <div class="stat amber-stat"><div class="stat-num">2/3/4</div><div class="stat-lab">Flavor 시럽</div></div>
+              <div class="stat amber-stat"><div class="stat-num">2/3/4</div><div class="stat-lab">칩 T/G/V</div></div>
+              <div class="stat amber-stat"><div class="stat-num">O</div><div class="stat-lab">휘핑</div></div>
+            </div>
+            <div class="flip-hint">탭 → 유의사항</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">⚠️ 유의사항</div>
+            <div class="trick-item"><span>·</span><span>프라푸치노 칩 T/G/V = 2/3/4</span></div>
+            <div class="trick-item"><span>·</span><span>Flavor Syrup T/G/V = 2/3/4</span></div>
+            <div class="trick-item"><span>·</span><span>휘핑 + 초콜릿 드리즐로 마무리</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="sec-label sec-gap">블렌디드</div>
+    <div class="cards">
+
+      <div class="flip-wrap c-amber" onclick="this.classList.toggle('flipped')" style="height:280px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🥭 MPTB — 망고 패션 티 블렌디드</div>
+            <div class="card-sub" style="font-size:11px;margin-bottom:8px">중간선 망고 베이스 + 클래식 시럽(7.5ml) + 블랙티 베이스 + 얼음</div>
+            <div class="stat-row">
+              <div class="stat amber-stat"><div class="stat-num">2/3/4</div><div class="stat-lab">시럽 T/G/V</div></div>
+            </div>
+            <div class="flip-hint">탭 → 트릭</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">💡 기억 트릭</div>
+            <div class="trick-item"><span>·</span><span>망고 베이스는 중간선까지</span></div>
+            <div class="trick-item"><span>·</span><span>클래식 시럽 7.5ml 기준 T/G/V = 2/3/4</span></div>
+            <div class="trick-item"><span>·</span><span>블랙티 베이스 + 얼음 추가</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-pink" onclick="this.classList.toggle('flipped')" style="height:310px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🍓 SYB — 딸기 알라카이트 요거트 블렌디드</div>
+            <div class="card-sub" style="font-size:11px;margin-bottom:8px">하단선 우유 + 돌체 소스 + 요거트 파우더 + 얼음 ▶ 딸기 베이스 + 내용물 붓기</div>
+            <div class="stat-row">
+              <div class="stat pink-stat"><div class="stat-num">2/3/4</div><div class="stat-lab">시럽 T/G/V</div></div>
+            </div>
+            <div class="flip-hint">탭 → 유의사항</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">⚠️ 유의사항</div>
+            <div class="trick-item"><span>·</span><span>딸기 베이스 T/G/V = 60ml / 90ml / 120ml</span></div>
+            <div class="trick-item"><span>·</span><span>시럽 T/G/V = 2/3/4</span></div>
+            <div class="trick-item"><span>·</span><span>우유 하단선 → 블렌딩 후 딸기 베이스 스월</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-amber" onclick="this.classList.toggle('flipped')" style="height:280px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🍌 BMB — 망고 바나나 블렌디드</div>
+            <div class="card-sub" style="font-size:11px;margin-bottom:8px">바나나 + 중간선 망고베이스 + 상단선 우유 + 얼음 ▶ 내용물 붓기</div>
+            <div class="stat-row">
+              <div class="stat amber-stat"><div class="stat-num">G만</div><div class="stat-lab">사이즈</div></div>
+            </div>
+            <div class="flip-hint">탭 → 유의사항</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">⚠️ 유의사항</div>
+            <div class="trick-item"><span>·</span><span>G 사이즈만 제공</span></div>
+            <div class="trick-item"><span>·</span><span>얼음과 베이스는 T 사이즈 기준으로 계량</span></div>
+            <div class="trick-item"><span>·</span><span>망고베이스 중간선 · 우유 상단선</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-wrap c-pink" onclick="this.classList.toggle('flipped')" style="height:340px">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="card-label">🍋 GHLB — 자몽 허니 레몬 블렌디드</div>
+            <div class="card-sub" style="font-size:11px;margin-bottom:8px">하단선 레모네이드 + 블렌더에 붓기 + 허니 자몽 소스 + 클래식 시럽(3.75ml) + 얼음 ▶ 허니 자몽 소스(스월)</div>
+            <div class="stat-row">
+              <div class="stat pink-stat"><div class="stat-num">3/4/5</div><div class="stat-lab">Flavor 시럽</div></div>
+              <div class="stat pink-stat"><div class="stat-num">2/3/4</div><div class="stat-lab">시럽</div></div>
+              <div class="stat pink-stat"><div class="stat-num">1/1/1</div><div class="stat-lab">스월 소스</div></div>
+            </div>
+            <div class="flip-hint">탭 → 유의사항</div>
+          </div>
+          <div class="flip-back">
+            <div class="card-label">⚠️ 유의사항</div>
+            <div class="trick-item"><span>·</span><span>Flavor Syrup T/G/V = 3/4/5</span></div>
+            <div class="trick-item"><span>·</span><span>시럽 T/G/V = 2/3/4</span></div>
+            <div class="trick-item"><span>·</span><span>얼음은 한 사이즈 큰 계량(G/V/V)</span></div>
+            <div class="trick-item"><span>·</span><span>마무리 전 허니 자몽 소스 T/G/V = 1/1/1 스월</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 빠른 참조 표 -->
+    <div class="sec-label sec-gap">프라푸치노 / 블렌디드 — 빠른 참조</div>
+    <table class="quick-table">
+      <thead><tr><th>마킹</th><th>음료명</th><th>제조순서 (핵심)</th><th>시럽·특이사항</th></tr></thead>
+      <tbody>
+        <tr><td colspan="4" style="background:#f5eee0;font-weight:700;color:#8a5a00">커피 프라푸치노</td></tr>
+        <tr><td>EF</td><td>에스프레소 프라푸치노</td><td>FR+샷+우유 하단선 + 얼음 + 커피베이스</td><td>샷 1/1/1 · Flavor 2/3/4</td></tr>
+        <tr><td>FC/MF</td><td>자바칩 프라푸치노</td><td>FR+우유 하단선 + 바모카 + 칩 + 얼음 + 커피베이스 ▶ 휘핑+드리즐</td><td>칩 2/3/4 · Flavor 2/3/4</td></tr>
+        <tr><td>CRF</td><td>카라멜 프라푸치노</td><td>FR+우유 하단선 + 스위트시럽 + 얼음 + 커피베이스 ▶ 휘핑+카라멜 드리즐</td><td>Flavor 2/3/4 · 시럽 2/3/4</td></tr>
+        <tr><td>DEF</td><td>더블 에스프레소 칩 프라푸치노</td><td>리스트레또+H&H 하단선 + 에스프레소 칩 + 얼음 + 커피베이스 ▶ 휘핑+칩</td><td>샷 2/2/4 · 칩 2/3/4 · Flavor 2/2/4</td></tr>
+        <tr><td colspan="4" style="background:#e8f5e9;font-weight:700;color:#1b5e20">크림 프라푸치노</td></tr>
+        <tr><td>JM CRM</td><td>유기농 말차 크림 프라푸치노</td><td>우유 + 클래식시럽 + 말차파우더 + 얼음 + 크림베이스 ▶ 휘핑</td><td>파우더 2/3/4 · Flavor 2/3/4</td></tr>
+        <tr><td>MO FC CRM</td><td>초콜릿 크림 칩 프라푸치노</td><td>우유 + 바모카 + 칩 + 얼음 + 크림베이스 ▶ 휘핑+드리즐</td><td>칩 2/3/4 · Flavor 2/3/4</td></tr>
+        <tr><td colspan="4" style="background:#fdecec;font-weight:700;color:#8a0f2a">블렌디드</td></tr>
+        <tr><td>MPTB</td><td>망고 패션 티 블렌디드</td><td>망고베이스 중간선 + 클래식시럽 + 블랙티베이스 + 얼음</td><td>시럽 2/3/4</td></tr>
+        <tr><td>SYB</td><td>딸기 알라카이트 요거트 블렌디드</td><td>우유 하단선 + 돌체소스 + 요거트파우더 + 얼음 ▶ 딸기베이스 스월</td><td>딸기 60/90/120ml · 시럽 2/3/4</td></tr>
+        <tr><td>BMB</td><td>망고 바나나 블렌디드</td><td>바나나 + 망고베이스 중간선 + 우유 상단선 + 얼음</td><td>G 사이즈만 제공</td></tr>
+        <tr><td>GHLB</td><td>자몽 허니 레몬 블렌디드</td><td>레모네이드 하단선 + 허니자몽소스 + 클래식시럽 + 얼음 ▶ 스월</td><td>Flavor 3/4/5 · 시럽 2/3/4 · 스월 1/1/1</td></tr>
+      </tbody>
+    </table>
+
+    <div class="rule-card" style="background:var(--warn-light);border-color:var(--warn);margin-top:12px">
+      <div class="rule-card-title" style="color:var(--warn)">📌 프라푸치노 / 블렌디드 참고</div>
+      <div class="rule-row"><span class="dot">·</span><span>FR = 프라푸치노 로스트 (1펌프 13.5ml)</span></div>
+      <div class="rule-row"><span class="dot">·</span><span>커피 프라푸치노 = 커피베이스 추가</span></div>
+      <div class="rule-row"><span class="dot">·</span><span>크림 프라푸치노 = 크림베이스 추가</span></div>
+      <div class="rule-row"><span class="dot">·</span><span>Flavor Syrup = 커피/크림 프라푸치노의 향 시럽 (펌프 수)</span></div>
+    </div>
 
   </div>
 
