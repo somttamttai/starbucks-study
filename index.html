@@ -4185,11 +4185,27 @@
           </div>
           <div class="quiz-mode-arrow">→</div>
         </button>
+        <button class="quiz-mode-btn" onclick="startQuiz('fb')">
+          <div class="quiz-mode-icon">🥤</div>
+          <div>
+            <div class="quiz-mode-title">프라푸치노/블렌디드 퀴즈</div>
+            <div class="quiz-mode-sub">커피·크림 프라푸치노·블렌디드 — 20문항</div>
+          </div>
+          <div class="quiz-mode-arrow">→</div>
+        </button>
+        <button class="quiz-mode-btn" onclick="startQuiz('promo')">
+          <div class="quiz-mode-icon">✨</div>
+          <div>
+            <div class="quiz-mode-title">프로모션/트렌타/딜리버스 퀴즈</div>
+            <div class="quiz-mode-sub">슈크림·시즌·트렌타·BVL — 20문항</div>
+          </div>
+          <div class="quiz-mode-arrow">→</div>
+        </button>
         <button class="quiz-mode-btn" onclick="startQuiz('all')">
           <div class="quiz-mode-icon">🎯</div>
           <div>
             <div class="quiz-mode-title">전체 퀴즈</div>
-            <div class="quiz-mode-sub">코어 + 제조 + 부재료 + HOT + ICE + 레시피 — 120문항</div>
+            <div class="quiz-mode-sub">코어+제조+부재료+HOT+ICE+레시피+프라푸치노+프로모션 — 160문항</div>
           </div>
           <div class="quiz-mode-arrow">→</div>
         </button>
@@ -4416,9 +4432,65 @@ const recipeQuiz = [
   { q: "카라멜 마끼아또(CM) 제조에서 샷은 어디에 붓나?", opts: ["컵 바닥에","우유에 직접","시럽 위에","우유 폼 위에"], ans: 3 },
 ];
 
-const allQuiz = [...coreQuiz, ...madeQuiz, ...bujaelyoQuiz, ...hotQuiz, ...iceQuiz, ...recipeQuiz];
+// 프라푸치노 / 블렌디드 — 정답 0,1,2,3 각 5개씩
+const fbQuiz = [
+  // ans=0
+  { q: "에스프레소 프라푸치노 마킹 코드는?", opts: ["EF","FC","MF","CRF"], ans: 0 },
+  { q: "자바칩 프라푸치노에 들어가는 토핑은?", opts: ["프라푸치노 칩","에스프레소 칩","오레오","견과류"], ans: 0 },
+  { q: "더블 에스프레소 칩 프라푸치노(DEF)에 사용하는 샷은?", opts: ["리스트레또 샷","에스프레소 샷","블론드 샷","도피오 샷"], ans: 0 },
+  { q: "망고 바나나 블렌디드(BMB)의 제공 사이즈는?", opts: ["G 사이즈만","T/G/V","G/V","T/G"], ans: 0 },
+  { q: "카라멜 프라푸치노(CRF)의 마무리 토핑은?", opts: ["휘핑 + 카라멜 드리즐","휘핑만","카라멜 드리즐만","초콜릿 드리즐"], ans: 0 },
+  // ans=1
+  { q: "자바칩 프라푸치노 칩 펌프(T/G/V)는?", opts: ["1/2/3","2/3/4","3/4/5","2/4/5"], ans: 1 },
+  { q: "자몽 허니 레몬 블렌디드(GHLB) Flavor Syrup(T/G/V)은?", opts: ["2/3/4","3/4/5","1/2/3","4/5/6"], ans: 1 },
+  { q: "더블 에스프레소 칩 프라푸치노(DEF) 리스트레또 샷(T/G/V)은?", opts: ["1/2/3","2/2/4","2/3/4","3/3/5"], ans: 1 },
+  { q: "유기농 말차 크림 프라푸치노(JM CRM) 말차 파우더(T/G/V)는?", opts: ["1/2/3","2/3/4","3/4/5","1/1/1"], ans: 1 },
+  { q: "딸기 알라카이트 요거트 블렌디드(SYB) T사이즈 딸기베이스 양은?", opts: ["100ml","60ml","90ml","120ml"], ans: 1 },
+  // ans=2
+  { q: "망고 패션 티 블렌디드(MPTB) 시럽 펌프(T/G/V)는?", opts: ["1/2/3","3/4/5","2/3/4","4/5/6"], ans: 2 },
+  { q: "자바칩 프라푸치노에 들어가는 소스는?", opts: ["화이트 모카 소스","스위트 바닐라","바모카 소스","피스타치오 소스"], ans: 2 },
+  { q: "자몽 허니 레몬 블렌디드(GHLB) 마무리 스월 소스(T/G/V)는?", opts: ["2/3/4","3/4/5","1/1/1","2/2/2"], ans: 2 },
+  { q: "카라멜 프라푸치노(CRF)에 사용하는 시럽은?", opts: ["바닐라 시럽","바모카 소스","스위트 향 시럽","클래식 시럽"], ans: 2 },
+  { q: "망고 바나나 블렌디드(BMB)의 얼음·베이스 계량 기준은?", opts: ["V 사이즈","S 사이즈","T 사이즈","G 사이즈"], ans: 2 },
+  // ans=3
+  { q: "초콜릿 크림 칩 프라푸치노 마킹 코드는?", opts: ["FC/MF","CRF","JM CRM","MO FC CRM"], ans: 3 },
+  { q: "에스프레소 프라푸치노(EF) 샷 수(T/G/V)는?", opts: ["2/3/4","1/2/2","1/2/3","1/1/1"], ans: 3 },
+  { q: "딸기 알라카이트 요거트 블렌디드 마킹 코드는?", opts: ["SSL","SBL","SAL","SYB"], ans: 3 },
+  { q: "자몽 허니 레몬 블렌디드(GHLB) 얼음 계량 규칙은?", opts: ["T/G/V 동일","사이즈 그대로","S 사이즈로","한 사이즈 큰 사이즈로(G/V/V)"], ans: 3 },
+  { q: "자바칩·초콜릿 크림 칩 프라푸치노의 칩 펌프(T/G/V)는?", opts: ["1/2/3","2/2/2","3/4/5","2/3/4"], ans: 3 },
+];
 
-const modeLabels = { core: '🫙 코어 원재료 퀴즈', made: '☕ 제조 베이스 퀴즈', bujaelyo: '🧪 부재료 제조 퀴즈', hot: '🔥 HOT 음료 퀴즈', ice: '🧊 ICE 음료 퀴즈', recipe: '🍹 음료 레시피 퀴즈', all: '🎯 전체 퀴즈' };
+// 프로모션 / 트렌타 / 딜리버스 — 정답 0,1,2,3 각 5개씩
+const promoQuiz = [
+  // ans=0
+  { q: "슈크림 라떼(CCL)의 시럽 펌프(T/G/V)는?", opts: ["3/4/5","2/3/4","1/2/3","4/5/6"], ans: 0 },
+  { q: "두바이 초콜릿 모카(DCM)에 사용하는 폼은?", opts: ["피스타치오 폼","초콜릿 폼","바닐라 폼","휘핑크림"], ans: 0 },
+  { q: "트렌타 콜드브루(CBIC) 텀블러 콜드브루 양은?", opts: ["250ml","230ml","200ml","300ml"], ans: 0 },
+  { q: "별다방 바닐라 라떼(BVL)에 사용하는 샷은?", opts: ["블론드 에스프레소 샷","에스프레소 샷","리스트레또 샷","도피오 샷"], ans: 0 },
+  { q: "슈크림 폼 라떼(CF L) 슈 폼 계량 양(T/G/V)은?", opts: ["40/50/60ml","80/100/120ml","60/80/100ml","30/40/50ml"], ans: 0 },
+  // ans=1
+  { q: "슈크림 폼 라떼(CF L)의 시럽 펌프(T/G/V)는?", opts: ["3/4/5","2/3/4","1/2/3","4/5/6"], ans: 1 },
+  { q: "트렌타 자몽 허니 블랙 티(GHBT) Syrup 고정 펌프 수는?", opts: ["3","5","8","2"], ans: 1 },
+  { q: "두바이 초콜릿 모카(DCM)의 바모카 1회 기준 용량은?", opts: ["10.2ml","15ml","7.5ml","13.5ml"], ans: 1 },
+  { q: "슈 폼 딸기 라떼(CF SL)의 얼음 양은?", opts: ["12mm","18mm","6mm","24mm"], ans: 1 },
+  { q: "별다방 바닐라 라떼(BVL)의 시럽 고정 펌프 수는?", opts: ["3","4","5","2"], ans: 1 },
+  // ans=2
+  { q: "슈크림 딸기 라떼(C SL)의 클래식 시럽 펌프(T/G/V)는?", opts: ["2/3/4","3/4/5","1/2/3","2/2/2"], ans: 2 },
+  { q: "두바이 초콜릿 말차(DC Mal)의 피스타치오 소스 1회 기준 용량은?", opts: ["7.5ml","13.5ml","10.2ml","15ml"], ans: 2 },
+  { q: "트렌타 복숭아 아이스티(PIT)의 고정 시럽 펌프 수는?", opts: ["2","8","6","5"], ans: 2 },
+  { q: "체리블라썸 백도 크림 프라푸치노(CB CRM)의 토핑 스쿱 규칙은?", opts: ["1t × 2","2t × 1","2t × 2","1t × 1"], ans: 2 },
+  { q: "슈크림 라떼(CCL)의 샷 펌프(T/G/V)는?", opts: ["1/1/1","2/3/4","1/2/2","1/2/3"], ans: 2 },
+  // ans=3
+  { q: "트렌타 콜드브루(CBIC)의 정수물 양은?", opts: ["250ml","200ml","260ml","230ml"], ans: 3 },
+  { q: "두바이 초콜릿 모카(DCM)의 피스타치오 폼 양(T/G/V)은?", opts: ["20/30/40ml","30/40/50ml","50/60/70ml","40/50/60ml"], ans: 3 },
+  { q: "트렌타 딸기 아사이 레모네이드 리프레셔(SALR)의 고정 시럽 펌프 수는?", opts: ["8","6","5","2"], ans: 3 },
+  { q: "슈크림 라떼와 슈 폼 라떼의 핵심 차이는?", opts: ["샷 수","시럽 종류","베이스 우유","마무리 휘핑/폼 차이"], ans: 3 },
+  { q: "별다방 바닐라 라떼(BVL) HOT 제조에 사용하는 우유는?", opts: ["일반우유","두유","무지방우유","하프앤하프"], ans: 3 },
+];
+
+const allQuiz = [...coreQuiz, ...madeQuiz, ...bujaelyoQuiz, ...hotQuiz, ...iceQuiz, ...recipeQuiz, ...fbQuiz, ...promoQuiz];
+
+const modeLabels = { core: '🫙 코어 원재료 퀴즈', made: '☕ 제조 베이스 퀴즈', bujaelyo: '🧪 부재료 제조 퀴즈', hot: '🔥 HOT 음료 퀴즈', ice: '🧊 ICE 음료 퀴즈', recipe: '🍹 음료 레시피 퀴즈', fb: '🥤 프라푸치노/블렌디드 퀴즈', promo: '✨ 프로모션/트렌타/딜리버스 퀴즈', all: '🎯 전체 퀴즈' };
 
 let shuffled = [], current = 0, correct = 0, results = [], answered = false, currentMode = 'core';
 
@@ -4431,7 +4503,7 @@ function backToSelect() {
 
 function startQuiz(mode) {
   currentMode = mode;
-  const pool = mode === 'core' ? coreQuiz : mode === 'made' ? madeQuiz : mode === 'bujaelyo' ? bujaelyoQuiz : mode === 'hot' ? hotQuiz : mode === 'ice' ? iceQuiz : mode === 'recipe' ? recipeQuiz : allQuiz;
+  const pool = mode === 'core' ? coreQuiz : mode === 'made' ? madeQuiz : mode === 'bujaelyo' ? bujaelyoQuiz : mode === 'hot' ? hotQuiz : mode === 'ice' ? iceQuiz : mode === 'recipe' ? recipeQuiz : mode === 'fb' ? fbQuiz : mode === 'promo' ? promoQuiz : allQuiz;
   shuffled = shuffle(pool);
   current = 0; correct = 0; results = []; answered = false;
   document.getElementById('quiz-mode-label').textContent = modeLabels[mode];
